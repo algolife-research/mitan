@@ -1,64 +1,50 @@
 [
   {
-    "objectID": "map.html#cartographie-des-perturbations-forestières",
-    "href": "map.html#cartographie-des-perturbations-forestières",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bienvenue dans Mitan",
+    "section": "",
+    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de sensibilisation où citoyens, chercheurs et gestionnaires de la forêt peuvent se rencontrer, partager leurs observations et réfléchir ensemble à des actions concrètes pour préserver ce milieu précieux tout en répondant à nos besoins, et décider de ce que nous laisserons aux générations futures."
+  },
+  {
+    "objectID": "index.html#quest-ce-que-mitan",
+    "href": "index.html#quest-ce-que-mitan",
+    "title": "Bienvenue dans Mitan",
+    "section": "",
+    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de sensibilisation où citoyens, chercheurs et gestionnaires de la forêt peuvent se rencontrer, partager leurs observations et réfléchir ensemble à des actions concrètes pour préserver ce milieu précieux tout en répondant à nos besoins, et décider de ce que nous laisserons aux générations futures."
+  },
+  {
+    "objectID": "index.html#comment-démarrer",
+    "href": "index.html#comment-démarrer",
+    "title": "Bienvenue dans Mitan",
+    "section": "Comment démarrer ?",
+    "text": "Comment démarrer ?\n\nVous trouverez dans la barre de navigation en haut un champ de recherche.\nTapez le nom de votre commune pour trouver sa page.\n\nVous pouvez aussi consulter un exemple ici."
+  },
+  {
+    "objectID": "87153.html#cartographie-des-perturbations-forestières",
+    "href": "87153.html#cartographie-des-perturbations-forestières",
     "title": "Saint-Julien-le-Petit",
     "section": "Cartographie des perturbations forestières",
     "text": "Cartographie des perturbations forestières"
   },
   {
-    "objectID": "map.html#la-commune-en-bref",
-    "href": "map.html#la-commune-en-bref",
+    "objectID": "87153.html#la-commune-en-bref",
+    "href": "87153.html#la-commune-en-bref",
     "title": "Saint-Julien-le-Petit",
     "section": "La commune en bref",
     "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1854 ha\nDont :\n- feuillus : 1194 ha\n- conifères : 283 ha\n- mixtes et non-classés : 378 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n279 ha\nEn pourcentage :\n- de la forêt : 15.03 %\n- des feuillus : 15.43 %\n- des conifères : 18.35 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n35 ha par an\nEn pourcentage :\n- de la forêt : 1.88 %\n- des feuillus : 1.93 %\n- des conifères : 2.29 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n53 années\nSoit 45 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
   },
   {
-    "objectID": "map.html#a-savoir",
-    "href": "map.html#a-savoir",
+    "objectID": "87153.html#a-savoir",
+    "href": "87153.html#a-savoir",
     "title": "Saint-Julien-le-Petit",
     "section": "A savoir",
     "text": "A savoir\nComme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.\n\nLimites de la classification des types de forêts\nLa classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l’IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :\n\nBDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.\nLa classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.\n\n\n\nLimites de la détection des perturbations\nLa détection des perturbations majeures de l’écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :\n\nRésolution temporelle et spatiale : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.\nConditions météorologiques : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.\nLimites de l’indice NDVI : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.\nRéactivité aux changements subtils : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.\n\n\n\nNos recommandations\nIl est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.\nBien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision."
   },
   {
-    "objectID": "map.html#source-des-données",
-    "href": "map.html#source-des-données",
+    "objectID": "87153.html#source-des-données",
+    "href": "87153.html#source-des-données",
     "title": "Saint-Julien-le-Petit",
-    "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "A propos",
-    "section": "",
-    "text": "Description du site."
-  },
-  {
-    "objectID": "87122.html#cartographie-des-perturbations-forestières",
-    "href": "87122.html#cartographie-des-perturbations-forestières",
-    "title": "Razès",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières"
-  },
-  {
-    "objectID": "87122.html#la-commune-en-bref",
-    "href": "87122.html#la-commune-en-bref",
-    "title": "Razès",
-    "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1549 ha\nDont :\n- feuillus : 1122 ha\n- conifères : 220 ha\n- mixtes et non-classés : 207 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n56 ha\nEn pourcentage :\n- de la forêt : 3.64 %\n- des feuillus : 2.25 %\n- des conifères : 12.1 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n8 ha par an\nEn pourcentage :\n- de la forêt : 0.52 %\n- des feuillus : 0.32 %\n- des conifères : 1.73 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n192 années\nSoit 185 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
-  },
-  {
-    "objectID": "87122.html#a-savoir",
-    "href": "87122.html#a-savoir",
-    "title": "Razès",
-    "section": "A savoir",
-    "text": "A savoir\nComme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.\n\nLimites de la classification des types de forêts\nLa classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l’IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :\n\nBDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.\nLa classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.\n\n\n\nLimites de la détection des perturbations\nLa détection des perturbations majeures de l’écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :\n\nRésolution temporelle et spatiale : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.\nConditions météorologiques : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.\nLimites de l’indice NDVI : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.\nRéactivité aux changements subtils : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.\n\n\n\nNos recommandations\nIl est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.\nBien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision."
-  },
-  {
-    "objectID": "87122.html#source-des-données",
-    "href": "87122.html#source-des-données",
-    "title": "Razès",
     "section": "Source des données",
     "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
@@ -91,52 +77,38 @@
     "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "87153.html#cartographie-des-perturbations-forestières",
-    "href": "87153.html#cartographie-des-perturbations-forestières",
-    "title": "Saint-Julien-le-Petit",
+    "objectID": "87122.html#cartographie-des-perturbations-forestières",
+    "href": "87122.html#cartographie-des-perturbations-forestières",
+    "title": "Razès",
     "section": "Cartographie des perturbations forestières",
     "text": "Cartographie des perturbations forestières"
   },
   {
-    "objectID": "87153.html#la-commune-en-bref",
-    "href": "87153.html#la-commune-en-bref",
-    "title": "Saint-Julien-le-Petit",
+    "objectID": "87122.html#la-commune-en-bref",
+    "href": "87122.html#la-commune-en-bref",
+    "title": "Razès",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1854 ha\nDont :\n- feuillus : 1194 ha\n- conifères : 283 ha\n- mixtes et non-classés : 378 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n279 ha\nEn pourcentage :\n- de la forêt : 15.03 %\n- des feuillus : 15.43 %\n- des conifères : 18.35 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n35 ha par an\nEn pourcentage :\n- de la forêt : 1.88 %\n- des feuillus : 1.93 %\n- des conifères : 2.29 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n53 années\nSoit 45 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1549 ha\nDont :\n- feuillus : 1122 ha\n- conifères : 220 ha\n- mixtes et non-classés : 207 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n56 ha\nEn pourcentage :\n- de la forêt : 3.64 %\n- des feuillus : 2.25 %\n- des conifères : 12.1 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n8 ha par an\nEn pourcentage :\n- de la forêt : 0.52 %\n- des feuillus : 0.32 %\n- des conifères : 1.73 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n192 années\nSoit 185 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
   },
   {
-    "objectID": "87153.html#a-savoir",
-    "href": "87153.html#a-savoir",
-    "title": "Saint-Julien-le-Petit",
+    "objectID": "87122.html#a-savoir",
+    "href": "87122.html#a-savoir",
+    "title": "Razès",
     "section": "A savoir",
     "text": "A savoir\nComme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.\n\nLimites de la classification des types de forêts\nLa classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l’IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :\n\nBDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.\nLa classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.\n\n\n\nLimites de la détection des perturbations\nLa détection des perturbations majeures de l’écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :\n\nRésolution temporelle et spatiale : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.\nConditions météorologiques : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.\nLimites de l’indice NDVI : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.\nRéactivité aux changements subtils : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.\n\n\n\nNos recommandations\nIl est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.\nBien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision."
   },
   {
-    "objectID": "87153.html#source-des-données",
-    "href": "87153.html#source-des-données",
-    "title": "Saint-Julien-le-Petit",
+    "objectID": "87122.html#source-des-données",
+    "href": "87122.html#source-des-données",
+    "title": "Razès",
     "section": "Source des données",
     "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Bienvenue dans Mitan",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "A propos",
     "section": "",
-    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de sensibilisation où citoyens, chercheurs et gestionnaires de la forêt peuvent se rencontrer, partager leurs observations et réfléchir ensemble à des actions concrètes pour préserver ce milieu précieux tout en répondant à nos besoins, et décider ce que nous laisserons aux générations futures."
-  },
-  {
-    "objectID": "index.html#quest-ce-que-mitan",
-    "href": "index.html#quest-ce-que-mitan",
-    "title": "Bienvenue dans Mitan",
-    "section": "",
-    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de sensibilisation où citoyens, chercheurs et gestionnaires de la forêt peuvent se rencontrer, partager leurs observations et réfléchir ensemble à des actions concrètes pour préserver ce milieu précieux tout en répondant à nos besoins, et décider ce que nous laisserons aux générations futures."
-  },
-  {
-    "objectID": "index.html#comment-démarrer",
-    "href": "index.html#comment-démarrer",
-    "title": "Bienvenue dans Mitan",
-    "section": "Comment démarrer ?",
-    "text": "Comment démarrer ?\n\nVous trouverez dans la barre de navigation en haut un champ de recherche.\nTapez le nom de votre commune pour trouver sa page.\n\nVous pouvez aussi consulter un exemple ici."
+    "text": "Description du site."
   }
 ]
