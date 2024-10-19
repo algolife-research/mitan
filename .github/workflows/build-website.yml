@@ -31,8 +31,8 @@ jobs:
           packages:
             any::knitr
             any::rmarkdown
-            # any::downlit
-            # any::xml2
+            any::downlit
+            any::xml2
             any::leaflet
         
       - name: Publish to GitHub Pages (and render) 
