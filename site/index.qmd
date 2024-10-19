@@ -1,0 +1,27 @@
+---
+title: "Bienvenue dans Mitan"
+---
+
+## Qu'est-ce que Mitan ?
+
+__Mitan__, le milieu en occitan, est une plateforme dédiée à l'exploration et au 
+suivi du patrimoine forestier des communes françaises. Utilisant des données 
+satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les 
+perturbations subies par les écosystèmes forestiers, qu'il s'agisse de changements 
+liés aux conditions climatiques, à l'exploitation des ressources ou à d'autres 
+impacts humains.
+
+Plus qu'un simple outil de suivi, Mitan se veut un espace d'échange et de 
+sensibilisation où citoyens, chercheurs et gestionnaires de la forêt peuvent se
+rencontrer, partager leurs observations et réfléchir ensemble à des actions 
+concrètes pour préserver ce milieu précieux tout en répondant à nos besoins,
+et décider ce que nous laisserons aux générations futures.
+
+## Comment démarrer ?
+
+* Vous trouverez dans la barre de navigation en haut un __champ de recherche__. 
+
+* __Tapez le nom de votre commune__ pour trouver sa page.
+
+
+Vous pouvez aussi consulter un exemple [ici](87153.html).
