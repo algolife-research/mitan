@@ -15,7 +15,7 @@ Plus qu'un simple outil de suivi, Mitan se veut un espace d'échange et de
 sensibilisation où citoyens, chercheurs et gestionnaires de la forêt peuvent se
 rencontrer, partager leurs observations et réfléchir ensemble à des actions 
 concrètes pour préserver ce milieu précieux tout en répondant à nos besoins,
-et décider ce que nous laisserons aux générations futures.
+et décider de ce que nous laisserons aux générations futures.
 
 ## Comment démarrer ?
 
