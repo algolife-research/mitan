@@ -19,8 +19,8 @@ div.bslib-column-wrap > div.html-fill-container:first-child {
 library(leaflet) 
 library(jsonlite)
 
-map <- readRDS("../data/communes_results/', df$V1[i], '_map.rds") 
-df_cr <- readRDS("../data/communes_results/', df$V1[i], '_df.rds") 
+map <- readRDS("./communes_results/', df$V1[i], '_map.rds") 
+df_cr <- readRDS("./communes_results/', df$V1[i], '_df.rds") 
 ```
 
 ## Cartographie des perturbations forestières
