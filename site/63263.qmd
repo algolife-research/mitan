@@ -1,4 +1,3 @@
-
 ---
 title: "Orcines"
 format: html
@@ -69,7 +68,7 @@ layout_column_wrap(
     p(paste0("- de la forêt : ", round(df_cr$pourcentage_CR_foret_par_an, 2), " %")),
     p(paste0("- des feuillus : ", round(df_cr$pourcentage_CR_foret_par_an_feuillus, 2), " %")),
     p(paste0("- des conifères : ", round(df_cr$pourcentage_CR_foret_par_an_coniferes, 2), " %")),
-    showcase = bs_icon("calendar")
+    showcase = bs_icon("calendar", class = "icons")
   ),
   
   value_box(

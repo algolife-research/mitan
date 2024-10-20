@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: "../docs"
+  render:
+    - "*.qmd"
+    - "!dev.qmd"
 
 website:
   title: "Mitan"

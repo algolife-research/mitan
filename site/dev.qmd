@@ -1,5 +1,5 @@
 ---
-title: "Saint-Julien-le-Petit"
+title: "PLACEHOLDER_NAME"
 format: html
 echo: false
 warning: false
@@ -15,8 +15,8 @@ div.bslib-column-wrap > div.html-fill-container:first-child {
 library(leaflet) 
 library(jsonlite)
 
-map <- readRDS("./communes_results/87153_map.rds") 
-df_cr <- readRDS("./communes_results/87153_df.rds") 
+map <- readRDS("./communes_results/PLACEHOLDER_ID_map.rds") 
+df_cr <- readRDS("./communes_results/PLACEHOLDER_ID_df.rds") 
 ```
 
 ## Cartographie des perturbations forestières
