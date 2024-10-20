@@ -1,6 +1,6 @@
 source("./utils.R")
 
-comm_id <- 87122
+comm_id <- 87153
 dptt <- "87"
 
 data_dir <- "data"
@@ -13,10 +13,12 @@ comm <- sf::read_sf(path)
 geom <- comm$geometry
 
 bd_shp <- sf::read_sf(file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp")))
+bd_shp <- bd_shp[!bd_shp$TFV_G11 %in% c("Lande", "Formation herbacée"), ]
+
 bd_shp$Type <- case_when(
-  grepl(pattern = "feuillus", bd_shp$TFV_G11, ignore.case = TRUE) ~ "Feuillus",
+  grepl(pattern = "feuillus|peupleraie", bd_shp$TFV_G11, ignore.case = TRUE) ~ "Feuillus",
   grepl(pattern = "conifères", bd_shp$TFV_G11, ignore.case = TRUE) ~ "Conifères",
-  .default = "Autres"
+  .default = "Autres / Mixtes"
 )
 
 #####
@@ -35,7 +37,7 @@ cr_mask <- get_cr_mask(
   min_pixels = 10
 )
 
-map <- get_leaflet_map(cr_mask, bd_shp)
+map <- get_leaflet_map(cr_mask, bd_shp, comm_geom = comm$geometry)
 map
 
 cr_mask_conv <- terra::project(cr_mask, "EPSG:32631")

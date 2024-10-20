@@ -10,6 +10,8 @@ communes_ndvi_dir <- "communes_ndvi"
 communes_shp_dir <- "communes_shp"
 sentinel_data_dir <- file.path(data_dir, communes_ndvi_dir, comm_id)
 
+bdforet_path <- file.path(data_dir, "dptt_bdforetv2", dptt, "FORMATION_VEGETALE.shp")
+
 download_data <- T
 
 ### First time for a community, if doesn't exist
@@ -41,7 +43,7 @@ if(download_data) {
 
 if(download_data) {
   bd_shp_cropped <- extract_comm_from_bdforet(
-    bd_path = "./data/dptt_bdforetv2/63/FORMATION_VEGETALE.shp",
+    bd_path = bdforet_path,
     comm_geom = geom
   )
   sf::st_write(

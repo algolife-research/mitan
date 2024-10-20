@@ -586,7 +586,8 @@ convert_coordinates <- function(
 
 get_leaflet_map <- function(
     cr_mask,
-    bd_shp_cropped
+    bd_shp_cropped,
+    comm_geom
 ) {
   
   pal_cr <- colorNumeric(
@@ -598,9 +599,17 @@ get_leaflet_map <- function(
   bd_shp_cropped$Type <- as.factor(bd_shp_cropped$Type)
   pal_foret <- colorFactor(c("steelblue", "chocolate", "forestgreen"), bd_shp_cropped$Type)
   
+  popup <- paste0("<strong>Type de forêt : </strong>", 
+                        bd_shp_cropped$Type, 
+                        "<br><strong>Essence : </strong>", 
+                        bd_shp_cropped$ESSENCE,
+                        "<br>D'après BDForêt V2")
+  
+  
   map <- leaflet() %>%
     
     addMapPane("background", zIndex = 1) %>%
+    addMapPane("comm", zIndex = 100) %>%
     addMapPane("perturbations", zIndex = 200) %>%
     addMapPane("BD", zIndex = 100) %>%
     
@@ -609,6 +618,15 @@ get_leaflet_map <- function(
       options = providerTileOptions(opacity = 0.8, pane = "background")
     ) %>%
     addScaleBar(position = "bottomleft") %>% 
+    
+    addPolygons(
+      data = comm_geom,
+      fillColor = "#00000000",
+      stroke = TRUE,
+      color = "white",
+      weight = 2,
+      options = list(pane = "comm")
+    ) %>%
     
     addPolygons(
       data = bd_shp_cropped,
@@ -622,7 +640,7 @@ get_leaflet_map <- function(
         bringToFront = TRUE
       ),
       group = "BD Forêt",
-      label = ~ESSENCE,
+      popup = popup,
       options = list(pane = "BD")
     ) %>%
     
