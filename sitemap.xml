@@ -2,26 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/algolife-research/mitan/index.html</loc>
-    <lastmod>2024-10-20T16:00:19.878Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/algolife-research/mitan/about.html</loc>
-    <lastmod>2024-10-20T16:00:17.104Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/algolife-research/mitan/87122.html</loc>
-    <lastmod>2024-10-20T16:00:14.351Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/algolife-research/mitan/63263.html</loc>
-    <lastmod>2024-10-20T16:00:11.761Z</lastmod>
+    <lastmod>2024-10-20T16:06:32.308Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/algolife-research/mitan/87153.html</loc>
-    <lastmod>2024-10-20T16:00:16.878Z</lastmod>
+    <lastmod>2024-10-20T16:06:31.867Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/algolife-research/mitan/dev.html</loc>
-    <lastmod>2024-10-20T16:00:19.652Z</lastmod>
+    <loc>https://github.com/algolife-research/mitan/63263.html</loc>
+    <lastmod>2024-10-20T16:06:26.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/algolife-research/mitan/87122.html</loc>
+    <lastmod>2024-10-20T16:06:29.295Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/algolife-research/mitan/about.html</loc>
+    <lastmod>2024-10-20T16:06:32.086Z</lastmod>
   </url>
 </urlset>
