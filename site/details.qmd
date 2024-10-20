@@ -1,0 +1,38 @@
+---
+title: "Détails"
+---
+
+Comme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu'elles peuvent vraiment nous révéler.
+
+### Limites de la classification des types de forêts
+
+La classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l'IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :
+
+-   BDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.
+
+-   La classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.
+
+### Limites de la détection des perturbations
+
+La détection des perturbations majeures de l'écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :
+  
+  -   **Résolution temporelle et spatiale** : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.
+
+-   **Conditions météorologiques** : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.
+
+-   **Limites de l'indice NDVI** : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.
+
+-   **Réactivité aux changements subtils** : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.
+
+## Source des données
+
+-   **Annotation des forêts**: [BDForêt® V2](https://geoservices.ign.fr/bdforet) sous [Licence ETALAB-Licence-Ouverte-v2.0](https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf)
+
+-   **Altitudes**: [Service Géoplateforme de calcul altimétrique](https://geoservices.ign.fr/services-geoplateforme-altimetrie) sous [Licence ETALAB-Licence-Ouverte-v2.0](https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf)
+
+-   **Données satellite**: Copernicus ([satellite Sentinel 2](https://sentiwiki.copernicus.eu/web/s2-mission)) obtenues par [Sentinel-Hub](https://www.sentinel-hub.com/), sous [Licence CC-BY-SA](https://creativecommons.org/licenses/by/4.0/deed.fr)
+
+-   **Fond de carte**: ESRI
+
+-   **Perturbations et calculs associés** - Algorithme maison sous [Licence CC-BY-SA](https://creativecommons.org/licenses/by-sa/4.0/deed.fr)
+

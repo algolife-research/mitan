@@ -1,5 +1,0 @@
----
-title: "A propos"
----
-
-Description du site.

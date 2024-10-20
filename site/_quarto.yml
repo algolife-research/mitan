@@ -18,7 +18,8 @@ website:
     left:
       - href: index.qmd
         text: Accueil
-      - about.qmd
+      - href: details.qmd
+        text: Détails
 
 format:
   html:
