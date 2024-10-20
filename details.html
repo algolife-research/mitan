@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Mitan - Bienvenue dans Mitan</title>
+<title>Mitan - Détails</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -82,11 +82,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Accueil</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./details.html" rel="" target="">
+    <a class="nav-link active" href="./details.html" rel="" target="" aria-current="page">
  <span class="menu-text">Détails</span></a>
   </li>  
 </ul>
@@ -106,7 +106,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bienvenue dans Mitan</h1>
+<h1 class="title">Détails</h1>
 </div>
 
 
@@ -121,18 +121,34 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="quest-ce-que-mitan" class="level2">
-<h2 class="anchored" data-anchor-id="quest-ce-que-mitan">Qu’est-ce que Mitan ?</h2>
-<p><strong>Mitan</strong>, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.</p>
-<p>Plus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de sensibilisation où citoyens, chercheurs et gestionnaires de la forêt peuvent se rencontrer, partager leurs observations et réfléchir ensemble à des actions concrètes pour préserver ce milieu précieux tout en répondant à nos besoins, et décider de ce que nous laisserons aux générations futures.</p>
-</section>
-<section id="comment-démarrer" class="level2">
-<h2 class="anchored" data-anchor-id="comment-démarrer">Comment démarrer ?</h2>
+<p>Comme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.</p>
+<section id="limites-de-la-classification-des-types-de-forêts" class="level3">
+<h3 class="anchored" data-anchor-id="limites-de-la-classification-des-types-de-forêts">Limites de la classification des types de forêts</h3>
+<p>La classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l’IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :</p>
 <ul>
-<li><p>Vous trouverez dans la barre de navigation en haut un <strong>champ de recherche</strong>.</p></li>
-<li><p><strong>Tapez le nom de votre commune</strong> pour trouver sa page.</p></li>
+<li><p>BDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.</p></li>
+<li><p>La classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.</p></li>
 </ul>
-<p>Vous pouvez aussi consulter un exemple <a href="87153.html">ici</a>.</p>
+</section>
+<section id="limites-de-la-détection-des-perturbations" class="level3">
+<h3 class="anchored" data-anchor-id="limites-de-la-détection-des-perturbations">Limites de la détection des perturbations</h3>
+<p>La détection des perturbations majeures de l’écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :</p>
+<ul>
+<li><p><strong>Résolution temporelle et spatiale</strong> : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.</p></li>
+<li><p><strong>Conditions météorologiques</strong> : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.</p></li>
+<li><p><strong>Limites de l’indice NDVI</strong> : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.</p></li>
+<li><p><strong>Réactivité aux changements subtils</strong> : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.</p></li>
+</ul>
+</section>
+<section id="source-des-données" class="level2">
+<h2 class="anchored" data-anchor-id="source-des-données">Source des données</h2>
+<ul>
+<li><p><strong>Annotation des forêts</strong>: <a href="https://geoservices.ign.fr/bdforet">BDForêt® V2</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence ETALAB-Licence-Ouverte-v2.0</a></p></li>
+<li><p><strong>Altitudes</strong>: <a href="https://geoservices.ign.fr/services-geoplateforme-altimetrie">Service Géoplateforme de calcul altimétrique</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence ETALAB-Licence-Ouverte-v2.0</a></p></li>
+<li><p><strong>Données satellite</strong>: Copernicus (<a href="https://sentiwiki.copernicus.eu/web/s2-mission">satellite Sentinel 2</a>) obtenues par <a href="https://www.sentinel-hub.com/">Sentinel-Hub</a>, sous <a href="https://creativecommons.org/licenses/by/4.0/deed.fr">Licence CC-BY-SA</a></p></li>
+<li><p><strong>Fond de carte</strong>: ESRI</p></li>
+<li><p><strong>Perturbations et calculs associés</strong> - Algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC-BY-SA</a></p></li>
+</ul>
 
 
 </section>
