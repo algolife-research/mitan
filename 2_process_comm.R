@@ -20,6 +20,7 @@ bd_shp$Type <- case_when(
   grepl(pattern = "conifères", bd_shp$TFV_G11, ignore.case = TRUE) ~ "Conifères",
   .default = "Autres / Mixtes"
 )
+bd_shp$area <- st_area(bd_shp)
 
 #####
 ## Data analysis
@@ -37,8 +38,24 @@ cr_mask <- get_cr_mask(
   min_pixels = 10
 )
 
-map <- get_leaflet_map(cr_mask, bd_shp, comm_geom = comm$geometry)
-map
+cr_mask_pr <- fillHoles(as.polygons(cr_mask))
+cr_mask_pr <- st_cast(st_as_sf(cr_mask_pr), "POLYGON")
+cr_mask_pr$area_cr <- st_area(cr_mask_pr)
+
+cr_mask_pr <- st_join(
+  cr_mask_pr,
+  bd_shp[, c("Type", "ESSENCE")],
+  join = st_intersects, largest = TRUE
+)
+
+map <- get_leaflet_map(
+  cr_mask = cr_mask_pr,
+  bd_shp,
+  comm_geom = comm$geometry
+);map
+
+
+
 
 cr_mask_conv <- terra::project(cr_mask, "EPSG:32631")
 
@@ -55,7 +72,6 @@ df_coupes_rases <- df_coupes_rases |>
   mutate(altitude = res_elev)
 
 ## surface de foret
-bd_shp$area <- st_area(bd_shp)
 
 
 df_coupes_sf <- st_as_sf(df_coupes_rases, coords = c("longitude", "latitude"), crs = 32631)

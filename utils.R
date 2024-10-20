@@ -599,12 +599,19 @@ get_leaflet_map <- function(
   bd_shp_cropped$Type <- as.factor(bd_shp_cropped$Type)
   pal_foret <- colorFactor(c("steelblue", "chocolate", "forestgreen"), bd_shp_cropped$Type)
   
-  popup <- paste0("<strong>Type de forêt : </strong>", 
-                        bd_shp_cropped$Type, 
-                        "<br><strong>Essence : </strong>", 
-                        bd_shp_cropped$ESSENCE,
-                        "<br>D'après BDForêt V2")
+  popup_cr <- paste0("<br><strong>Surface de la perturbation (ha) : </strong>", 
+                  round(cr_mask$area_cr / 1e4, 3),
+                  "<br><br><strong>Type de forêt (BDForêt): </strong>", 
+                  cr_mask$Type, 
+                        "<br><strong>Essence (BDForêt) : </strong>", 
+                  cr_mask$ESSENCE)
   
+  popup <- paste0("<strong>Type de forêt (BDForêt) : </strong>", 
+                  bd_shp_cropped$Type, 
+                  "<br><strong>Essence (BDForêt) : </strong>", 
+                  bd_shp_cropped$ESSENCE,
+                  "<br><strong>Surface (ha) : </strong>", 
+                  round(bd_shp_cropped$area / 1e4, 3))
   
   map <- leaflet() %>%
     
@@ -644,12 +651,19 @@ get_leaflet_map <- function(
       options = list(pane = "BD")
     ) %>%
     
-    addRasterImage(
-      cr_mask,
-      opacity = 0.8,
-      colors = pal_cr,
+    addPolygons(
+      data = cr_mask,
+      fillColor = "firebrick",
+      fillOpacity = 0.7,
+      highlight = highlightOptions(
+        weight = 0,
+        fillOpacity = 1,
+        bringToFront = TRUE
+      ),
+      stroke = FALSE,
       group = "Perturbations",
-      options=list(pane = "perturbations")
+      popup = popup_cr,
+      options = list(pane = "perturbations")
     ) %>%
     
     addLayersControl(
