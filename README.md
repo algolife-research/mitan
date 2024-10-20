@@ -16,10 +16,9 @@ For a given community:
 
 #### Forest perturbation detection
 
-- Handle shadows
-- Handle cloud pixels
 - Handle water proximity
 - Handle small holes
+- Use optimal local threshold
 
 #### Processing
 
@@ -28,4 +27,5 @@ For a given community:
 
 #### App
 
-- Script to autogenerate community page
+- display map over time
+- 

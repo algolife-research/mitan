@@ -1,0 +1,33 @@
+/*-- scss:defaults --*/
+$primary: #44644c; //44644c, c43926
+$primary-light: #44644c; //44644c, c43926
+$secondary-dark: #d38b5d;
+$secondary-light: #feeedf;
+$light-color: #f4ece2;
+
+$link-color: $secondary-dark;
+$navbar-bg: $primary;
+$navbar-fg: $light-color;
+
+/*-- scss:rules --*/
+h1, h2, h3, h4, h5, h6 {
+}
+
+.navbar-logo {
+  max-height: 64px;
+  width: auto;
+  padding-right: 2px;
+}
+
+.bi {
+  color: $primary;
+}
+
+.value-box-grid {
+  background-color: $light-color;
+  border-width: 0px;
+}
+
+.bslib-card {
+  border-width: 0px;
+}

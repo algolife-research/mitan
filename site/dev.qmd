@@ -15,8 +15,8 @@ div.bslib-column-wrap > div.html-fill-container:first-child {
 library(leaflet) 
 library(jsonlite)
 
-map <- readRDS("../data/communes_results/87153_map.rds") 
-df_cr <- readRDS("../data/communes_results/87153_df.rds") 
+map <- readRDS("./communes_results/87153_map.rds") 
+df_cr <- readRDS("./communes_results/87153_df.rds") 
 ```
 
 ## Cartographie des perturbations forestières
@@ -68,7 +68,7 @@ layout_column_wrap(
     p(paste0("- de la forêt : ", round(df_cr$pourcentage_CR_foret_par_an, 2), " %")),
     p(paste0("- des feuillus : ", round(df_cr$pourcentage_CR_foret_par_an_feuillus, 2), " %")),
     p(paste0("- des conifères : ", round(df_cr$pourcentage_CR_foret_par_an_coniferes, 2), " %")),
-    showcase = bs_icon("calendar")
+    showcase = bs_icon("calendar", class = "icons")
   ),
   
   value_box(
@@ -97,8 +97,8 @@ La classification des types de forêts (et leur localisation) provient de la bas
 ### Limites de la détection des perturbations
 
 La détection des perturbations majeures de l'écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :
-
--   **Résolution temporelle et spatiale** : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.
+  
+  -   **Résolution temporelle et spatiale** : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.
 
 -   **Conditions météorologiques** : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.
 
@@ -123,3 +123,4 @@ Bien qu'elles offrent une vision globale intéressante, ces données doivent tou
 -   **Fond de carte**: ESRI
 
 -   **Perturbations et calculs associés** - Algorithme maison sous [Licence CC-BY-SA](https://creativecommons.org/licenses/by-sa/4.0/deed.fr)
+

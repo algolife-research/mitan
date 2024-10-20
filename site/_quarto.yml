@@ -4,24 +4,27 @@ project:
 
 website:
   title: "Mitan"
+  favicon: assets/IconMitan.png
   search: 
     location: navbar
     type: textbox 
   navbar:
+    title: false
+    logo: assets/LogoMitanRect.png
     search: true
     left:
       - href: index.qmd
-        text: Home
+        text: Accueil
       - about.qmd
-
-language: 
-  search-text-placeholder: "Rechercher une commune"
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: 
+      - cosmo
+      - custom.scss
     toc: false
+    minify: true
 
-
+language: 
+  search-text-placeholder: "Rechercher une commune"
 
