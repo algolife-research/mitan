@@ -24,4 +24,6 @@ et décider de ce que nous laisserons aux générations futures.
 * __Tapez le nom de votre commune__ pour trouver sa page.
 
 
-Vous pouvez aussi consulter un exemple [ici](87153.html).
+Vous pouvez aussi [consulter un exemple ici](87153.html)...
+
+... Ou consulter [la liste des communes disponibles](communes.html).

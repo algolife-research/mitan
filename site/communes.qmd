@@ -1,0 +1,23 @@
+---
+title: "Liste des communes disponibles"
+listing: 
+  contents:
+    - "*.qmd"
+    - "!index.qmd"
+    - "!communes.qmd"
+    - "!details.qmd"
+    - "!dev.qmd"
+  type: table
+  fields: [title]
+  field-display-names:
+    title: "Communes"
+  sort-ui: false
+  filter-ui: [title]
+
+format:
+  html:
+    include-in-header:
+      - text: <script>window.onload = function() {document.getElementByClass('search form-control').placeholder = 'YOLO';};</script>
+
+---
+

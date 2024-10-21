@@ -20,9 +20,10 @@ website:
         text: Accueil
       - href: details.qmd
         text: Détails
-
 format:
   html:
+    include-in-header:
+      - text: <script>window.onload = function() {document.getElementById('autocomplete-0-input').placeholder = 'Commune';};</script>
     theme: 
       - cosmo
       - custom.scss
