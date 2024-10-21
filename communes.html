@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Mitan - Détails</title>
+<title>Mitan - Liste des communes disponibles</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,6 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./assets/IconMitan.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -60,8 +62,40 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>window.onload = function() {document.getElementById('autocomplete-0-input').placeholder = 'Commune';};</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      
+      searchColumns: ["listing-title"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+<script>window.onload = function() {document.getElementById('autocomplete-0-input').placeholder = 'Commune';};</script>
+<script>window.onload = function() {document.getElementByClass('search form-control').placeholder = 'YOLO';};</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -87,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Accueil</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./details.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./details.html" rel="" target="">
  <span class="menu-text">Détails</span></a>
   </li>  
 </ul>
@@ -107,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Détails</h1>
+<h1 class="title">Liste des communes disponibles</h1>
 </div>
 
 
@@ -122,39 +156,49 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Comme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.</p>
-<section id="limites-de-la-classification-des-types-de-forêts" class="level3">
-<h3 class="anchored" data-anchor-id="limites-de-la-classification-des-types-de-forêts">Limites de la classification des types de forêts</h3>
-<p>La classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l’IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :</p>
-<ul>
-<li><p>BDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.</p></li>
-<li><p>La classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.</p></li>
-</ul>
-</section>
-<section id="limites-de-la-détection-des-perturbations" class="level3">
-<h3 class="anchored" data-anchor-id="limites-de-la-détection-des-perturbations">Limites de la détection des perturbations</h3>
-<p>La détection des perturbations majeures de l’écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :</p>
-<ul>
-<li><p><strong>Résolution temporelle et spatiale</strong> : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.</p></li>
-<li><p><strong>Conditions météorologiques</strong> : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.</p></li>
-<li><p><strong>Limites de l’indice NDVI</strong> : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.</p></li>
-<li><p><strong>Réactivité aux changements subtils</strong> : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.</p></li>
-</ul>
-</section>
-<section id="source-des-données" class="level2">
-<h2 class="anchored" data-anchor-id="source-des-données">Source des données</h2>
-<ul>
-<li><p><strong>Annotation des forêts</strong>: <a href="https://geoservices.ign.fr/bdforet">BDForêt® V2</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence ETALAB-Licence-Ouverte-v2.0</a></p></li>
-<li><p><strong>Altitudes</strong>: <a href="https://geoservices.ign.fr/services-geoplateforme-altimetrie">Service Géoplateforme de calcul altimétrique</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence ETALAB-Licence-Ouverte-v2.0</a></p></li>
-<li><p><strong>Données satellite</strong>: Copernicus (<a href="https://sentiwiki.copernicus.eu/web/s2-mission">satellite Sentinel 2</a>) obtenues par <a href="https://www.sentinel-hub.com/">Sentinel-Hub</a>, sous <a href="https://creativecommons.org/licenses/by/4.0/deed.fr">Licence CC-BY-SA</a></p></li>
-<li><p><strong>Fond de carte</strong>: ESRI</p></li>
-<li><p><strong>Perturbations et calculs associés</strong> - Algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC-BY-SA</a></p></li>
-</ul>
 
 
-</section>
 
-</main> <!-- /main -->
+
+<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+<th>
+Communes
+</th>
+</tr>
+</thead>
+<tbody class="list">
+<tr data-index="0" data-listing-file-modified-sort="1729440229387" data-listing-reading-time-sort="4" data-listing-title-sort="Orcines" data-listing-filename-sort="63263.qmd">
+<td>
+<a href="./63263.html" class="title listing-title">Orcines</a>
+</td>
+</tr>
+<tr data-index="1" data-listing-file-modified-sort="1729440229389" data-listing-reading-time-sort="4" data-listing-title-sort="Razès" data-listing-filename-sort="87122.qmd">
+<td>
+<a href="./87122.html" class="title listing-title">Razès</a>
+</td>
+</tr>
+<tr data-index="2" data-listing-file-modified-sort="1729440229388" data-listing-reading-time-sort="4" data-listing-title-sort="Saint-Julien-le-Petit" data-listing-filename-sort="87153.qmd">
+<td>
+<a href="./87153.html" class="title listing-title">Saint-Julien-le-Petit</a>
+</td>
+</tr>
+</tbody>
+
+</table>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
