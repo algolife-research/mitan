@@ -34,6 +34,7 @@ jobs:
             any::downlit
             any::xml2
             any::shiny
+            any::bsicons
             any::leaflet
         
       - name: Publish to GitHub Pages (and render) 
