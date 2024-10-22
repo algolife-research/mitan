@@ -12,9 +12,7 @@ __suivi__ du __patrimoine forestier__ des communes françaises.
 En utilisant des __données satellitaires__ régulières, Mitan détecte et quantifie en temps quasi-réel les __perturbations__ subies par les écosystèmes forestiers, qu'il s'agisse de changements liés aux conditions climatiques, à l'exploitation des ressources ou à d'autres
 impacts humains.
 
-Plus qu'un simple outil de suivi, Mitan se veut un __espace d'échange et de compréhension__. Il peut être utilisé par citoyens, chercheurs et gestionnaires des milieux naturels pour réfléchir ensemble à notre rapport au milieu environnant, discuter d'actions concrètes face aux données et trouver __le juste milieu__.
-
-> _Comprendre notre milieu, s'entendre pour le respecter tout en répondant à nos besoins, sans oublier les générations futures._
+Plus qu'un simple outil de suivi, Mitan se veut un __espace d'échange et de compréhension__. Il peut être utilisé par citoyens, chercheurs et gestionnaires des milieux naturels pour réfléchir ensemble à notre rapport au milieu environnant, prendre des décisions face aux données et trouver __le juste milieu__.
 
 ## Comment démarrer ?
 
@@ -25,6 +23,6 @@ Plus qu'un simple outil de suivi, Mitan se veut un __espace d'échange et de com
 
 Vous pouvez aussi...
 
-[Voir un exemple](87153.html){.btn .btn-secondary .btn role="button"}
-
-[Voir la liste des communes disponibles](communes.html){.btn .btn-secondary .btn role="button"}
+<center>[Voir un exemple](87153.html){.btn .btn-secondary .btn role="button"}</center>
+<br>
+<center>[Voir la liste des communes disponibles](communes.html){.btn .btn-secondary .btn role="button"}</center>

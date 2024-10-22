@@ -1,7 +1,7 @@
 /*-- scss:defaults --*/
 $primary: #44644c; //44644c, c43926
 $primary-light: #44644c; //44644c, c43926
-$secondary: #d38b5d;
+$secondary: #f79873;// #d38b5d;
 $light-color: #f4ece2;
 
 $link-color: $secondary;
@@ -29,4 +29,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .bslib-card {
   border-width: 0px;
+}
+
+.btn-secondary {
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #f5865b;
 }
