@@ -19,6 +19,7 @@ map <- readRDS("./communes_results/87153_map.rds")
 df_cr <- readRDS("./communes_results/87153_df.rds") 
 ```
 
+
 ## Cartographie des perturbations forestières
 
 ```{r}

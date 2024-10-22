@@ -18,6 +18,8 @@ website:
     left:
       - href: index.qmd
         text: Accueil
+      - href: communes.qmd
+        text: Communes
       - href: details.qmd
         text: Détails
 format:

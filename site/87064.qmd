@@ -1,5 +1,5 @@
 ---
-title: "Orcines"
+title: "Eymoutiers"
 format: html
 echo: false
 warning: false
@@ -15,8 +15,8 @@ div.bslib-column-wrap > div.html-fill-container:first-child {
 library(leaflet) 
 library(jsonlite)
 
-map <- readRDS("./communes_results/63263_map.rds") 
-df_cr <- readRDS("./communes_results/63263_df.rds") 
+map <- readRDS("./communes_results/87064_map.rds") 
+df_cr <- readRDS("./communes_results/87064_df.rds") 
 ```
 
 
