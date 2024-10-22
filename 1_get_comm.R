@@ -2,8 +2,8 @@
 
 source("./utils.R")
 
-comm_id <- 63263
-dptt <- "63"
+comm_id <- 87064
+dptt <- "87"
 
 data_dir <- "data"
 communes_ndvi_dir <- "communes_ndvi"
@@ -42,10 +42,18 @@ if(download_data) {
 }
 
 if(download_data) {
-  bd_shp_cropped <- extract_comm_from_bdforet(
+  bd <- extract_comm_from_bdforet(
     bd_path = bdforet_path,
     comm_geom = geom
   )
+  bd <- bd[!bd$TFV_G11 %in% c("Lande", "Formation herbacée"), ]
+  
+  bd$Type <- case_when(
+    grepl(pattern = "feuillus|peupleraie", bd$TFV_G11, ignore.case = TRUE) ~ "Feuillus",
+    grepl(pattern = "conifères", bd$TFV_G11, ignore.case = TRUE) ~ "Conifères",
+    .default = "Autres / Mixtes"
+  )
+  bd$area <- st_area(bd)
   sf::st_write(
     bd_shp_cropped,
     dsn = file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp")),

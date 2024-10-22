@@ -1,6 +1,6 @@
 source("./utils.R")
 
-comm_id <- 87153
+comm_id <- 87064
 dptt <- "87"
 
 data_dir <- "data"
@@ -13,20 +13,28 @@ comm <- sf::read_sf(path)
 geom <- comm$geometry
 
 bd_shp <- sf::read_sf(file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp")))
-bd_shp <- bd_shp[!bd_shp$TFV_G11 %in% c("Lande", "Formation herbacée"), ]
-
-bd_shp$Type <- case_when(
-  grepl(pattern = "feuillus|peupleraie", bd_shp$TFV_G11, ignore.case = TRUE) ~ "Feuillus",
-  grepl(pattern = "conifères", bd_shp$TFV_G11, ignore.case = TRUE) ~ "Conifères",
-  .default = "Autres / Mixtes"
-)
-bd_shp$area <- st_area(bd_shp)
 
 #####
 ## Data analysis
+
+ndvi.y <- aggregate_ndvi(
+  data_dir = sentinel_data_dir,
+  bd_foret_shp = bd_shp,
+  filename = file.path(
+    data_dir,
+    communes_ndvi_dir,
+    paste0(comm$INSEE_COM, "_ndvi_agg.tif")
+  )
+)
+
+ndvi.y <- terra::rast(file.path(
+  data_dir,
+  communes_ndvi_dir,
+  paste0(comm$INSEE_COM, "_ndvi_agg.tif")
+))
+
 ndvi_diff <- get_ndvi_diff(
-  sentinel_data_dir,
-  bd_shp,
+  ndvi.y,
   n_years_lag = 1,
   max_difference_days = 15,
   min_past_ndvi = 0.7
@@ -55,9 +63,9 @@ map <- get_leaflet_map(
 );map
 
 
-
-
 cr_mask_conv <- terra::project(cr_mask, "EPSG:32631")
+
+# sf::st_centroid(cr_mask_pr)
 
 df_coupes_rases <- get_centroids(cr_mask_conv, directions = 8) %>%
   select(x, y) %>%
@@ -90,10 +98,10 @@ df_captage <- tibble(
   surface_foret_ha = as.vector(sum(bd_shp$area)) / 1e4,
   surface_foret_ha_feuillus = as.vector(sum(bd_shp[bd_shp$Type == "Feuillus", ]$area)) / 1e4,
   surface_foret_ha_coniferes = as.vector(sum(bd_shp[bd_shp$Type == "Conifères", ]$area)) / 1e4,
-  surface_foret_ha_autres = as.vector(sum(bd_shp[bd_shp$Type == "Autres", ]$area)) / 1e4,
+  surface_foret_ha_autres = as.vector(sum(bd_shp[bd_shp$Type == "Autres / Mixtes", ]$area)) / 1e4,
   surface_CR_feuillus = df_per_type$surface[df_per_type$Type == "Feuillus"],
   surface_CR_coniferes = df_per_type$surface[df_per_type$Type == "Conifères"],
-  surface_CR_autres = df_per_type$surface[df_per_type$Type == "Autres"],
+  surface_CR_autres = df_per_type$surface[df_per_type$Type == "Autres / Mixtes"],
 ) %>%
   mutate(pourcentage_CR_foret_total = 100 * surface_CR_totale / surface_foret_ha,
          pourcentage_CR_foret_total_feuillus = 100 * surface_CR_feuillus / surface_foret_ha_feuillus,
@@ -110,11 +118,11 @@ df_captage <- tibble(
 
 jsonlite::toJSON(c(df_captage), auto_unbox = TRUE) %>% 
   prettify() %>%
-  jsonlite::write_json(file.path(data_dir, "communes_results", paste0(comm_id, "_df.json")))
+  jsonlite::write_json(file.path("./site/communes_results", paste0(comm_id, "_df.json")))
 
-saveRDS(map, file = file.path(data_dir, "communes_results", paste0(comm_id, "_map.rds")))
+saveRDS(map, file = file.path("./site/communes_results", paste0(comm_id, "_map.rds")))
 
-saveRDS(c(df_captage), file = file.path(data_dir, "communes_results", paste0(comm_id, "_df.rds")))
+saveRDS(c(df_captage), file = file.path("./site/communes_results", paste0(comm_id, "_df.rds")))
 # crd <- data.frame(lon = 1.34, lat = 46.04)
 # vals <- extract(ndvi_diff, crd) %>%
 #   select(-ID)

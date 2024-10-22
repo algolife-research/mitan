@@ -337,13 +337,14 @@ get_comm_shp <- function(insee_code = 87153, path = "./eau/commune-frmetdrom/COM
   return(geom)
 }
 
-get_ndvi_diff <- function(
+
+aggregate_ndvi <- function(
     data_dir,
     bd_foret_shp,
+    na_flag = 0,
+    max_miss = 0.50,
     scale_factor = (255 / 2),
-    n_years_lag = 1,
-    max_difference_days = 15,
-    min_past_ndvi = 0.7
+    filename = "./ndvi_aggregated.tif"
   ) {
   
   lst <- list.files(
@@ -353,9 +354,12 @@ get_ndvi_diff <- function(
   )
   
   r <- terra::rast(lst)
-  NAflag(r) <- 0
-  many_nas <- which(freq(r, value=NA)$count/ncell(r) > 0.50)
-  r_norm <- terra::app(r[[-many_nas]], function(x) { -1 + x / scale_factor } )
+  NAflag(r) <- na_flag
+  freq_data <- terra::global(r, fun = "isNA") / ncell(r)
+  many_nas <- which(freq_data > max_miss)
+  scale_func <- function(x) { -1 + x / scale_factor }
+  r_norm <- terra::app(r[[-many_nas]], scale_func, cores = TRUE)  
+  
   rn <- mask(r_norm, bd_foret_shp)
   
   d <- as.Date(
@@ -364,7 +368,21 @@ get_ndvi_diff <- function(
   )
   d_months <- format(d, "%Y-%m")
   ndvi.y <- tapp(rn, index = d_months, fun = mean, na.rm = TRUE)
-  
+  time(ndvi.y) <- as.Date(
+    paste0(gsub("X", "", names(ndvi.y)), ".15"),
+    format = "%Y.%m.%d"
+  )
+  terra::writeRaster(ndvi.y, filename, overwrite = TRUE)
+  return(ndvi.y)
+}
+
+get_ndvi_diff <- function(
+    ndvi.y,
+    n_years_lag = 1,
+    max_difference_days = 15,
+    min_past_ndvi = 0.7
+  ) {
+
   dates <- as.Date(paste0(gsub("X", "", names(ndvi.y)), ".15"), format = "%Y.%m.%d")
   
   ndvi_diff <- ndvi.y[[1]]
