@@ -2,8 +2,8 @@
 
 source("./utils.R")
 
-comm_id <- 87064
-dptt <- "87"
+comm_id <- 19136
+dptt <- "19"
 
 data_dir <- "data"
 communes_ndvi_dir <- "communes_ndvi"
@@ -55,8 +55,37 @@ if(download_data) {
   )
   bd$area <- st_area(bd)
   sf::st_write(
-    bd_shp_cropped,
+    bd,
     dsn = file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp")),
     dataset_options = "ENCODING=ISO-8859-1"
   )
 }
+
+ndvi.y <- aggregate_ndvi(
+  data_dir = sentinel_data_dir,
+  bd_foret_shp = bd,
+  filename = file.path(
+    data_dir,
+    communes_ndvi_dir,
+    paste0(comm$INSEE_COM, "_ndvi_agg.tif")
+  )
+)
+
+ndvi_diff <- get_ndvi_diff(
+  ndvi.y,
+  n_years_lag = 1,
+  max_difference_days = 15,
+  min_past_ndvi = 0.7
+)
+
+terra::writeRaster(
+  ndvi_diff, 
+  file.path(
+    data_dir,
+    communes_ndvi_dir,
+    paste0(comm$INSEE_COM, "_ndvi_diff.tif")
+  ),
+  overwrite = TRUE,
+  datatype = "FLT4S",
+  gdal = c("COMPRESS=DEFLATE", "PREDICTOR=2", "ZLEVEL=9")
+)

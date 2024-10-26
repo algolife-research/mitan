@@ -220,7 +220,8 @@ extract_comm_from_bdforet <- function(
   }
   
   # Apply this function to the entire sf object
-  it_cleaned <- it
+  it_cleaned <-  it %>%
+    filter(st_geometry_type(.) != "MULTILINESTRING")
   it_cleaned$geometry <- sf::st_collection_extract(it$geometry, "POLYGON")
   it_cleaned <- sf::st_as_sf(it_cleaned)
   
@@ -385,14 +386,10 @@ get_ndvi_diff <- function(
 
   dates <- as.Date(paste0(gsub("X", "", names(ndvi.y)), ".15"), format = "%Y.%m.%d")
   
-  ndvi_diff <- ndvi.y[[1]]
-  ndvi_diff <- init(ndvi_diff, NA) # Initialize with NA values
-  ndvi_diff <- rep(ndvi_diff, nlyr(ndvi.y))
+  ndvi_diff <- list()
   
   for (i in seq_along(dates)) {
     date_prev <- dates[i] - (n_years_lag * 365L)
-    
-    # index_prev <- which.min(abs(dates - date_prev)) # Find closest date
     ddff <- dates - date_prev
     index_prev <- which(ddff <= 0 & ddff > (-65))
     ddff <- dates - dates[i]
@@ -406,12 +403,10 @@ get_ndvi_diff <- function(
         ndvi_diff[[i]] <- curr - prev
       }
     }
-    names(ndvi_diff) <- names(ndvi.y)
-    # if (abs(dates[index_prev] - date_prev) <= max_difference_days) {
-    #   clamped <- terra::clamp(ndvi.y[[index_prev]], lower = min_past_ndvi, upper = Inf, values=FALSE)
-    #   ndvi_diff[[i]] <- ndvi.y[[i]] - clamped
-    # }
   }
+  
+  names(ndvi_diff) <- names(ndvi.y)
+  ndvi_diff <- terra::rast(ndvi_diff)
   
   na_layers <- sapply(1:nlyr(ndvi_diff), function(i) {
     all(is.na(values(ndvi_diff[[i]])))
@@ -420,6 +415,7 @@ get_ndvi_diff <- function(
   
   return(ndvi_diff_filtered)
 }
+
 
 get_cr_mask <- function(ndvi_diff, diff_threshold = -0.5, min_pixels = 20) {
   cr_mask <- terra::app(ndvi_diff, function(x) ifelse(x < diff_threshold, 1, NA))

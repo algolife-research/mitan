@@ -1,7 +1,8 @@
 source("./utils.R")
 
-comm_id <- 87064
-dptt <- "87"
+comm_id <- 19136
+# 19261
+dptt <- "19"
 
 data_dir <- "data"
 communes_ndvi_dir <- "communes_ndvi"
@@ -12,33 +13,18 @@ path <- file.path(data_dir, communes_shp_dir, paste0(comm_id, ".shp"))
 comm <- sf::read_sf(path)
 geom <- comm$geometry
 
-bd_shp <- sf::read_sf(file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp")))
+bd_shp <- sf::read_sf(
+  file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp"))
+)
 
 #####
 ## Data analysis
 
-ndvi.y <- aggregate_ndvi(
-  data_dir = sentinel_data_dir,
-  bd_foret_shp = bd_shp,
-  filename = file.path(
-    data_dir,
-    communes_ndvi_dir,
-    paste0(comm$INSEE_COM, "_ndvi_agg.tif")
-  )
-)
-
-ndvi.y <- terra::rast(file.path(
+ndvi_diff <- terra::rast(file.path(
   data_dir,
   communes_ndvi_dir,
-  paste0(comm$INSEE_COM, "_ndvi_agg.tif")
+  paste0(comm$INSEE_COM, "_ndvi_diff.tif")
 ))
-
-ndvi_diff <- get_ndvi_diff(
-  ndvi.y,
-  n_years_lag = 1,
-  max_difference_days = 15,
-  min_past_ndvi = 0.7
-)
 
 cr_mask <- get_cr_mask(
   ndvi_diff,
@@ -123,64 +109,5 @@ jsonlite::toJSON(c(df_captage), auto_unbox = TRUE) %>%
 saveRDS(map, file = file.path("./site/communes_results", paste0(comm_id, "_map.rds")))
 
 saveRDS(c(df_captage), file = file.path("./site/communes_results", paste0(comm_id, "_df.rds")))
-# crd <- data.frame(lon = 1.34, lat = 46.04)
-# vals <- extract(ndvi_diff, crd) %>%
-#   select(-ID)
-# tp <- vals[!is.na(vals)]
-# plot(tp, type = "s")
-# 
-# vals <- extract(ndvi_diff, 1:ncell(ndvi_diff)) 
-# vals2 <- vals[!rowSums(is.na(vals)) == ncol(vals), ]
-# matplot(t(vals2[sample(1:nrow(vals2), 200),]), type = "s", col =  rgb(0,0,0, 0.1), lwd = 1.2, lty = 1)
-# matplot(vals2[sample(1:nrow(vals2), 1000),], type = "s", col =  rgb(0,0,0, 0.1), lwd = 1.2, lty = 1)
-# tp <- vals[!is.na(vals)]
-# plot(tp, type = "s")
 
 
-### Plot over time
-# library(basemaps)
-# library(tidyterra)
-# library(data.table)
-# library(ggplot2)
-# library(tidyr)
-
-# square_extent_sf <- st_as_sf(as.polygons(ext(comm)))
-# st_crs(square_extent_sf) <- 4326
-# 
-# bm_rast <- basemap_raster(
-#   square_extent_sf,
-#   map_service = "esri",
-#   map_type = "world_imagery"
-# ) %>%
-#   as("SpatRaster")
-
-# df_plot <- as.data.frame(cr_mask, xy = TRUE) %>%
-#   pivot_longer(-(x:y), names_to = "variable", values_to = "value") %>%
-#   mutate(variable = as.Date(paste0(gsub("X", "", variable), ".08.15"), format = "%Y.%m.%d"))
-# 
-# plt_cr_vs_time <- ggplot(df_plot, aes(x = (x), y = (y), fill = value)) +
-#   geom_spatraster_rgb(data = project(bm_rast, "EPSG:4326"), alpha = 0.7) +
-#   geom_tile() +
-#   facet_wrap(~ lubridate::year(variable)) +
-#   scale_fill_distiller(
-#     palette = "Reds",
-#     direction = 1,
-#     values = c(-1, 1), na.value = "#00000000") +
-#   labs(
-#     title = "Evolution de la zone dans le temps",
-#     x = "Date",
-#     y = "Value",
-#     color = "Band"
-#   ) +
-#   theme_minimal() +
-#   coord_sf() +
-#   theme(axis.title.x = element_blank(),
-#         axis.text.x = element_blank(),
-#         axis.ticks.x = element_blank(),
-#         axis.title.y = element_blank(),
-#         axis.text.y = element_blank(),
-#         axis.ticks.y = element_blank(),
-#         panel.grid.major = element_blank(),
-#         panel.grid.minor = element_blank(),
-#         plot.background = element_rect(fill = "white"))
-# 
