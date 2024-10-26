@@ -18,7 +18,7 @@
     "href": "communes.html",
     "title": "Liste des communes disponibles",
     "section": "",
-    "text": "Communes\n\n\n\n\n\n\nOrcines\n\n\n\n\nRazès\n\n\n\n\nSaint-Julien-le-Petit\n\n\n\n\n\n\nNo matching items"
+    "text": "Communes\n\n\n\n\n\n\nBugeat\n\n\n\n\nEymoutiers\n\n\n\n\nOrcines\n\n\n\n\nRazès\n\n\n\n\nSaint-Julien-le-Petit\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "87122.html#cartographie-des-perturbations-forestières",
@@ -73,6 +73,62 @@
     "objectID": "63263.html#source-des-données",
     "href": "63263.html#source-des-données",
     "title": "Orcines",
+    "section": "Source des données",
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+  },
+  {
+    "objectID": "19261.html#cartographie-des-perturbations-forestières",
+    "href": "19261.html#cartographie-des-perturbations-forestières",
+    "title": "Bugeat",
+    "section": "Cartographie des perturbations forestières",
+    "text": "Cartographie des perturbations forestières"
+  },
+  {
+    "objectID": "19261.html#la-commune-en-bref",
+    "href": "19261.html#la-commune-en-bref",
+    "title": "Bugeat",
+    "section": "La commune en bref",
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n3785 ha\nDont :\n- feuillus : 914 ha\n- conifères : 1782 ha\n- mixtes et non-classés : 1089 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n443 ha\nEn pourcentage :\n- de la forêt : 11.71 %\n- des feuillus : 7.77 %\n- des conifères : 16.84 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n74 ha par an\nEn pourcentage :\n- de la forêt : 1.95 %\n- des feuillus : 1.29 %\n- des conifères : 2.81 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n51 années\nSoit 45 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+  },
+  {
+    "objectID": "19261.html#a-savoir",
+    "href": "19261.html#a-savoir",
+    "title": "Bugeat",
+    "section": "A savoir",
+    "text": "A savoir\nComme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.\n\nLimites de la classification des types de forêts\nLa classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l’IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :\n\nBDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.\nLa classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.\n\n\n\nLimites de la détection des perturbations\nLa détection des perturbations majeures de l’écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :\n\nRésolution temporelle et spatiale : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.\nConditions météorologiques : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.\nLimites de l’indice NDVI : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.\nRéactivité aux changements subtils : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.\n\n\n\nNos recommandations\nIl est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.\nBien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision."
+  },
+  {
+    "objectID": "19261.html#source-des-données",
+    "href": "19261.html#source-des-données",
+    "title": "Bugeat",
+    "section": "Source des données",
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+  },
+  {
+    "objectID": "87064.html#cartographie-des-perturbations-forestières",
+    "href": "87064.html#cartographie-des-perturbations-forestières",
+    "title": "Eymoutiers",
+    "section": "Cartographie des perturbations forestières",
+    "text": "Cartographie des perturbations forestières"
+  },
+  {
+    "objectID": "87064.html#la-commune-en-bref",
+    "href": "87064.html#la-commune-en-bref",
+    "title": "Eymoutiers",
+    "section": "La commune en bref",
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n3915 ha\nDont :\n- feuillus : 2249 ha\n- conifères : 977 ha\n- mixtes et non-classés : 690 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n301 ha\nEn pourcentage :\n- de la forêt : 7.7 %\n- des feuillus : 4.89 %\n- des conifères : 15.12 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n43 ha par an\nEn pourcentage :\n- de la forêt : 1.1 %\n- des feuillus : 0.7 %\n- des conifères : 2.16 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n91 années\nSoit 84 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+  },
+  {
+    "objectID": "87064.html#a-savoir",
+    "href": "87064.html#a-savoir",
+    "title": "Eymoutiers",
+    "section": "A savoir",
+    "text": "A savoir\nComme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.\n\nLimites de la classification des types de forêts\nLa classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l’IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :\n\nBDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.\nLa classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.\n\n\n\nLimites de la détection des perturbations\nLa détection des perturbations majeures de l’écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :\n\nRésolution temporelle et spatiale : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.\nConditions météorologiques : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.\nLimites de l’indice NDVI : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.\nRéactivité aux changements subtils : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.\n\n\n\nNos recommandations\nIl est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.\nBien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision."
+  },
+  {
+    "objectID": "87064.html#source-des-données",
+    "href": "87064.html#source-des-données",
+    "title": "Eymoutiers",
     "section": "Source des données",
     "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
