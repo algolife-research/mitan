@@ -14,10 +14,15 @@ div.bslib-column-wrap > div.html-fill-container:first-child {
 ```{r}
 library(leaflet) 
 library(jsonlite)
+library(plotly)
+library(shiny)
+library(bslib)
+library(bsicons)
 
 map <- readRDS("./communes_results/PLACEHOLDER_ID_map.rds") 
 df_cr <- readRDS("./communes_results/PLACEHOLDER_ID_df.rds") 
 ```
+
 
 ## Cartographie des perturbations forestières
 
@@ -27,13 +32,17 @@ map
 
 ------------------------------------------------------------------------
 
+* Cliquez sur une zone forestière pour obtenir plus d'informations.
+
+* Les perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l'année précédente.
+
+* Elles sont principalement expliquées par des coupes rases.
+
+------------------------------------------------------------------------
+
 ## La commune en bref
 
 ```{r}
-library(shiny)
-library(bslib)
-library(bsicons)
-
 layout_column_wrap(
 
   value_box(
@@ -82,29 +91,85 @@ layout_column_wrap(
 )
 ```
 
+## Et si on continuait à ce rythme ?
+
+```{r out-height:100px}
+pc <- df_cr$pourcentage_CR_foret_total
+cr_rate <- df_cr$pourcentage_CR_foret_par_an
+yf <- 40
+pc_20 <- pc + cr_rate * 20
+if(pc_20 > 100) pc_20 <- 100
+nw_50 <- cr_rate * ((50 + df_cr$duree_suivi_y) - yf)
+pc_50 <- pc + cr_rate * 50 - nw_50
+if(pc_50 > 100) pc_50 <- 100
+
+data <- dplyr::tibble(
+  category = rep(c("Aujourd'hui", "Dans 20 ans", "Dans 50 ans"), each = 3),
+  group = rep(c("Forêt vivante", "Forêt rasée", "Jeune Forêt (+ de 40 ans)"), 3),
+  value = c(100 - pc, pc, 0, 100 - pc_20, pc_20, 0, 100 - pc_50 - nw_50, pc_50, nw_50)
+)
+
+data$value[data$value < 0] <- 0
+data$value <- round(data$value, 2)
+
+hovertmp <- ~paste("Type :", group, "<br>Valeur :", value, " %")
+
+fig <- plot_ly(height = 180) %>%
+
+  add_trace(data = subset(data, group == "Jeune Forêt (+ de 40 ans)"),
+            x = ~value, y = ~category, type = 'bar', orientation = 'h',
+            marker = list(color = '#b7d693'),
+            name = "Jeune Forêt (+ de 40 ans)",
+            name = "Jeune Forêt",
+            hovertemplate = hovertmp) %>%
+  
+  add_trace(data = subset(data, group == "Forêt rasée"),
+            x = ~value, y = ~category, type = 'bar', orientation = 'h',
+            marker = list(
+              color = '#ff0f0f',
+              pattern = list(
+                bgcolor = "#b7d693",
+                shape = "x",
+                solidity = 0.2,
+                size = 4
+              )
+            ),
+            name = "Forêt rasée",
+            hovertemplate = hovertmp) %>%
+  
+  add_trace(data = subset(data, group == "Forêt vivante"),
+            x = ~value, y = ~category, type = 'bar', orientation = 'h',
+            marker = list(color = '#6a994e'),
+            name = "Forêt vivante",
+            hovertemplate = hovertmp) %>%
+  
+  layout(
+    barmode = 'stack', 
+    xaxis = list(title = "", showticklabels = FALSE, zeroline = FALSE),
+    yaxis = list(title = "", categoryorder = "array",
+              categoryarray = c("Dans 50 ans", "Dans 20 ans", "Aujourd'hui")),
+    legend = list(title = list(text = 'Type de Forêt')),
+    height = 150,
+    width = "100%"
+  ) %>%
+  config(displayModeBar = FALSE)
+
+fig
+
+```
+
+
+## Evolution dans le temps
+
+A venir.
+
+
 ## A savoir
 
 Comme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu'elles peuvent vraiment nous révéler.
 
-### Limites de la classification des types de forêts
+Nous vous invitons à consulter la page [Détails](details.html) pour en apprendre plus sur les limites de la classification des types de forêts ainsi que de la détection des perturbations.
 
-La classification des types de forêts (et leur localisation) provient de la base de données BDForêt® de l'IGN. Celle-ci est générée via un processus semi-automatisé, qui, bien que fiable, comporte quelques imprécisions, notamment :
-
--   BDForêt repose sur des relevés et des informations générées sur plusieurs années. Or, les forêts évoluent rapidement sous l’effet des interventions humaines (exploitation forestière, urbanisation) ou naturelles (tempêtes, incendies). Cela signifie que les informations fournies peuvent ne pas toujours refléter la situation actuelle sur le terrain.
-
--   La classification des types de forêts peut manquer de précision dans certaines zones. Par exemple, les types de forêts mixtes ou les forêts en transition peuvent être mal identifiés ou classés dans des catégories génériques. De plus, les petites parcelles forestières ou les forêts linéaires (comme les haies forestières) peuvent être mal représentées, voire omises.
-
-### Limites de la détection des perturbations
-
-La détection des perturbations majeures de l'écosystème forestier, même si elle repose sur un algorithme développé avec soin et passion en Limousin, présente aussi certaines limites :
-  
-  -   **Résolution temporelle et spatiale** : Avec une résolution de 10 mètres, Sentinel-2 permet de détecter des changements dans la végétation, mais peut manquer les petites coupes rases ou perturbations locales. Sa fréquence de passage (5 jours) peut également ne pas capter des événements temporaires ou survenus entre deux images.
-
--   **Conditions météorologiques** : Les images satellite peuvent être altérées par des nuages ou de la brume, surtout dans les zones humides. Même avec des corrections, certaines zones restent difficiles à observer précisément.
-
--   **Limites de l'indice NDVI** : Bien que bon indicateur de la végétation, le NDVI peine à distinguer les coupes rases d’autres perturbations (maladies, incendies). Dans les zones à végétation clairsemée ou feuillage persistant, il peut mal interpréter les variations.
-
--   **Réactivité aux changements subtils** : Le NDVI détecte bien les changements majeurs, mais est moins performant pour les coupes sélectives ou les perturbations progressives, qui peuvent être masquées par la régénération rapide de la végétation.
 
 ### Nos recommandations
 
