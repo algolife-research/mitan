@@ -1,0 +1,191 @@
+---
+title: "Bugeat"
+format: html
+echo: false
+warning: false
+---
+
+```{css, echo=FALSE}
+div.bslib-column-wrap > div.html-fill-container:first-child {
+  grid-column: span 2;
+}
+```
+
+```{r}
+library(leaflet) 
+library(jsonlite)
+library(plotly)
+library(shiny)
+library(bslib)
+library(bsicons)
+
+map <- readRDS("./communes_results/19261_map.rds") 
+df_cr <- readRDS("./communes_results/19261_df.rds") 
+```
+
+
+## Cartographie des perturbations forestières
+
+```{r}
+map
+```
+
+------------------------------------------------------------------------
+
+* Cliquez sur une zone forestière pour obtenir plus d'informations.
+
+* Les perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l'année précédente.
+
+* Elles sont principalement expliquées par des coupes rases.
+
+------------------------------------------------------------------------
+
+## La commune en bref
+
+```{r}
+layout_column_wrap(
+
+  value_box(
+    title = "Surface totale de forêt",
+    value = paste0(round(df_cr$surface_foret_ha), " ha"),
+    p("Dont :"),
+    p(paste0("- feuillus : ", round(df_cr$surface_foret_ha_feuillus), " ha")),
+    p(paste0("- conifères : ", round(df_cr$surface_foret_ha_coniferes), " ha")),
+    p(paste0("- mixtes et non-classés : ", round(df_cr$surface_foret_ha_autres), " ha")),
+    showcase = bs_icon("tree")
+  ),
+  
+  value_box(
+    title = "Surface de forêt rasée depuis 2018",
+    value = paste0(round(df_cr$surface_CR_totale), " ha"),
+    p("En pourcentage :"),
+    p(paste0("- de la forêt : ", round(df_cr$pourcentage_CR_foret_total, 2), " %")),
+    p(paste0("- des feuillus : ", round(df_cr$pourcentage_CR_foret_total_feuillus, 2), " %")),
+    p(paste0("- des conifères : ", round(df_cr$pourcentage_CR_foret_total_coniferes, 2), " %")),
+    showcase = bs_icon("scissors")
+  )
+)
+
+br()
+
+layout_column_wrap(
+  
+  value_box(
+    title = "Surface de forêt rasée par an",
+    value = paste0(round(df_cr$ha_par_an), " ha par an"),
+    p("En pourcentage :"),
+    p(paste0("- de la forêt : ", round(df_cr$pourcentage_CR_foret_par_an, 2), " %")),
+    p(paste0("- des feuillus : ", round(df_cr$pourcentage_CR_foret_par_an_feuillus, 2), " %")),
+    p(paste0("- des conifères : ", round(df_cr$pourcentage_CR_foret_par_an_coniferes, 2), " %")),
+    showcase = bs_icon("calendar", class = "icons")
+  ),
+  
+  value_box(
+    title = "Durée estimée du cycle de la forêt",
+    value = paste0(round(df_cr$temps_cycle), " années"),
+    p(paste0("Soit ", round(df_cr$temps_restant), " restantes !")),
+    p("Espérance de vie d'un chêne : > 500 ans."),
+    showcase = bs_icon("hourglass-split")
+  )
+  
+)
+```
+
+## Et si on continuait à ce rythme ?
+
+```{r out-height:100px}
+pc <- df_cr$pourcentage_CR_foret_total
+cr_rate <- df_cr$pourcentage_CR_foret_par_an
+yf <- 40
+pc_20 <- pc + cr_rate * 20
+if(pc_20 > 100) pc_20 <- 100
+nw_50 <- cr_rate * ((50 + df_cr$duree_suivi_y) - yf)
+pc_50 <- pc + cr_rate * 50 - nw_50
+if(pc_50 > 100) pc_50 <- 100
+
+data <- dplyr::tibble(
+  category = rep(c("Aujourd'hui", "Dans 20 ans", "Dans 50 ans"), each = 3),
+  group = rep(c("Forêt vivante", "Forêt rasée", "Jeune Forêt (+ de 40 ans)"), 3),
+  value = c(100 - pc, pc, 0, 100 - pc_20, pc_20, 0, 100 - pc_50 - nw_50, pc_50, nw_50)
+)
+
+data$value[data$value < 0] <- 0
+data$value <- round(data$value, 2)
+
+hovertmp <- ~paste("Type :", group, "<br>Valeur :", value, " %")
+
+fig <- plot_ly(height = 180) %>%
+
+  add_trace(data = subset(data, group == "Jeune Forêt (+ de 40 ans)"),
+            x = ~value, y = ~category, type = 'bar', orientation = 'h',
+            marker = list(color = '#b7d693'),
+            name = "Jeune Forêt (+ de 40 ans)",
+            name = "Jeune Forêt",
+            hovertemplate = hovertmp) %>%
+  
+  add_trace(data = subset(data, group == "Forêt rasée"),
+            x = ~value, y = ~category, type = 'bar', orientation = 'h',
+            marker = list(
+              color = '#ff0f0f',
+              pattern = list(
+                bgcolor = "#b7d693",
+                shape = "x",
+                solidity = 0.2,
+                size = 4
+              )
+            ),
+            name = "Forêt rasée",
+            hovertemplate = hovertmp) %>%
+  
+  add_trace(data = subset(data, group == "Forêt vivante"),
+            x = ~value, y = ~category, type = 'bar', orientation = 'h',
+            marker = list(color = '#6a994e'),
+            name = "Forêt vivante",
+            hovertemplate = hovertmp) %>%
+  
+  layout(
+    barmode = 'stack', 
+    xaxis = list(title = "", showticklabels = FALSE, zeroline = FALSE),
+    yaxis = list(title = "", categoryorder = "array",
+              categoryarray = c("Dans 50 ans", "Dans 20 ans", "Aujourd'hui")),
+    legend = list(title = list(text = 'Type de Forêt')),
+    height = 150,
+    width = "100%"
+  ) %>%
+  config(displayModeBar = FALSE)
+
+fig
+
+```
+
+
+## Evolution dans le temps
+
+A venir.
+
+
+## A savoir
+
+Comme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu'elles peuvent vraiment nous révéler.
+
+Nous vous invitons à consulter la page [Détails](details.html) pour en apprendre plus sur les limites de la classification des types de forêts ainsi que de la détection des perturbations.
+
+
+### Nos recommandations
+
+Il est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.
+
+Bien qu'elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision.
+
+## Source des données
+
+-   **Annotation des forêts**: [BDForêt® V2](https://geoservices.ign.fr/bdforet) sous [Licence ETALAB-Licence-Ouverte-v2.0](https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf)
+
+-   **Altitudes**: [Service Géoplateforme de calcul altimétrique](https://geoservices.ign.fr/services-geoplateforme-altimetrie) sous [Licence ETALAB-Licence-Ouverte-v2.0](https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf)
+
+-   **Données satellite**: Copernicus ([satellite Sentinel 2](https://sentiwiki.copernicus.eu/web/s2-mission)) obtenues par [Sentinel-Hub](https://www.sentinel-hub.com/), sous [Licence CC-BY-SA](https://creativecommons.org/licenses/by/4.0/deed.fr)
+
+-   **Fond de carte**: ESRI
+
+-   **Perturbations et calculs associés** - Algorithme maison sous [Licence CC-BY-SA](https://creativecommons.org/licenses/by-sa/4.0/deed.fr)
+
