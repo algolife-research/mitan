@@ -1,13 +1,4 @@
-### Utilities
-suppressPackageStartupMessages({
-  library(sf)
-  library(leaflet) 
-  require(httr)
-  require(jsonlite)
-  library(dplyr)
-  library(terra)
-  library(landscapemetrics)
-})
+
 
 get_token <- function(client_id, client_secret) {
   url <- "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
@@ -28,6 +19,18 @@ get_token <- function(client_id, client_secret) {
   
   return(content(tk_response)$access_token)
   
+}
+
+
+get_surface_commune <- function(insee_code) {
+  url <- paste0("https://geo.api.gouv.fr/communes/", insee_code, "?fields=surface&format=json")
+  response <- GET(url, accept("application/json"))
+  if (status_code(response) == 200) {
+    data <- content(response, "parsed")
+    return(data$surface)  # Return the parsed data
+  } else {
+    stop(paste("Request failed with status code", status_code(response)))
+  }
 }
 
 download_comm_ndvi <- function(
@@ -418,7 +421,8 @@ get_ndvi_diff <- function(
 
 
 get_cr_mask <- function(ndvi_diff, diff_threshold = -0.5, min_pixels = 20) {
-  cr_mask <- terra::app(ndvi_diff, function(x) ifelse(x < diff_threshold, 1, NA))
+
+  cr_mask <- terra::ifel(ndvi_diff < diff_threshold, 1, NA)
   
   na_layers <- sapply(1:nlyr(cr_mask), function(i) {
     all(is.na(values(cr_mask[[i]])))
@@ -445,6 +449,54 @@ get_cr_mask <- function(ndvi_diff, diff_threshold = -0.5, min_pixels = 20) {
   )
   
   return(cr_mask_clean_merged_filtered)
+}
+
+postprocess_cr <- function(cr_mask, min_area = 1000) {
+  polygon_list <- list()
+  merged_mask <- app(cr_mask, mean, na.rm = TRUE)
+  clumped_layer <- patches(merged_mask, directions = 8)
+  
+  layer_polygons <- as.polygons(clumped_layer, dissolve = TRUE)
+  layer_polygons_filled <- fillHoles(layer_polygons)
+
+  layer_polygons_filled$dr <- NA
+  for (i in 1:nlyr(cr_mask)) {
+    layer <- cr_mask[[i]]
+    layer_name <- names(cr_mask)[i]
+    active_polygons <- as.polygons(patches(layer, directions = 8), dissolve = TRUE)
+    idx <- is.related(layer_polygons_filled, active_polygons, "intersects")
+    layer_polygons_filled$dr[idx] <- paste0(layer_polygons_filled$dr[idx], "", layer_name)
+  }
+
+  layer_polygons_proj <- project(layer_polygons_filled, "EPSG:32632")
+  
+  polygon_areas <- expanse(layer_polygons_proj, unit = "m")
+  
+  polygon_centroids <- centroids(layer_polygons_proj)
+  centroid_coords <- crds(polygon_centroids)  # Extract coordinates as matrix
+  
+  layer_polygons_proj <- layer_polygons_proj[polygon_areas > min_area, ]
+  layer_polygons_proj$area_m2 <- polygon_areas[polygon_areas > min_area]
+  layer_polygons_proj$centroid_x <- centroid_coords[polygon_areas > min_area, 1]
+  layer_polygons_proj$centroid_y <- centroid_coords[polygon_areas > min_area, 2]
+  
+  df_tmp <- do.call(rbind, lapply(strsplit(gsub("NAX", "", layer_polygons_proj$dr), "X"), function(x) {
+    dates <- as.Date(paste0(x, ".01"), format = "%Y.%m.%d")
+    min_date <- min(dates)
+    max_date <- max(dates)
+    middle_date <- as.Date((as.numeric(min_date) + as.numeric(max_date + 30.5)) / 2, origin = "1970-01-01")
+    
+    list(
+      start = format.Date(min_date, "%Y.%m"),
+      end = format.Date(max_date, "%Y.%m"),
+      mid = format.Date(middle_date, "%Y.%m"),
+      year = format.Date(middle_date, "%Y")
+    )
+  }))
+  
+  layer_polygons_proj <- cbind(layer_polygons_proj, df_tmp)
+  
+  return(layer_polygons_proj)
 }
 
 
@@ -613,9 +665,9 @@ get_leaflet_map <- function(
   bd_shp_cropped$Type <- as.factor(bd_shp_cropped$Type)
   pal_foret <- colorFactor(c("steelblue", "chocolate", "forestgreen"), bd_shp_cropped$Type)
   
-  popup_cr <- paste0("<br><strong>Surface de la perturbation (ha) : </strong>", 
-                  round(cr_mask$area_cr / 1e4, 3),
-                  "<br><br><strong>Type de forêt (BDForêt): </strong>", 
+  popup_cr <- paste0("<strong>Perturbation</strong><br><br><strong>Période : </strong>", paste0(cr_mask$start, " - ", cr_mask$end),"<br><strong>Surface (ha) : </strong>", 
+                  round(cr_mask$area_m2 / 1e4, 3),
+                  "<br><br><strong>Type de forêt (BDForêt) : </strong>", 
                   cr_mask$Type, 
                         "<br><strong>Essence (BDForêt) : </strong>", 
                   cr_mask$ESSENCE)
@@ -668,7 +720,7 @@ get_leaflet_map <- function(
     addPolygons(
       data = cr_mask,
       fillColor = "firebrick",
-      fillOpacity = 0.7,
+      fillOpacity = 0.9,
       highlight = highlightOptions(
         weight = 0,
         fillOpacity = 1,

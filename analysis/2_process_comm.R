@@ -31,15 +31,17 @@ cr_mask <- get_cr_mask(
   -0.45,
   min_pixels = 10
 )
+### remove NAs
 
-cr_mask_pr <- fillHoles(as.polygons(cr_mask))
-cr_mask_pr <- st_cast(st_as_sf(cr_mask_pr), "POLYGON")
-cr_mask_pr$area_cr <- st_area(cr_mask_pr)
+pls <- postprocess_cr(cr_mask)
 
+cr_mask_pr <- st_as_sf(pls)
+cr_mask_pr <- st_transform(cr_mask_pr, st_crs(bd_shp))
 cr_mask_pr <- st_join(
   cr_mask_pr,
   bd_shp[, c("Type", "ESSENCE")],
-  join = st_intersects, largest = TRUE
+  join = st_intersects,
+  largest = TRUE
 )
 
 map <- get_leaflet_map(
@@ -48,17 +50,29 @@ map <- get_leaflet_map(
   comm_geom = comm$geometry
 );map
 
+### get cr date
 
-cr_mask_conv <- terra::project(cr_mask, "EPSG:32631")
+### get time series per cr
+library(exactextractr)
+results <- exact_extract(ndvi_diff,  sf::st_as_sf(cr_mask_pr), fun = "median", stack_apply = TRUE)
+results_matrix <- do.call(cbind, results)
+rownames(results_matrix) <- paste0("Polygon_", 1:nrow(cr_mask_pr))
+colnames(results_matrix) <- names(ndvi_diff)
+matplot(t(results_matrix),type = "l", col = rgb(0,0,0,0.05))
+lines(results_matrix[1,], col = "firebrick", lwd = 2, type = "s")
+lines(results_matrix[60, ], col = "steelblue", lwd = 2, type = "s")
 
-# sf::st_centroid(cr_mask_pr)
+cr_mask_conv <- terra::project(cr_mask[[-1]], "EPSG:32631")
 
 df_coupes_rases <- get_centroids(cr_mask_conv, directions = 8) %>%
   select(x, y) %>%
   rename(longitude = x, latitude = y)
 
 df_coupes_rases$surface_ha <- lsm_p_area(cr_mask_conv, directions = 8)$value
-
+sum(st_area(cr_mask_pr))
+sum(lsm_p_area(cr_mask_conv[[1]], directions = 8)$value)
+sum(lsm_p_area(cr_mask_conv[[-1]], directions = 8)$value)
+sum(lsm_p_area(cr_mask_conv, directions = 8)$value)
 coords_4326 <- convert_coordinates(df_coupes_rases, c("longitude", "latitude"), crs_from = "EPSG:32631", crs_to = "EPSG:4326")
 res_elev <- get_elevation_open(lat = coords_4326$Y, lon = coords_4326$X)
 
@@ -78,7 +92,20 @@ df_per_type <- df_with_tfv %>%
   group_by(Type) %>% 
   summarise(surface = sum(surface_ha))
 
+surface_comm <- get_surface_commune(comm_id)
+taux_boisement <- sum(bd_shp$area)/1e4 / surface_comm
+
+
+dts_suivi <- paste0(gsub("X", "", names(ndvi_diff)), ".15") %>% as.Date(format = "%Y.%m.%d")
+Sys.setlocale("LC_TIME", "fr_FR.UTF-8")
+rng <- format(range(dts_suivi), "%B %Y")
+
+
 df_captage <- tibble(
+  debut_suivi = rng[1],
+  fin_suivi = rng[2],
+  surface_comm = surface_comm,
+  taux_boisement = taux_boisement,
   duree_suivi_y = nlyr(cr_mask) - 2,
   surface_CR_totale = sum(df_coupes_rases$surface_ha),
   surface_foret_ha = as.vector(sum(bd_shp$area)) / 1e4,
@@ -89,16 +116,16 @@ df_captage <- tibble(
   surface_CR_coniferes = df_per_type$surface[df_per_type$Type == "Conifères"],
   surface_CR_autres = df_per_type$surface[df_per_type$Type == "Autres / Mixtes"],
 ) %>%
-  mutate(pourcentage_CR_foret_total = 100 * surface_CR_totale / surface_foret_ha,
-         pourcentage_CR_foret_total_feuillus = 100 * surface_CR_feuillus / surface_foret_ha_feuillus,
-         pourcentage_CR_foret_total_coniferes = 100 * surface_CR_coniferes / surface_foret_ha_coniferes,
-         pourcentage_CR_foret_total_autres = 100 * surface_CR_autres / surface_foret_ha_autres,
-         pourcentage_CR_foret_par_an = pourcentage_CR_foret_total / duree_suivi_y,
-         pourcentage_CR_foret_par_an_feuillus = pourcentage_CR_foret_total_feuillus / duree_suivi_y,
-         pourcentage_CR_foret_par_an_coniferes = pourcentage_CR_foret_total_coniferes / duree_suivi_y,
-         pourcentage_CR_foret_par_an_autres = pourcentage_CR_foret_total_autres / duree_suivi_y,
+  mutate(pc_CR_foret_total = 100 * surface_CR_totale / surface_foret_ha,
+         pc_CR_foret_total_feuillus = 100 * surface_CR_feuillus / surface_foret_ha_feuillus,
+         pc_CR_foret_total_coniferes = 100 * surface_CR_coniferes / surface_foret_ha_coniferes,
+         pc_CR_foret_total_autres = 100 * surface_CR_autres / surface_foret_ha_autres,
+         pc_CR_foret_par_an = pc_CR_foret_total / duree_suivi_y,
+         pc_CR_foret_par_an_feuillus = pc_CR_foret_total_feuillus / duree_suivi_y,
+         pc_CR_foret_par_an_coniferes = pc_CR_foret_total_coniferes / duree_suivi_y,
+         pc_CR_foret_par_an_autres = pc_CR_foret_total_autres / duree_suivi_y,
          ha_par_an = surface_CR_totale / duree_suivi_y,
-         temps_cycle = 100 / pourcentage_CR_foret_par_an,
+         temps_cycle = 100 / pc_CR_foret_par_an,
          temps_restant = temps_cycle - duree_suivi_y)
 
 
