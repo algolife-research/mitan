@@ -1,0 +1,19 @@
+Package: mitan
+Title: Utility functions for the Mitan application.
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Alexandre", family = "Gouy", email = "alexandre.gouy@algolife.fr", role = c("cre"),
+           comment = c(ORCID = "0000-0002-2478-8475"))
+Description: Utility functions for the Mitan application.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    sf,
+    leaflet,
+    httr,
+    jsonlite,
+    dplyr,
+    terra,
+    landscapemetrics
