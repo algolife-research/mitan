@@ -9,7 +9,7 @@ aggregate_ndvi(
   bd_foret_shp,
   na_flag = 0,
   max_miss = 0.5,
-  scale_factor = 127.5,
+  scale_factor = (255/2),
   filename = "./ndvi_aggregated.tif"
 )
 }

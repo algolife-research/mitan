@@ -4,7 +4,15 @@
 \alias{tiff_request}
 \title{Request TIFF Image from Sentinel Hub}
 \usage{
-tiff_request(bbox, width, height, from, to, name, auth_token)
+tiff_request(
+  bbox,
+  width,
+  height,
+  from = "2022-10-01T00:00:00Z",
+  to = "2022-10-31T00:00:00Z",
+  name = "default",
+  auth_token
+)
 }
 \arguments{
 \item{bbox}{Numeric vector. Bounding box coordinates as \code{c(xmin, ymin, xmax, ymax)}.}

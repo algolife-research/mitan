@@ -12,6 +12,8 @@
 #' @export
 get_token <- function(client_id, client_secret) {
   url <- "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+  
+  # Define the body data
   body_data <- list(
     grant_type = "client_credentials",
     client_id = client_id,
@@ -25,11 +27,9 @@ get_token <- function(client_id, client_secret) {
     encode = "form"
   )
   
-  if (httr::status_code(tk_response) != 200) {
-    stop("Failed to retrieve token. Check client ID and secret.")
-  }
+  tk <- httr::content(tk_response)$access_token
+  return(tk)
   
-  return(httr::content(tk_response)$access_token)
 }
 
 
@@ -64,6 +64,7 @@ download_comm_ndvi <- function(
     client_id,
     client_secret
 ) {
+  
   message("Getting auth token...")
   tk <- get_token(client_id, client_secret)
   
@@ -71,16 +72,17 @@ download_comm_ndvi <- function(
   dates <- request_sentinel_dates(
     min_date = min_date,
     max_date = max_date,
-    comm_geom = comm_geom,
+    comm_geom = geom,
     auth_token = tk
   )
   
-  message("Downloading NDVI data...")
+  message("Getting NDVI...")
+  
   bbox <- sf::st_bbox(comm_geom)
   bbox2 <- transform_bbox(bbox)
   
-  for (date in dates) {
-    message("Processing date: ", date)
+  for(date in dates) {
+    message(date)
     response <- ndvi_request(
       bbox = as.vector(bbox),
       width = bbox2$width / 10,
@@ -97,7 +99,7 @@ download_comm_ndvi <- function(
     )
   }
   
-  return(invisible(NULL))
+  return(NULL)
 }
 
 #' Retrieve Available Sentinel Image Dates
@@ -123,54 +125,64 @@ download_comm_ndvi <- function(
 #' }
 #' @export
 request_sentinel_dates <- function(min_date, max_date, comm_geom, auth_token, max_cloud_cover = 25) {
-  # Bounding box and transformation
-  bbox <- sf::st_bbox(comm_geom)
+  bbox <- st_bbox(comm_geom)
   bbox2 <- transform_bbox(bbox)
   
-  # Helper function to split date range by year
   get_date_iterations <- function(min_date, max_date) {
     min_date <- as.Date(min_date)
     max_date <- as.Date(max_date)
-    years <- seq(as.numeric(format(min_date, "%Y")), as.numeric(format(max_date, "%Y")))
+    start_year <- as.numeric(format(min_date, "%Y"))
+    end_year <- as.numeric(format(max_date, "%Y"))
     
-    lapply(years, function(year) {
-      start <- ifelse(year == min_date, min_date, as.Date(paste0(year, "-01-01")))
-      end <- ifelse(year == max_date, max_date, as.Date(paste0(year, "-12-31")))
-      c(start, end)
-    })
+    output <- list()
+    for (year in start_year:end_year) {
+      if (year == start_year) {
+        current_min_date <- min_date
+      } else {
+        current_min_date <- as.Date(paste0(year, "-01-01"))
+      }
+      
+      # Determine the max date for the current year
+      if (year == end_year) {
+        current_max_date <- max_date
+      } else {
+        current_max_date <- as.Date(paste0(year, "-12-31"))
+      }
+      output[[1L + year - start_year]] <- c(current_min_date, current_max_date)
+    }
+    return(output)
   }
-  
-  # Get year-wise date ranges to optimize API calls
   date_ranges <- get_date_iterations(min_date, max_date)
   
-  message("Requesting catalog dates from Sentinel Hub...")
+  message("Catalog requests...")
   date_list <- list()
-  
-  for (range in date_ranges) {
-    datetime <- paste0(range[1], "T00:00:00Z/", range[2], "T23:59:59Z")
-    message("Fetching data for date range: ", datetime)
-    
-    # Make a catalog request for each year
+  for(i in seq_along(date_ranges)) {
+    datetime <- paste0(
+      date_ranges[[i]][1], 
+      "T00:00:00Z/",
+      date_ranges[[i]][2],
+      "T00:00:00Z"
+    )
+    message(datetime)
     cat_list <- catalog_request(
-      bbox = as.vector(bbox),
-      datetime = datetime,
+      as.vector(bbox),
+      datetime,
       max_cloud_cover = max_cloud_cover,
       distinct = "date",
       limit = 100,
       auth_token = auth_token
     )
-    
-    # Append results if available, handle missing results
-    if (length(cat_list$features) > 0) {
-      date_list <- c(date_list, sapply(cat_list$features, function(x) x$date))
+    if(length(cat_list$features) == 0) {
+      date_list[[i]] <- NA
     } else {
-      warning("No data available for date range: ", datetime)
+      date_list[[i]] <- paste0(cat_list$features, "T00:00:00Z")
     }
   }
-  
-  # Return unique, non-NA dates
-  unique(unlist(date_list, use.names = FALSE))
+  date_list <- unlist(date_list)
+  date_list <- date_list[!is.na(date_list)]
+  return(date_list)
 }
+
 
 #' Sentinel Hub Catalog Request
 #'
@@ -194,16 +206,14 @@ request_sentinel_dates <- function(min_date, max_date, comm_geom, auth_token, ma
 #' }
 #' @export
 catalog_request <- function(bbox, datetime, max_cloud_cover = 25, distinct = NULL, limit = 100, auth_token) {
-  # API URL
+  
   url <- "https://services.sentinel-hub.com/api/v1/catalog/1.0.0/search"
   
-  # Headers for authorization
   headers <- c(
     'Authorization' = paste0('Bearer ', auth_token),
     'Content-Type' = 'application/json'
   )
   
-  # Request payload
   body_data <- list(
     bbox = bbox,
     datetime = datetime,
@@ -215,22 +225,19 @@ catalog_request <- function(bbox, datetime, max_cloud_cover = 25, distinct = NUL
   
   body_json <- jsonlite::toJSON(body_data, auto_unbox = TRUE)
   
-  # Send POST request
   response <- httr::POST(
     url = url,
-    httr::add_headers(.headers = headers),
+    httr::add_headers(headers),
     body = body_json,
     encode = "json"
   )
   
-  # Parse response
-  if (httr::status_code(response) == 200) {
-    jsonlite::fromJSON(httr::content(response, as = "text"))
-  } else {
-    stop("Catalog request failed with status code: ", httr::status_code(response))
-  }
+  r <- httr::content(response, as = "text") %>%
+    jsonlite::fromJSON()
+  
+  return(r)
+  
 }
-
 
 
 #' Request TIFF Image from Sentinel Hub
@@ -259,8 +266,18 @@ catalog_request <- function(bbox, datetime, max_cloud_cover = 25, distinct = NUL
 #' )
 #' }
 #' @export
-tiff_request <- function(bbox, width, height, from, to, name, auth_token) {
+tiff_request <- function(
+    bbox,
+    width,
+    height,
+    from ="2022-10-01T00:00:00Z",
+    to = "2022-10-31T00:00:00Z",
+    name = "default",
+    auth_token
+) {
+  
   url <- "https://services.sentinel-hub.com/api/v1/process"
+  
   headers <- c(
     'Authorization' = paste0('Bearer ', auth_token),
     'Content-Type' = 'multipart/form-data',
@@ -270,13 +287,21 @@ tiff_request <- function(bbox, width, height, from, to, name, auth_token) {
   body_data <- list(
     input = list(
       bounds = list(
-        properties = list(crs = "http://www.opengis.net/def/crs/OGC/1.3/CRS84"),
+        properties = list(
+          crs = "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+          # crs = "http://www.opengis.net/def/crs/EPSG/0/32736"
+        ),
         bbox = bbox
       ),
       data = list(
         list(
           type = "sentinel-2-l2a",
-          dataFilter = list(timeRange = list(from = from, to = to))
+          dataFilter = list(
+            timeRange = list(
+              from = from,
+              to = to
+            )
+          )
         )
       )
     ),
@@ -285,19 +310,46 @@ tiff_request <- function(bbox, width, height, from, to, name, auth_token) {
       height = height,
       responses = list(list(
         identifier = name,
-        format = list(type = "image/tiff")
-      ))
+        format = list(
+          type = "image/tiff"
+        ))
+      )
     )
   )
   
+  body_json <- jsonlite::toJSON(body_data, auto_unbox = TRUE)
+  
+  evalscript <- '//VERSION=3
+
+  function setup() {
+    return {
+      input: [{
+        bands: ["B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B8A", "B11", "B12"],
+        units: "DN"
+      }],
+      output: {
+        id: "default",
+        bands: 12,
+        sampleType: SampleType.UINT16
+      }
+    }
+  }
+  
+  function evaluatePixel(sample) {
+      return [ sample.B01, sample.B02, sample.B03, sample.B04, sample.B05, sample.B06, sample.B07, sample.B08, sample.B8A, sample.B09, sample.B11, sample.B12]
+  }'
+  
   response <- httr::POST(
     url = url,
-    httr::add_headers(.headers = headers),
-    body = list(request = jsonlite::toJSON(body_data, auto_unbox = TRUE)),
-    encode = "json"
+    httr::add_headers(headers),
+    body = list(
+      request = body_json,
+      evalscript = evalscript
+    )
   )
   
-  response
+  return(response)
+  
 }
 
 
@@ -316,12 +368,131 @@ tiff_request <- function(bbox, width, height, from, to, name, auth_token) {
 #' }
 #' @export
 write_extract_tar_response <- function(response, output_dir = ".") {
+  
   tar_path <- tempfile()
   on.exit(unlink(tar_path))
-  
   writeBin(httr::content(response, "raw"), con = tar_path)
-  extracted_files <- utils::untar(tar_path, exdir = output_dir)
   
-  extracted_files
+  utils::untar(tar_path, exdir = output_dir)
+  
+  fnames <- utils::untar(tar_path, list = TRUE)
+  
+  return(fnames)
+}
+
+
+#' Request NDVI Data from Sentinel Hub API
+#'
+#' This function sends a request to the Sentinel Hub API to retrieve NDVI data within a specified 
+#' bounding box, resolution, and date range. The NDVI is computed from Sentinel-2 bands and returned 
+#' as a TIFF image.
+#'
+#' @param bbox Numeric vector. Bounding box coordinates as \code{c(xmin, ymin, xmax, ymax)} in WGS84 CRS.
+#' @param width Integer. Width of the output image in pixels.
+#' @param height Integer. Height of the output image in pixels.
+#' @param from Character. Start date-time in ISO 8601 format (e.g., "YYYY-MM-DDTHH:MM:SSZ").
+#' @param to Character. End date-time in ISO 8601 format (e.g., "YYYY-MM-DDTHH:MM:SSZ").
+#' @param name Character. Identifier for the response image layer.
+#' @param auth_token Character. Sentinel Hub API authentication token.
+#' @return response object. The response object from the API call containing NDVI data as a TIFF image.
+#' @examples
+#' \dontrun{
+#' response <- ndvi_request(
+#'   bbox = c(2.0, 48.0, 3.0, 49.0),
+#'   width = 512,
+#'   height = 512,
+#'   from = "2023-01-01T00:00:00Z",
+#'   to = "2023-01-31T00:00:00Z",
+#'   name = "ndvi_image",
+#'   auth_token = "your_api_token"
+#' )
+#' }
+#' @export
+ndvi_request <- function(
+    bbox,
+    width,
+    height,
+    from ="2022-10-01T00:00:00Z",
+    to = "2022-10-31T00:00:00Z",
+    name = "default",
+    auth_token
+) {
+  
+  url <- "https://services.sentinel-hub.com/api/v1/process"
+  
+  headers <- c(
+    'Authorization' = paste0('Bearer ', auth_token),
+    'Content-Type' = 'multipart/form-data',
+    'Accept' = 'application/tar'
+  )
+  
+  body_data <- list(
+    input = list(
+      bounds = list(
+        properties = list(
+          crs = "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+          # crs = "http://www.opengis.net/def/crs/EPSG/0/32736"
+        ),
+        bbox = bbox
+      ),
+      data = list(
+        list(
+          type = "sentinel-2-l2a",
+          dataFilter = list(
+            timeRange = list(
+              from = from,
+              to = to
+            )
+          )
+        )
+      )
+    ),
+    output = list(
+      width = width,
+      height = height,
+      responses = list(list(
+        identifier = name,
+        format = list(
+          type = "image/tiff"
+        ))
+      )
+    )
+  )
+  
+  body_json <- jsonlite::toJSON(body_data, auto_unbox = TRUE)
+  
+  evalscript <- paste0('//VERSION=3
+  function setup() {
+    return {
+      input: [{
+        bands:["B04", "B08", "SCL"]
+      }],
+      output: {
+        id: "', name, '",
+        bands: 1,
+        sampleType: SampleType.UINT8
+      }
+    }
+  }
+  function evaluatePixel(sample) {
+    if ([2, 3, 6, 8, 9, 10].includes(sample.SCL) ){
+      return [ 0 ]
+    } else{
+      let ndvi = 1 + (sample.B08 - sample.B04) / (sample.B08 + sample.B04)
+      return [ ndvi * 255 / 2 ]
+    }
+
+  }')
+  
+  response <- httr::POST(
+    url = url,
+    httr::add_headers(headers),
+    body = list(
+      request = body_json,
+      evalscript = evalscript
+    )
+  )
+  return(response)
+  
 }
 

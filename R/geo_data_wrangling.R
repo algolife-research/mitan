@@ -13,29 +13,26 @@
 #' }
 #' @export
 transform_bbox <- function(bbox, crs_from = 4326, crs_to = 32736, rounding = -1) {
-  requireNamespace("sf")
-  requireNamespace("lwgeom")
+  require(sf)
+  require(lwgeom)
+  bbox_wgs84 <- st_bbox(c(xmin = bbox[1], ymin = bbox[3], 
+                          xmax = bbox[2], ymax = bbox[4]), 
+                        crs = st_crs(crs_from))
   
-  # Create an sf bounding box object in the source CRS
-  bbox_wgs84 <- sf::st_bbox(c(xmin = bbox[1], ymin = bbox[3], 
-                              xmax = bbox[2], ymax = bbox[4]), 
-                            crs = sf::st_crs(crs_from))
+  bbox_sf <- st_as_sfc(bbox)
+  bbox_transformed <- st_transform(bbox_sf, crs = st_crs(crs_to))
   
-  # Convert bounding box to an sf polygon, transform to the target CRS, and calculate dimensions
-  bbox_sf <- sf::st_as_sfc(bbox)
-  bbox_transformed <- sf::st_transform(bbox_sf, crs = sf::st_crs(crs_to))
+  width <- (st_bbox(bbox_transformed)$xmax - st_bbox(bbox_transformed)$xmin)
+  height <- (st_bbox(bbox_transformed)$ymax - st_bbox(bbox_transformed)$ymin)
   
-  width <- sf::st_bbox(bbox_transformed)$xmax - sf::st_bbox(bbox_transformed)$xmin
-  height <- sf::st_bbox(bbox_transformed)$ymax - sf::st_bbox(bbox_transformed)$ymin
-  
-  # Round coordinates of the transformed bounding box
-  transformed_coords <- sf::st_bbox(bbox_transformed)
+  transformed_coords <- st_bbox(bbox_transformed)
   rounded_coords <- round(transformed_coords, rounding)
-  out <- sf::st_as_sfc(rounded_coords) %>%
-    sf::st_transform(crs = crs_from)
-  
+  out <- rounded_coords %>%
+    st_as_sfc() %>%
+    st_transform(crs = crs_from)
   return(list(bbox = out, width = unname(width), height = unname(height)))
 }
+
 
 
 
@@ -52,25 +49,38 @@ transform_bbox <- function(bbox, crs_from = 4326, crs_to = 32736, rounding = -1)
 #' commune_area <- extract_comm_from_bdforet("path/to/bdforet.shp", commune_geom)
 #' }
 #' @export
-extract_comm_from_bdforet <- function(bd_path, comm_geom) {
-  message("Loading BDForêt data...")
-  bd_shp <- sf::st_read(bd_path)
-  crs_bd_shp <- sf::st_crs(bd_shp)
+extract_comm_from_bdforet <- function(
+    bd_path,
+    comm_geom) {
   
-  if (crs_bd_shp != sf::st_crs(4326)) {
-    bd_shp <- sf::st_transform(bd_shp, crs = 4326)
+  message("Loading BD...")
+  bd_shp <- st_read(bd_path)
+  crs_bd_shp <- st_crs(bd_shp)
+  if (crs_bd_shp != "EPSG:4326") {
+    bd_shp <- st_transform(bd_shp, crs = "EPSG:4326")
   }
   
-  message("Finding intersection with commune geometry...")
-  it <- sf::st_intersection(bd_shp, comm_geom)
+  message("Finding intersection...")
+  it <- st_intersection(x = bd_shp, y = comm_geom)
   
-  message("Cleaning geometry...")
-  it_cleaned <- it %>%
-    dplyr::filter(sf::st_geometry_type(.) != "MULTILINESTRING")
+  message("Cleaning...")
+  remove_linestrings_from_collection <- function(geometry) {
+    if (sf::st_is(geometry, "GEOMETRYCOLLECTION")) {
+      print(1)
+      # Extract all geometries except LINESTRING and MULTILINESTRING
+      geometry <- sf::st_collection_extract(geometry, "POLYGON")
+    }
+    return(geometry)
+  }
   
-  it_cleaned$geometry <- sf::st_collection_extract(it_cleaned$geometry, "POLYGON")
-  sf::st_as_sf(it_cleaned) %>%
-    sf::st_cast("POLYGON", warn = FALSE)
+  # Apply this function to the entire sf object
+  it_cleaned <-  it %>%
+    filter(st_geometry_type(.) != "MULTILINESTRING")
+  it_cleaned$geometry <- sf::st_collection_extract(it$geometry, "POLYGON")
+  it_cleaned <- sf::st_as_sf(it_cleaned)
+  
+  it_out <- sf::st_cast(it_cleaned, "POLYGON", warn = FALSE)
+  return(it_out)
 }
 
 
@@ -87,10 +97,10 @@ extract_comm_from_bdforet <- function(bd_path, comm_geom) {
 #' commune_geom <- get_comm_shp(insee_code = "75056", path = "path/to/commune.shp")
 #' }
 #' @export
-get_comm_shp <- function(insee_code, path) {
+get_comm_shp <- function(insee_code = 87153, path = "./eau/commune-frmetdrom/COMMUNE_FRMETDROM.shp") {
   comm <- sf::read_sf(path)
-  geom <- comm[comm$INSEE_COM == insee_code, ]$geometry
-  geom
+  geom <- comm[comm$INSEE_COM == 87153, ]$geometry
+  return(geom)
 }
 
 

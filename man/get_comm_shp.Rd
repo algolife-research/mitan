@@ -4,7 +4,10 @@
 \alias{get_comm_shp}
 \title{Retrieve Commune Geometry by INSEE Code}
 \usage{
-get_comm_shp(insee_code, path)
+get_comm_shp(
+  insee_code = 87153,
+  path = "./eau/commune-frmetdrom/COMMUNE_FRMETDROM.shp"
+)
 }
 \arguments{
 \item{insee_code}{Character. INSEE code for the commune.}
