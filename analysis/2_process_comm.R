@@ -1,8 +1,6 @@
-source("./utils.R")
-
-comm_id <- 19136
-# 19261
-dptt <- "19"
+library(mitan)
+comm_id <- 87183
+dptt <- "87"
 
 data_dir <- "data"
 communes_ndvi_dir <- "communes_ndvi"
@@ -33,14 +31,14 @@ cr_mask <- get_cr_mask(
 )
 ### remove NAs
 
-pls <- postprocess_cr(cr_mask)
+pls <- postprocess_cr(cr_mask[[-1]])
 
-cr_mask_pr <- st_as_sf(pls)
-cr_mask_pr <- st_transform(cr_mask_pr, st_crs(bd_shp))
-cr_mask_pr <- st_join(
+cr_mask_pr <- sf::st_as_sf(pls)
+cr_mask_pr <- sf::st_transform(cr_mask_pr, sf::st_crs(bd_shp))
+cr_mask_pr <- sf::st_join(
   cr_mask_pr,
   bd_shp[, c("Type", "ESSENCE")],
-  join = st_intersects,
+  join = sf::st_intersects,
   largest = TRUE
 )
 
@@ -50,7 +48,6 @@ map <- get_leaflet_map(
   comm_geom = comm$geometry
 );map
 
-### get cr date
 
 ### get time series per cr
 library(exactextractr)
@@ -62,30 +59,25 @@ matplot(t(results_matrix),type = "l", col = rgb(0,0,0,0.05))
 lines(results_matrix[1,], col = "firebrick", lwd = 2, type = "s")
 lines(results_matrix[60, ], col = "steelblue", lwd = 2, type = "s")
 
-cr_mask_conv <- terra::project(cr_mask[[-1]], "EPSG:32631")
 
-df_coupes_rases <- get_centroids(cr_mask_conv, directions = 8) %>%
-  select(x, y) %>%
-  rename(longitude = x, latitude = y)
+get_summary_stats <- function(cr_mask_pr) {
+  
+  cr_mask_conv <- terra::project(cr_mask_pr, "EPSG:32631")
 
-df_coupes_rases$surface_ha <- lsm_p_area(cr_mask_conv, directions = 8)$value
-sum(st_area(cr_mask_pr))
-sum(lsm_p_area(cr_mask_conv[[1]], directions = 8)$value)
-sum(lsm_p_area(cr_mask_conv[[-1]], directions = 8)$value)
-sum(lsm_p_area(cr_mask_conv, directions = 8)$value)
-coords_4326 <- convert_coordinates(df_coupes_rases, c("longitude", "latitude"), crs_from = "EPSG:32631", crs_to = "EPSG:4326")
-res_elev <- get_elevation_open(lat = coords_4326$Y, lon = coords_4326$X)
+  df_coupes_rases <- terra::get_centroids(cr_mask_conv, directions = 8) %>%
+    select(x, y) %>%
+    rename(longitude = x, latitude = y)
 
-df_coupes_rases <- df_coupes_rases |>
-  mutate(altitude = res_elev)
+  df_coupes_rases$surface_ha <- landscapemetrics::lsm_p_area(cr_mask_conv, directions = 8)$value
+  coords_4326 <- convert_coordinates(df_coupes_rases, c("longitude", "latitude"), crs_from = "EPSG:32631", crs_to = "EPSG:4326")
+  res_elev <- get_elevation_open(lat = coords_4326$Y, lon = coords_4326$X)
+  df_coupes_rases <- df_coupes_rases |>
+    mutate(altitude = res_elev)
 
-## surface de foret
+df_coupes_sf <- sf::st_as_sf(df_coupes_rases, coords = c("longitude", "latitude"), crs = 32631)
+bd_shp2 <- sf::st_transform(bd_shp, crs = 32631)
 
-
-df_coupes_sf <- st_as_sf(df_coupes_rases, coords = c("longitude", "latitude"), crs = 32631)
-bd_shp2 <- st_transform(bd_shp, crs = 32631)
-
-df_with_tfv <- st_join(df_coupes_sf, bd_shp2[, "Type"], join = st_nearest_feature)
+df_with_tfv <- sf::st_join(df_coupes_sf, bd_shp2[, "Type"], join = sf::st_nearest_feature)
 
 df_per_type <- df_with_tfv %>% 
   as_tibble() %>% 
@@ -95,11 +87,9 @@ df_per_type <- df_with_tfv %>%
 surface_comm <- get_surface_commune(comm_id)
 taux_boisement <- sum(bd_shp$area)/1e4 / surface_comm
 
-
 dts_suivi <- paste0(gsub("X", "", names(ndvi_diff)), ".15") %>% as.Date(format = "%Y.%m.%d")
 Sys.setlocale("LC_TIME", "fr_FR.UTF-8")
 rng <- format(range(dts_suivi), "%B %Y")
-
 
 df_captage <- tibble(
   debut_suivi = rng[1],
@@ -127,7 +117,8 @@ df_captage <- tibble(
          ha_par_an = surface_CR_totale / duree_suivi_y,
          temps_cycle = 100 / pc_CR_foret_par_an,
          temps_restant = temps_cycle - duree_suivi_y)
-
+return(df_captage)
+}
 
 jsonlite::toJSON(c(df_captage), auto_unbox = TRUE) %>% 
   prettify() %>%

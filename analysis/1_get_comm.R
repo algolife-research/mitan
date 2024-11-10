@@ -1,11 +1,11 @@
 ## Get community shapefile from INSEE code
 
-source("./utils.R")
+library(mitan)
+library(dplyr)
+comm_id <- 87183
+dptt <- "87"
 
-comm_id <- 19136
-dptt <- "19"
-
-data_dir <- "data"
+data_dir <- "./data"
 communes_ndvi_dir <- "communes_ndvi"
 communes_shp_dir <- "communes_shp"
 sentinel_data_dir <- file.path(data_dir, communes_ndvi_dir, comm_id)
@@ -21,7 +21,9 @@ if(download_data) {
   id <- comm$INSEE_COM == comm_id
   sf::write_sf(
     comm[id, ],
-    dsn = paste0("./data/communes_shp/", comm[id, ]$INSEE_COM, ".shp"))
+    append = FALSE,
+    dsn = file.path(data_dir, communes_shp_dir, paste0(comm_id, ".shp"))
+  )
 }
 
 path <- file.path(data_dir, communes_shp_dir, paste0(comm_id, ".shp"))
@@ -53,7 +55,7 @@ if(download_data) {
     grepl(pattern = "conifères", bd$TFV_G11, ignore.case = TRUE) ~ "Conifères",
     .default = "Autres / Mixtes"
   )
-  bd$area <- st_area(bd)
+  bd$area <- sf::st_area(bd)
   sf::st_write(
     bd,
     dsn = file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp")),
@@ -77,6 +79,8 @@ ndvi_diff <- get_ndvi_diff(
   max_difference_days = 15,
   min_past_ndvi = 0.7
 )
+
+# terra::plot(ndvi_diff)
 
 terra::writeRaster(
   ndvi_diff, 
