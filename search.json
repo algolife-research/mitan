@@ -21,18 +21,18 @@
     "text": "Communes\n\n\n\n\n\n\nBugeat\n\n\n\n\nEymoutiers\n\n\n\n\nMeymac\n\n\n\n\nOrcines\n\n\n\n\nRazès\n\n\n\n\nSaint-Julien-le-Petit\n\n\n\n\nSaint-Sylvestre\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "87153.html#cartographie-des-perturbations-forestières",
-    "href": "87153.html#cartographie-des-perturbations-forestières",
+    "objectID": "87153.html#cartographie-forestière",
+    "href": "87153.html#cartographie-forestière",
     "title": "Saint-Julien-le-Petit",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières\n\n\n\n\n\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
+    "section": "Cartographie forestière",
+    "text": "Cartographie forestière\n\n\n\nInteractive Map with Time Series Chart\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPériode de suivi : novembre 2017 - octobre 2024.\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
   },
   {
     "objectID": "87153.html#la-commune-en-bref",
     "href": "87153.html#la-commune-en-bref",
     "title": "Saint-Julien-le-Petit",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1847 ha\nDont :\n- feuillus : 1194 ha\n- conifères : 283 ha\n- mixtes et non-classés : 371 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n89 ha\nEn pourcentage :\n- de la forêt : 4.8 %\n- des feuillus : 5.19 %\n- des conifères : 6 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n13 ha par an\nEn pourcentage :\n- de la forêt : 0.69 %\n- des feuillus : 0.75 %\n- des conifères : 0.87 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n144 années\nSoit 137 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface de la commune\n2924 ha\n\nDont forêt : 1847 ha\nTaux de boisement : 63 %\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1847 ha\nDont :\n- feuillus : 1194 ha\n- conifères : 283 ha\n- mixtes, autres : 371 ha\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n89 ha\nEn pourcentage :\n- de la forêt : 4.8 %\n- des feuillus : 5.19 %\n- des conifères : 6 %\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n13 ha par an\nEn pourcentage :\n- de la forêt : 0.69 %\n- des feuillus : 0.75 %\n- des conifères : 0.87 %"
   },
   {
     "objectID": "87153.html#et-si-on-continuait-à-ce-rythme",
@@ -40,13 +40,6 @@
     "title": "Saint-Julien-le-Petit",
     "section": "Et si on continuait à ce rythme ?",
     "text": "Et si on continuait à ce rythme ?"
-  },
-  {
-    "objectID": "87153.html#evolution-dans-le-temps",
-    "href": "87153.html#evolution-dans-le-temps",
-    "title": "Saint-Julien-le-Petit",
-    "section": "Evolution dans le temps",
-    "text": "Evolution dans le temps\nA venir."
   },
   {
     "objectID": "87153.html#a-savoir",
@@ -60,21 +53,21 @@
     "href": "87153.html#source-des-données",
     "title": "Saint-Julien-le-Petit",
     "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "87064.html#cartographie-des-perturbations-forestières",
-    "href": "87064.html#cartographie-des-perturbations-forestières",
+    "objectID": "87064.html#cartographie-forestière",
+    "href": "87064.html#cartographie-forestière",
     "title": "Eymoutiers",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières\n\n\n\n\n\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
+    "section": "Cartographie forestière",
+    "text": "Cartographie forestière\n\n\n\nInteractive Map with Time Series Chart\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPériode de suivi : novembre 2017 - octobre 2024.\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
   },
   {
     "objectID": "87064.html#la-commune-en-bref",
     "href": "87064.html#la-commune-en-bref",
     "title": "Eymoutiers",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n3915 ha\nDont :\n- feuillus : 2249 ha\n- conifères : 977 ha\n- mixtes et non-classés : 690 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n128 ha\nEn pourcentage :\n- de la forêt : 3.27 %\n- des feuillus : 1.95 %\n- des conifères : 6.86 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n18 ha par an\nEn pourcentage :\n- de la forêt : 0.47 %\n- des feuillus : 0.28 %\n- des conifères : 0.99 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n212 années\nSoit 205 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface de la commune\n7062 ha\n\nDont forêt : 3915 ha\nTaux de boisement : 55 %\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n3915 ha\nDont :\n- feuillus : 2249 ha\n- conifères : 977 ha\n- mixtes, autres : 690 ha\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n128 ha\nEn pourcentage :\n- de la forêt : 3.27 %\n- des feuillus : 1.95 %\n- des conifères : 6.86 %\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n18 ha par an\nEn pourcentage :\n- de la forêt : 0.47 %\n- des feuillus : 0.28 %\n- des conifères : 0.99 %"
   },
   {
     "objectID": "87064.html#et-si-on-continuait-à-ce-rythme",
@@ -82,13 +75,6 @@
     "title": "Eymoutiers",
     "section": "Et si on continuait à ce rythme ?",
     "text": "Et si on continuait à ce rythme ?"
-  },
-  {
-    "objectID": "87064.html#evolution-dans-le-temps",
-    "href": "87064.html#evolution-dans-le-temps",
-    "title": "Eymoutiers",
-    "section": "Evolution dans le temps",
-    "text": "Evolution dans le temps\nA venir."
   },
   {
     "objectID": "87064.html#a-savoir",
@@ -102,21 +88,21 @@
     "href": "87064.html#source-des-données",
     "title": "Eymoutiers",
     "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "19261.html#cartographie-des-perturbations-forestières",
-    "href": "19261.html#cartographie-des-perturbations-forestières",
+    "objectID": "19261.html#cartographie-forestière",
+    "href": "19261.html#cartographie-forestière",
     "title": "Bugeat",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières\n\n\n\n\n\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
+    "section": "Cartographie forestière",
+    "text": "Cartographie forestière\n\n\n\nInteractive Map with Time Series Chart\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPériode de suivi : février 2018 - octobre 2024.\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
   },
   {
     "objectID": "19261.html#la-commune-en-bref",
     "href": "19261.html#la-commune-en-bref",
     "title": "Bugeat",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n3785 ha\nDont :\n- feuillus : 914 ha\n- conifères : 1782 ha\n- mixtes et non-classés : 1089 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n192 ha\nEn pourcentage :\n- de la forêt : 5.08 %\n- des feuillus : 3.51 %\n- des conifères : 7.28 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n29 ha par an\nEn pourcentage :\n- de la forêt : 0.76 %\n- des feuillus : 0.53 %\n- des conifères : 1.09 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n131 années\nSoit 125 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface de la commune\n5946 ha\n\nDont forêt : 3785 ha\nTaux de boisement : 64 %\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n3785 ha\nDont :\n- feuillus : 914 ha\n- conifères : 1782 ha\n- mixtes, autres : 1089 ha\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n192 ha\nEn pourcentage :\n- de la forêt : 5.08 %\n- des feuillus : 3.51 %\n- des conifères : 7.28 %\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n29 ha par an\nEn pourcentage :\n- de la forêt : 0.76 %\n- des feuillus : 0.53 %\n- des conifères : 1.09 %"
   },
   {
     "objectID": "19261.html#et-si-on-continuait-à-ce-rythme",
@@ -124,13 +110,6 @@
     "title": "Bugeat",
     "section": "Et si on continuait à ce rythme ?",
     "text": "Et si on continuait à ce rythme ?"
-  },
-  {
-    "objectID": "19261.html#evolution-dans-le-temps",
-    "href": "19261.html#evolution-dans-le-temps",
-    "title": "Bugeat",
-    "section": "Evolution dans le temps",
-    "text": "Evolution dans le temps\nA venir."
   },
   {
     "objectID": "19261.html#a-savoir",
@@ -144,21 +123,21 @@
     "href": "19261.html#source-des-données",
     "title": "Bugeat",
     "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "19136.html#cartographie-des-perturbations-forestières",
-    "href": "19136.html#cartographie-des-perturbations-forestières",
+    "objectID": "19136.html#cartographie-forestière",
+    "href": "19136.html#cartographie-forestière",
     "title": "Meymac",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières\n\n\n\n\n\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
+    "section": "Cartographie forestière",
+    "text": "Cartographie forestière\n\n\n\nInteractive Map with Time Series Chart\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPériode de suivi : février 2018 - octobre 2024.\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
   },
   {
     "objectID": "19136.html#la-commune-en-bref",
     "href": "19136.html#la-commune-en-bref",
     "title": "Meymac",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n5544 ha\nDont :\n- feuillus : 532 ha\n- conifères : 3029 ha\n- mixtes et non-classés : 1983 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n357 ha\nEn pourcentage :\n- de la forêt : 6.43 %\n- des feuillus : 8.24 %\n- des conifères : 8.06 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n53 ha par an\nEn pourcentage :\n- de la forêt : 0.96 %\n- des feuillus : 1.24 %\n- des conifères : 1.21 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n104 années\nSoit 97 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface de la commune\n8729 ha\n\nDont forêt : 5544 ha\nTaux de boisement : 64 %\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n5544 ha\nDont :\n- feuillus : 532 ha\n- conifères : 3029 ha\n- mixtes, autres : 1983 ha\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n357 ha\nEn pourcentage :\n- de la forêt : 6.43 %\n- des feuillus : 8.24 %\n- des conifères : 8.06 %\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n53 ha par an\nEn pourcentage :\n- de la forêt : 0.96 %\n- des feuillus : 1.24 %\n- des conifères : 1.21 %"
   },
   {
     "objectID": "19136.html#et-si-on-continuait-à-ce-rythme",
@@ -166,13 +145,6 @@
     "title": "Meymac",
     "section": "Et si on continuait à ce rythme ?",
     "text": "Et si on continuait à ce rythme ?"
-  },
-  {
-    "objectID": "19136.html#evolution-dans-le-temps",
-    "href": "19136.html#evolution-dans-le-temps",
-    "title": "Meymac",
-    "section": "Evolution dans le temps",
-    "text": "Evolution dans le temps\nA venir."
   },
   {
     "objectID": "19136.html#a-savoir",
@@ -186,21 +158,21 @@
     "href": "19136.html#source-des-données",
     "title": "Meymac",
     "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "63263.html#cartographie-des-perturbations-forestières",
-    "href": "63263.html#cartographie-des-perturbations-forestières",
+    "objectID": "63263.html#cartographie-forestière",
+    "href": "63263.html#cartographie-forestière",
     "title": "Orcines",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières\n\n\n\n\n\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
+    "section": "Cartographie forestière",
+    "text": "Cartographie forestière\n\n\n\nInteractive Map with Time Series Chart\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPériode de suivi : mars 2018 - octobre 2024.\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
   },
   {
     "objectID": "63263.html#la-commune-en-bref",
     "href": "63263.html#la-commune-en-bref",
     "title": "Orcines",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n2593 ha\nDont :\n- feuillus : 1581 ha\n- conifères : 621 ha\n- mixtes et non-classés : 391 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n40 ha\nEn pourcentage :\n- de la forêt : 1.53 %\n- des feuillus : 1.74 %\n- des conifères : 0.78 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n6 ha par an\nEn pourcentage :\n- de la forêt : 0.23 %\n- des feuillus : 0.26 %\n- des conifères : 0.12 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n432 années\nSoit 425 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface de la commune\n4282 ha\n\nDont forêt : 2593 ha\nTaux de boisement : 61 %\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n2593 ha\nDont :\n- feuillus : 1581 ha\n- conifères : 621 ha\n- mixtes, autres : 391 ha\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n40 ha\nEn pourcentage :\n- de la forêt : 1.53 %\n- des feuillus : 1.74 %\n- des conifères : 0.78 %\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n6 ha par an\nEn pourcentage :\n- de la forêt : 0.23 %\n- des feuillus : 0.26 %\n- des conifères : 0.12 %"
   },
   {
     "objectID": "63263.html#et-si-on-continuait-à-ce-rythme",
@@ -208,13 +180,6 @@
     "title": "Orcines",
     "section": "Et si on continuait à ce rythme ?",
     "text": "Et si on continuait à ce rythme ?"
-  },
-  {
-    "objectID": "63263.html#evolution-dans-le-temps",
-    "href": "63263.html#evolution-dans-le-temps",
-    "title": "Orcines",
-    "section": "Evolution dans le temps",
-    "text": "Evolution dans le temps\nA venir."
   },
   {
     "objectID": "63263.html#a-savoir",
@@ -228,21 +193,21 @@
     "href": "63263.html#source-des-données",
     "title": "Orcines",
     "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "87122.html#cartographie-des-perturbations-forestières",
-    "href": "87122.html#cartographie-des-perturbations-forestières",
+    "objectID": "87122.html#cartographie-forestière",
+    "href": "87122.html#cartographie-forestière",
     "title": "Razès",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières\n\n\n\n\n\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
+    "section": "Cartographie forestière",
+    "text": "Cartographie forestière\n\n\n\nInteractive Map with Time Series Chart\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPériode de suivi : novembre 2017 - octobre 2024.\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
   },
   {
     "objectID": "87122.html#la-commune-en-bref",
     "href": "87122.html#la-commune-en-bref",
     "title": "Razès",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1515 ha\nDont :\n- feuillus : 1122 ha\n- conifères : 220 ha\n- mixtes et non-classés : 174 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n23 ha\nEn pourcentage :\n- de la forêt : 1.52 %\n- des feuillus : 0.9 %\n- des conifères : 5.07 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n3 ha par an\nEn pourcentage :\n- de la forêt : 0.22 %\n- des feuillus : 0.13 %\n- des conifères : 0.73 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n456 années\nSoit 449 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface de la commune\n2525 ha\n\nDont forêt : 1515 ha\nTaux de boisement : 60 %\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n1515 ha\nDont :\n- feuillus : 1122 ha\n- conifères : 220 ha\n- mixtes, autres : 174 ha\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n23 ha\nEn pourcentage :\n- de la forêt : 1.52 %\n- des feuillus : 0.9 %\n- des conifères : 5.07 %\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n3 ha par an\nEn pourcentage :\n- de la forêt : 0.22 %\n- des feuillus : 0.13 %\n- des conifères : 0.73 %"
   },
   {
     "objectID": "87122.html#et-si-on-continuait-à-ce-rythme",
@@ -250,13 +215,6 @@
     "title": "Razès",
     "section": "Et si on continuait à ce rythme ?",
     "text": "Et si on continuait à ce rythme ?"
-  },
-  {
-    "objectID": "87122.html#evolution-dans-le-temps",
-    "href": "87122.html#evolution-dans-le-temps",
-    "title": "Razès",
-    "section": "Evolution dans le temps",
-    "text": "Evolution dans le temps\nA venir."
   },
   {
     "objectID": "87122.html#a-savoir",
@@ -270,21 +228,21 @@
     "href": "87122.html#source-des-données",
     "title": "Razès",
     "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "87183.html#cartographie-des-perturbations-forestières",
-    "href": "87183.html#cartographie-des-perturbations-forestières",
+    "objectID": "87183.html#cartographie-forestière",
+    "href": "87183.html#cartographie-forestière",
     "title": "Saint-Sylvestre",
-    "section": "Cartographie des perturbations forestières",
-    "text": "Cartographie des perturbations forestières\n\n\n\n\n\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
+    "section": "Cartographie forestière",
+    "text": "Cartographie forestière\n\n\n\nInteractive Map with Time Series Chart\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPériode de suivi : novembre 2017 - octobre 2024.\nCliquez sur une zone forestière pour obtenir plus d’informations.\nLes perturbations sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente.\nElles sont principalement expliquées par des coupes rases."
   },
   {
     "objectID": "87183.html#la-commune-en-bref",
     "href": "87183.html#la-commune-en-bref",
     "title": "Saint-Sylvestre",
     "section": "La commune en bref",
-    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n2263 ha\nDont :\n- feuillus : 1692 ha\n- conifères : 221 ha\n- mixtes et non-classés : 349 ha\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n64 ha\nEn pourcentage :\n- de la forêt : 2.84 %\n- des feuillus : 2.43 %\n- des conifères : 9.71 %\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n9 ha par an\nEn pourcentage :\n- de la forêt : 0.41 %\n- des feuillus : 0.35 %\n- des conifères : 1.4 %\n\n\n\n\n\n\n\n\n\n\n\n\nDurée estimée du cycle de la forêt\n244 années\nSoit 237 restantes !\nEspérance de vie d'un chêne : &gt; 500 ans."
+    "text": "La commune en bref\n\n\n\n\n\n\n\n\n\nSurface de la commune\n3130 ha\n\nDont forêt : 2263 ha\nTaux de boisement : 72 %\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface totale de forêt\n2263 ha\nDont :\n- feuillus : 1692 ha\n- conifères : 221 ha\n- mixtes, autres : 349 ha\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée depuis 2018\n64 ha\nEn pourcentage :\n- de la forêt : 2.84 %\n- des feuillus : 2.43 %\n- des conifères : 9.71 %\n\n\n\n\n\n\n\n\n\n\n\n\nSurface de forêt rasée par an\n9 ha par an\nEn pourcentage :\n- de la forêt : 0.41 %\n- des feuillus : 0.35 %\n- des conifères : 1.4 %"
   },
   {
     "objectID": "87183.html#et-si-on-continuait-à-ce-rythme",
@@ -292,13 +250,6 @@
     "title": "Saint-Sylvestre",
     "section": "Et si on continuait à ce rythme ?",
     "text": "Et si on continuait à ce rythme ?"
-  },
-  {
-    "objectID": "87183.html#evolution-dans-le-temps",
-    "href": "87183.html#evolution-dans-le-temps",
-    "title": "Saint-Sylvestre",
-    "section": "Evolution dans le temps",
-    "text": "Evolution dans le temps\nA venir."
   },
   {
     "objectID": "87183.html#a-savoir",
@@ -312,7 +263,7 @@
     "href": "87183.html#source-des-données",
     "title": "Saint-Sylvestre",
     "section": "Source des données",
-    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+    "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
     "objectID": "details.html",
