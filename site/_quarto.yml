@@ -31,6 +31,9 @@ format:
       - custom.scss
     toc: false
     minify: true
+  
+resources:
+  - "communes_results/*"
 
 language: 
   search-text-placeholder: "Rechercher une commune"
