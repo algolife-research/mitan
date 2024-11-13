@@ -4,7 +4,7 @@
 \alias{get_cr_mask}
 \title{Generate Change Region Mask Based on NDVI Difference Threshold}
 \usage{
-get_cr_mask(ndvi_diff, diff_threshold = -0.5, min_pixels = 20)
+get_cr_mask(ndvi_diff, diff_threshold = -0.45, min_pixels = 20)
 }
 \arguments{
 \item{ndvi_diff}{terra::SpatRaster. Raster containing NDVI difference values.}
