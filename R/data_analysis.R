@@ -127,7 +127,7 @@ get_ndvi_diff <- function(
 #' change_mask <- get_cr_mask(ndvi_diff, diff_threshold = -0.5, min_pixels = 20)
 #' }
 #' @export
-get_cr_mask <- function(ndvi_diff, diff_threshold = -0.5, min_pixels = 20) {
+get_cr_mask <- function(ndvi_diff, diff_threshold = -0.45, min_pixels = 20) {
   
   cr_mask <- terra::ifel(ndvi_diff < diff_threshold, 1, NA)
   
@@ -139,7 +139,9 @@ get_cr_mask <- function(ndvi_diff, diff_threshold = -0.5, min_pixels = 20) {
   
   dts <- as.Date(paste0(gsub("X", "", names(cr_mask_clean)), ".15"), format = "%Y.%m.%d")
   
-  cr_mask_clean_merged_y <- terra::tapp(cr_mask_clean, format(dts, "%Y"), mean, na.rm = TRUE)
+  # cr_mask_clean_merged_y <- terra::tapp(cr_mask_clean, format(dts, "%Y"), mean, na.rm = TRUE)
+  
+  cr_mask_clean_merged_ym <- terra::tapp(cr_mask_clean, format(dts, "%Y.%m"), mean, na.rm = TRUE)
   cr_mask_clean_merged <- terra::mean(cr_mask_clean, na.rm = TRUE)
   
   ## Remove small patches
@@ -149,7 +151,7 @@ get_cr_mask <- function(ndvi_diff, diff_threshold = -0.5, min_pixels = 20) {
   mask_large_clusters <- terra::`%in%`(clusters, large_clusters)
   
   cr_mask_clean_merged_filtered <- terra::mask(
-    c(cr_mask_clean_merged, cr_mask_clean_merged_y),
+    c(cr_mask_clean_merged, cr_mask_clean_merged_ym),
     mask_large_clusters,
     maskvalue = 0,
     updatevalue = NA
@@ -191,19 +193,18 @@ postprocess_cr <- function(cr_mask, min_area = 1000) {
     layer_polygons_filled$dr[idx] <- paste0(layer_polygons_filled$dr[idx], "", layer_name)
   }
   
-  layer_polygons_proj <- terra::project(layer_polygons_filled, "EPSG:32632")
+  polygon_areas <- terra::expanse(layer_polygons_filled, unit = "m")
   
-  polygon_areas <- terra::expanse(layer_polygons_proj, unit = "m")
-  
-  polygon_centroids <- terra::centroids(layer_polygons_proj)
+  polygon_centroids <- terra::centroids(layer_polygons_filled)
   centroid_coords <- terra::crds(polygon_centroids)  # Extract coordinates as matrix
   
-  layer_polygons_proj <- layer_polygons_proj[polygon_areas > min_area, ]
-  layer_polygons_proj$area_m2 <- polygon_areas[polygon_areas > min_area]
-  layer_polygons_proj$centroid_x <- centroid_coords[polygon_areas > min_area, 1]
-  layer_polygons_proj$centroid_y <- centroid_coords[polygon_areas > min_area, 2]
+  idx <- polygon_areas > min_area
+  layer_polygons_filled <- layer_polygons_filled[idx, ]
+  layer_polygons_filled$area_m2 <- polygon_areas[idx]
+  layer_polygons_filled$centroid_x <- centroid_coords[idx, 1]
+  layer_polygons_filled$centroid_y <- centroid_coords[idx, 2]
   
-  df_tmp <- do.call(rbind, lapply(strsplit(gsub("NAX", "", layer_polygons_proj$dr), "X"), function(x) {
+  df_tmp <- do.call(rbind, lapply(strsplit(gsub("NAX", "", layer_polygons_filled$dr), "X"), function(x) {
     dates <- as.Date(paste0(x, ".01"), format = "%Y.%m.%d")
     min_date <- min(dates)
     max_date <- max(dates)
@@ -217,9 +218,9 @@ postprocess_cr <- function(cr_mask, min_area = 1000) {
     )
   }))
   
-  layer_polygons_proj <- cbind(layer_polygons_proj, df_tmp)
+  layer_polygons_filled <- cbind(layer_polygons_filled, df_tmp)
   
-  return(layer_polygons_proj)
+  return(layer_polygons_filled)
 }
 
 
@@ -336,3 +337,81 @@ get_leaflet_map <- function(
   
 }
 
+#' Update or append CSV
+#' @export
+update_or_append_csv <- function(new_data, file_path) {
+  if (file.exists(file_path)) {
+    existing_data <- read.csv(file_path, stringsAsFactors = FALSE)
+    if (!"comm_code" %in% colnames(existing_data)) {
+      stop("The existing CSV does not have a 'comm_code' column.")
+    }
+    new_data$comm_code <- as.numeric(new_data$comm_code)
+    updated_data <- existing_data %>%
+      filter(!(comm_code %in% new_data$comm_code )) %>%  
+      bind_rows(new_data)
+    write.csv(updated_data, file_path, row.names = FALSE, quote = FALSE)
+  } else {
+    write.csv(new_data, file_path, row.names = FALSE, quote = FALSE)
+  }
+}
+
+#' get_summary_stats
+#' @export
+get_summary_stats <- function(cr_mask_pr, comm_code) {
+  
+  res_elev <- get_elevation_open(lat = cr_mask_pr$centroid_y, lon = cr_mask_pr$centroid_x)
+  cr_mask_pr$altitude = res_elev
+  
+  surface_comm <- get_surface_commune(comm_id)
+  taux_boisement <- sum(bd_shp$area)/1e4 / surface_comm
+  
+  dts_suivi <- paste0(gsub("X", "", names(ndvi_diff)), ".15") %>%
+    as.Date(format = "%Y.%m.%d")
+  
+  Sys.setlocale("LC_TIME", "fr_FR.UTF-8")
+  rng <- format(range(dts_suivi), "%B %Y")
+  
+  duree_suivi_y <- diff(range(dts_suivi)) / 365
+  
+  df_cr <- tibble(cr_mask_pr) %>%
+    select(-geometry) %>%
+    group_by(Type) %>%
+    summarise(area = sum(area_m2) / 1e4)
+  
+  df_ft <- tibble(bd_shp) %>%
+    select(-geometry) %>%
+    group_by(Type) %>%
+    summarise(area = sum(area) / 1e4)
+  
+  df_out <- tibble(
+    comm_code = as.character(comm_code),
+    debut_suivi = rng[1],
+    fin_suivi = rng[2],
+    surface_comm = surface_comm,
+    taux_boisement = taux_boisement,
+    suivi_y = as.numeric(duree_suivi_y),
+    F_area = sum(df_ft$area),
+    F_area_fe = df_ft$area[df_ft$Type == "Feuillus"],
+    F_area_co = df_ft$area[df_ft$Type == "Conifères"],
+    F_area_au = df_ft$area[df_ft$Type == "Autres / Mixtes"],
+    CR_area = sum(df_cr$area),
+    CR_area_fe = df_cr$area[df_cr$Type == "Feuillus"],
+    CR_area_co = df_cr$area[df_cr$Type == "Conifères"],
+    CR_area_au = df_cr$area[df_cr$Type == "Autres / Mixtes"],
+  ) %>%
+    mutate(
+      CR_pc = 100 * CR_area / F_area,
+      CR_pc_fe = 100 * CR_area_fe / F_area_fe,
+      CR_pc_co = 100 * CR_area_co / F_area_co,
+      CR_pc_au = 100 * CR_area_au / F_area_au,
+      CR_pc_py = CR_pc / suivi_y,
+      CR_pc_py_fe = CR_pc_fe / suivi_y,
+      CR_pc_py_co = CR_pc_co / suivi_y,
+      CR_pc_py_au = CR_pc_au / suivi_y,
+      CR_area_py = CR_area / suivi_y,
+      cycle_y = 100 / CR_pc_py,
+      time_left = cycle_y - suivi_y
+    )
+  
+  return(df_out)
+}
