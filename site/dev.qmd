@@ -22,6 +22,8 @@ library(bsicons)
 map <- readRDS("./communes_results/87153_map.rds") 
 df_cr <- read.csv("./communes_results/comm_summary_stats.csv", header = TRUE) %>%
   filter(comm_code == "87153")
+df_cr_y <- read.csv("./communes_results/comm_summary_stats_year.csv", header = TRUE) %>%
+  filter(comm_code == "87153")
 ```
 
 
@@ -355,6 +357,43 @@ layout_column_wrap(
 
 )
 ```
+
+```{r}
+df_per_year <- df_cr_y %>%
+  mutate(year = as.factor(year)) %>%
+  mutate(surface = round(surface, 3))
+
+# Create interactive stacked bar chart with rounded edges
+fig <- plot_ly(height = 250,
+               df_per_year, 
+               x = ~year, 
+               y = ~surface, 
+               color = ~Type, 
+               type = 'bar', 
+               text = ~paste("Surface :", surface, "ha"),
+               textposition = "none",
+               hoverinfo = 'text',
+               colors = c("forestgreen", "chocolate", "steelblue"),
+               marker = list(line = list(width = 1, color = "white"),
+                             opacity = 0.9,
+                             pattern = list(shape = ""))
+               ) %>% 
+  layout(
+    title = list(text = "🌿 Surface de forêt coupée par an", x = 0.5, font = list(size = 18)),
+    xaxis = list(title = "Année", tickangle = -45, showgrid = FALSE, zeroline = FALSE),
+    yaxis = list(title = "Surface (hectares)", showgrid = FALSE, zeroline = FALSE),
+    barmode = "relative",  # Ensures a stacked look
+    plot_bgcolor = "rgba(0,0,0,0)",  # Transparent background
+    paper_bgcolor = "rgba(0,0,0,0)",  # Transparent paper
+    showlegend = TRUE
+  ) %>%
+  config(displayModeBar = FALSE)
+
+# Display the figure
+br()
+fig
+```
+
 
 
 ## Et si on continuait à ce rythme ?
