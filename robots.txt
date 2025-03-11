@@ -1,1 +1,1 @@
-Sitemap: https://github.com/algolife-research/mitan/sitemap.xml
+Sitemap: https://algolife-research.github.io/mitan/sitemap.xml
