@@ -196,27 +196,32 @@ fetch("./communes_results/merged_commune.geojson") // Change to actual GeoJSON p
             style: {
                 color: "#f79873",
                 weight: 2,
-                fillOpacity: 0.
+                fillOpacity: 0
             },
             onEachFeature: function (feature, layer) {
-                var popup = L.popup().setContent(feature.properties.NOM || "Unknown");
-                
-                // Highlight effect on hover and show text
-                layer.on('mouseover', function (e) {
-                    layer.setStyle({ weight: 3, fillOpacity: 1 });
-                    popup.setLatLng(e.latlng).openOn(map);
-                });
-                layer.on('mouseout', function () {
-                    layer.setStyle({ weight: 2, fillOpacity: 0. });
-                    map.closePopup();
-                });
-                
-                // Click event to redirect
-                layer.on('click', function () {
-                    if (feature.properties && feature.properties.ID) {
-                        window.location.href = `./${feature.properties.INSEE_COM}.html`;
-                    }
-                });
+                if (feature.properties) {
+                    var communeName = feature.properties.NOM || "Unknown";
+                    var communeID = feature.properties.INSEE_COM || "";
+                    var linkHTML = communeID ? `<br><a href="./${communeID}.html" target="_blank">Consulter la page</a>` : "";
+                    
+                    var popupContent = `<strong>${communeName}</strong>${linkHTML}`;
+                    
+                    layer.bindPopup(popupContent);
+
+                    // Highlight effect on hover
+                    layer.on('mouseover', function (e) {
+                        layer.setStyle({ weight: 3, fillOpacity: 0.5 });
+                    });
+
+                    layer.on('mouseout', function () {
+                        layer.setStyle({ weight: 2, fillOpacity: 0 });
+                    });
+
+                    // Click event to show popup
+                    layer.on('click', function (e) {
+                        layer.openPopup();
+                    });
+                }
             }
         }).addTo(map);
         
@@ -224,7 +229,6 @@ fetch("./communes_results/merged_commune.geojson") // Change to actual GeoJSON p
         map.fitBounds(geojsonLayer.getBounds());
     })
     .catch(error => console.error('Error loading GeoJSON:', error));
-
 </script>
 
 
