@@ -375,15 +375,21 @@ get_summary_stats <- function(cr_mask_pr, comm_code, ndvi_diff) {
   
   duree_suivi_y <- diff(range(dts_suivi)) / 365
   
+  all_types <- c("Feuillus", "Conifères", "Autres / Mixtes")
+  
   df_cr <- tibble(cr_mask_pr) %>%
     select(-geometry) %>%
     group_by(Type) %>%
-    summarise(area = sum(area_m2) / 1e4)
+    summarise(area = sum(area_m2) / 1e4) %>%
+    right_join(tibble(Type = all_types), by = "Type") %>% 
+    mutate(area = tidyr::replace_na(area, 0)) 
   
   df_ft <- tibble(bd_shp) %>%
     select(-geometry) %>%
     group_by(Type) %>%
-    summarise(area = sum(area) / 1e4)
+    summarise(area = sum(area) / 1e4) %>%
+    right_join(tibble(Type = all_types), by = "Type") %>% 
+    mutate(area = tidyr::replace_na(area, 0))
   
   df_out <- tibble(
     comm_code = as.character(comm_code),
