@@ -1,5 +1,5 @@
 library(mitan)
-
+library(dplyr)
 comms <- read.csv("./site/comm_list.csv", header = TRUE)
 # comms <- read.csv("./data/communes_pnr_millevaches.csv", header = TRUE)
 # comm_ids <- c("87183", "87153", "87122", "87064", "63263", "19261", "19136")
@@ -11,7 +11,7 @@ for(i in seq_len(nrow(comms))) {
 
   communes_ndvi_dir <- "./data/communes_ndvi"##"communes_ndvi"
   communes_shp_dir <- "./site/communes_results"#"communes_shp"
-  sentinel_data_dir <- file.path(data_dir, communes_ndvi_dir, comm_id)
+  sentinel_data_dir <- file.path(communes_ndvi_dir, comm_id)
   
   path <- file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
   comm <- sf::read_sf(path)
