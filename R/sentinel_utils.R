@@ -68,11 +68,13 @@ download_comm_ndvi <- function(
   message("Getting auth token...")
   tk <- get_token(client_id, client_secret)
   
+  if(is.null(tk)) stop("Authentication issue.")
+  
   message("Getting dates...")
   dates <- request_sentinel_dates(
     min_date = min_date,
     max_date = max_date,
-    comm_geom = geom,
+    comm_geom = comm_geom,
     auth_token = tk
   )
   
@@ -81,8 +83,34 @@ download_comm_ndvi <- function(
   bbox <- sf::st_bbox(comm_geom)
   bbox2 <- transform_bbox(bbox)
   
-  for(date in dates) {
-    message(date)
+  library(foreach)
+  library(doParallel)
+  
+  # Detect number of available cores
+  num_cores <- detectCores() - 1  # Leave one core free
+  
+  # Register parallel backend
+  cl <- makeCluster(num_cores)
+  registerDoParallel(cl)
+  
+  message(length(dates))
+  
+  existing_dates <- list.files(file.path(output_dir))
+  # dates
+  # dates <- setdiff(paste0(gsub("-|:", "", dates), ".tif"), existing_dates)
+  formatted_dates <- paste0(gsub("[-:]", "", dates), ".tif")
+  idx <- which(!(formatted_dates %in% existing_dates))
+  
+  dates <- dates[idx]
+  if(length(dates) == 0) {
+    message("No new dates to be downloaded.")
+  } else {
+    message(dates)
+
+  foreach(date = dates, .packages = c("mitan", "jsonlite", "httr")) %dopar% {
+  # for(date in dates) {
+    print(paste("Processing:", date))
+    
     response <- ndvi_request(
       bbox = as.vector(bbox),
       width = bbox2$width / 10,
@@ -97,7 +125,12 @@ download_comm_ndvi <- function(
       response,
       file.path(output_dir)
     )
+    
+    Sys.sleep(runif(1, 5, 20))
+    
   }
+  }
+  stopCluster(cl)
   
   return(NULL)
 }
