@@ -2,94 +2,225 @@
 
 library(mitan)
 library(dplyr)
-comm_id <- 87183
-dptt <- "87"
+library(sf)
 
-data_dir <- "./data"
-communes_ndvi_dir <- "communes_ndvi"
-communes_shp_dir <- "communes_shp"
-sentinel_data_dir <- file.path(data_dir, communes_ndvi_dir, comm_id)
+# comms <- read.csv("./data/communes_pnr_millevaches.csv", header = TRUE)
+comms <- read.csv("./site/comm_list.csv", header = TRUE)
+# comms <- comms[4, ]
 
-bdforet_path <- file.path(data_dir, "dptt_bdforetv2", dptt, "FORMATION_VEGETALE.shp")
-
-download_data <- T
-
-### First time for a community, if doesn't exist
-if(download_data) {
-  all_comm_path <- "./data/france_commune-frmetdrom/COMMUNE_FRMETDROM.shp"
-  comm <- sf::read_sf(all_comm_path)
-  id <- comm$INSEE_COM == comm_id
-  sf::write_sf(
-    comm[id, ],
-    append = FALSE,
-    dsn = file.path(data_dir, communes_shp_dir, paste0(comm_id, ".shp"))
-  )
-}
-
-path <- file.path(data_dir, communes_shp_dir, paste0(comm_id, ".shp"))
-comm <- sf::read_sf(path)
-geom <- comm$geometry
-
-
-### IF no sentinel data
-if(download_data) {
-  download_comm_ndvi(
-      comm_geom = geom,
-      min_date = "2016-01-01",
-      max_date = "2025-01-01",
-      output_dir = sentinel_data_dir,
-      client_id,
-      client_secret
-  )
-}
-
-if(download_data) {
-  bd <- extract_comm_from_bdforet(
-    bd_path = bdforet_path,
-    comm_geom = geom
-  )
-  bd <- bd[!bd$TFV_G11 %in% c("Lande", "Formation herbacée"), ]
+for(i in 1:nrow(comms)) {
+  print(i)
+  comm_id <- comms[i, 1]
   
-  bd$Type <- case_when(
-    grepl(pattern = "feuillus|peupleraie", bd$TFV_G11, ignore.case = TRUE) ~ "Feuillus",
-    grepl(pattern = "conifères", bd$TFV_G11, ignore.case = TRUE) ~ "Conifères",
-    .default = "Autres / Mixtes"
-  )
-  bd$area <- sf::st_area(bd)
-  sf::st_write(
-    bd,
-    dsn = file.path(data_dir, communes_shp_dir, paste0(comm$INSEE_COM, "_bdforetv2.shp")),
-    dataset_options = "ENCODING=ISO-8859-1"
-  )
-}
+  dptt <- substr(comm_id, 1, 2)
+  communes_ndvi_dir <- "./data/communes_ndvi"
+  communes_shp_dir <- "./site/communes_results"
+  sentinel_data_dir <- file.path(communes_ndvi_dir, comm_id)
+  
+  bdforet_path <- file.path("./data/dptt_bdforetv2", dptt, "FORMATION_VEGETALE.shp")
+  
+  download_data <- TRUE
+  
+  ## First time for a community, if doesn't exist
+  if(download_data) {
+    all_comm_path <- "./data/france_commune-frmetdrom/COMMUNE_FRMETDROM.shp"
+    comm <- sf::read_sf(all_comm_path)
+    id <- comm$INSEE_COM == comm_id
+    sf::write_sf(
+      comm[id, ],
+      append = FALSE,
+      dsn = file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
+    )
+  }
 
-ndvi.y <- aggregate_ndvi(
-  data_dir = sentinel_data_dir,
-  bd_foret_shp = bd,
-  filename = file.path(
-    data_dir,
+  ### BD Forets
+  path <- file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
+  comm <- sf::read_sf(path)
+  comm <- comm[!duplicated(comm), ]
+  
+  geom <- comm$geometry
+  
+  if(download_data) {
+    bd <- extract_comm_from_bdforet(
+      bd_path = bdforet_path,
+      comm_geom = geom
+    )
+    bd <- bd[!bd$TFV_G11 %in% c("Lande", "Formation herbacée"), ]
+    
+    bd$Type <- case_when(
+      grepl(pattern = "feuillus|peupleraie", bd$TFV_G11, ignore.case = TRUE) ~ "Feuillus",
+      grepl(pattern = "conifères", bd$TFV_G11, ignore.case = TRUE) ~ "Conifères",
+      .default = "Autres / Mixtes"
+    )
+    bd <- bd[sf::st_is_valid(bd), ]
+    bd$area <- sf::st_area(bd)
+    sf::st_write(
+      bd,
+      dsn = file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson")),
+      dataset_options = c("ENCODING=ISO-8859-1"), delete_dsn = TRUE, quiet = TRUE
+    )
+  } else {
+    bd <- sf::st_read(dsn = file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson")))
+  }
+
+  ## IF no sentinel data
+  ## Fix parallelisation, iterate until we have everything
+  
+  if(download_data) {
+    message("Downloading data...")
+    download_comm_ndvi(
+        comm_geom = geom,
+        min_date = "2016-01-01",
+        max_date = "2026-01-01",
+        output_dir = sentinel_data_dir,
+        client_id,
+        client_secret
+    )
+  }
+  
+  bd <- sf::st_read(
+    dsn = file.path(
+      communes_shp_dir,
+      paste0(comm$INSEE_COM, "_bdforet.geojson")
+    )
+  )
+  
+  message("Aggregating data...")
+  ndvi.y <- aggregate_ndvi(
+    data_dir = sentinel_data_dir,
+    bd_foret_shp = bd,
+    filename = file.path(
+      communes_ndvi_dir,
+      paste0(comm$INSEE_COM, "_ndvi_agg.tif")
+    )
+  )
+  
+  message("Computing NDVI diff...")
+  ndvi_diff <- mitan::get_ndvi_diff(
+    ndvi.y,
+    n_years_lag = 1,
+    max_difference_days = 15,
+    min_past_ndvi = 0.7
+  )
+  
+  terra::writeRaster(
+    ndvi_diff,
+    file.path(
+      communes_ndvi_dir,
+      paste0(comm$INSEE_COM, "_ndvi_diff.tif")
+    ),
+    overwrite = TRUE,
+    datatype = "FLT4S",
+    gdal = c("COMPRESS=DEFLATE", "PREDICTOR=2", "ZLEVEL=9")
+  )
+  
+  message("Identifying clear-cuts...")
+  cr_mask <- get_cr_mask(
+    ndvi_diff,
+    -0.45,
+    min_pixels = 10
+  )
+  
+  terra::writeRaster(
+    cr_mask,
+    file.path(
+      communes_ndvi_dir,
+      paste0(comm$INSEE_COM, "_cr_mask.tif")
+    ),
+    overwrite = TRUE,
+    datatype = "FLT4S",
+    gdal = c("COMPRESS=DEFLATE", "PREDICTOR=2", "ZLEVEL=9")
+  )
+
+  dptt <- substr(comm_id, 1, 2)
+
+  cr_mask <- terra::rast(file.path(
     communes_ndvi_dir,
-    paste0(comm$INSEE_COM, "_ndvi_agg.tif")
+    paste0(comm_id, "_cr_mask.tif")
+  ))
+  
+  pls <- mitan::postprocess_cr(
+    cr_mask[[-1]],
+    min_area = 1e3
   )
-)
-
-ndvi_diff <- get_ndvi_diff(
-  ndvi.y,
-  n_years_lag = 1,
-  max_difference_days = 15,
-  min_past_ndvi = 0.7
-)
-
-# terra::plot(ndvi_diff)
-
-terra::writeRaster(
-  ndvi_diff, 
-  file.path(
-    data_dir,
+  
+  cr_mask_pr <- sf::st_as_sf(pls)
+  bd_shp <- sf::st_read(dsn = file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson")))
+  
+  cr_mask_pr <- sf::st_transform(cr_mask_pr, sf::st_crs(bd_shp))
+  cr_mask_pr <- sf::st_join(
+    cr_mask_pr,
+    bd_shp[, c("Type", "ESSENCE")],
+    join = sf::st_intersects,
+    largest = TRUE
+  )
+  cr_mask_pr <- cr_mask_pr %>% select(-dr)
+  
+  fp <- file.path(
+    communes_shp_dir,
+    paste0(comm_id, "_cr_mask_pr.geojson")
+  )
+  if(file.exists(fp)) unlink(fp)
+  sf::st_write(
+    cr_mask_pr,
+    fp,
+    append = FALSE
+  )
+  
+  raster_stack <- terra::rast(file.path(
+    communes_ndvi_dir,
+    paste0(comm_id, "_ndvi_agg.tif")
+  ))
+  cr_mask_pr <- sf::st_transform(cr_mask_pr, terra::crs(raster_stack))
+  extracted_data <- exactextractr::exact_extract(raster_stack, cr_mask_pr, fun = "median")
+  extracted_data_with_ids <- bind_cols(cr_mask_pr$patches, extracted_data)
+  
+  fp <- file.path(
+    communes_shp_dir,
+    paste0(comm_id, "_ts.csv")
+  )
+  write.csv(extracted_data_with_ids, fp, row.names = FALSE)
+  
+  dptt <- substr(comm_id, 1, 2)
+  
+  path <- file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
+  comm <- sf::read_sf(path)
+  comm <- comm[!duplicated(comm), ]
+  geom <- comm$geometry
+  
+  bd_shp <- sf::read_sf(
+    file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson"))
+  )
+  
+  ndvi_diff <- terra::rast(file.path(
     communes_ndvi_dir,
     paste0(comm$INSEE_COM, "_ndvi_diff.tif")
-  ),
-  overwrite = TRUE,
-  datatype = "FLT4S",
-  gdal = c("COMPRESS=DEFLATE", "PREDICTOR=2", "ZLEVEL=9")
-)
+  ))
+  
+  cr_mask_pr <- sf::st_read(file.path(
+    communes_shp_dir,
+    paste0(comm$INSEE_COM, "_cr_mask_pr.geojson")
+  ))
+  
+  map <- get_leaflet_map(
+    cr_mask = cr_mask_pr,
+    bd_shp,
+    comm_geom = comm$geometry
+  );map
+  
+  out <- get_summary_stats(cr_mask_pr, comm_code = comm_id, ndvi_diff = ndvi_diff)
+  
+  update_or_append_csv(out, file_path = "./site/communes_results/comm_summary_stats.csv")
+  
+  df_per_year <- cr_mask_pr %>% 
+    as_tibble() %>%
+    select(-geometry) %>%
+    group_by(year, Type) %>% 
+    summarise(surface = sum(area_m2) / 1e4) %>%
+    mutate(comm_code = comm_id) %>% mutate(year = as.numeric(year))
+  
+  update_or_append_csv(df_per_year, file_path = "./site/communes_results/comm_summary_stats_year.csv")
+  
+  saveRDS(map, file = file.path(communes_shp_dir, paste0(comm_id, "_map.rds")))
+  
+}
