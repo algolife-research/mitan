@@ -179,14 +179,15 @@ Interactive Map with Time Series Chart
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"> <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 <div id="map" style="height: 500px;">
 
 </div>
 <script>
-
 // Initialize the map
 var map = L.map('map').setView([37.8, -96], 4);
 
@@ -198,8 +199,8 @@ L.Control.geocoder({
 })
 .on('markgeocode', function(e) {
     var latlng = e.geocode.center;
-    map.setView(latlng, 12); // Zoom to the selected location
-    L.marker(latlng).addTo(map) // Add a marker at the found location
+    map.setView(latlng, 12);
+    L.marker(latlng).addTo(map)
         .bindPopup(e.geocode.name);
 })
 .addTo(map);
@@ -215,7 +216,20 @@ L.tileLayer(
     }
 ).addTo(map);
 
-// Utility functions to load GeoJSON and CSV data
+// Custom Year Selector Control
+L.Control.YearSelector = L.Control.extend({
+    onAdd: function(map) {
+        const div = L.DomUtil.create('div', 'year-selector');
+        div.innerHTML = `
+            <select multiple id="yearSelect" style="width: 200px;">
+            </select>
+        `;
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+    }
+});
+
+// Utility functions
 async function loadGeoJSON(url) {
     const response = await fetch(url);
     return await response.json();
@@ -237,12 +251,21 @@ async function loadCSV(url) {
     return data;
 }
 
-// Utility function to create popup content with chart
+function getUniqueYears(geojsonData) {
+    const years = new Set();
+    geojsonData.features.forEach(feature => {
+        if (feature.properties.year) {
+            years.add(feature.properties.year);
+        }
+    });
+    return Array.from(years).sort();
+}
+
 function createPopupContent(feature) {
-            const patches = feature.properties.patches;
-            const year = feature.properties.year;
-            const start = feature.properties.start;
-            const area_m2 = (feature.properties.area_m2/ 10000).toFixed(2);
+    const patches = feature.properties.patches;
+    const year = feature.properties.year;
+    const start = feature.properties.start;
+    const area_m2 = (feature.properties.area_m2/ 10000).toFixed(2);
     return `
         <div>
             <b>Perturbation Forestière</b><br><br>
@@ -254,11 +277,9 @@ function createPopupContent(feature) {
         <div>
         <canvas id="chart-${patches}" style="width:250px; height:150px;"></canvas>
         </div>
-
     `;
 }
 
-// Utility function to get color based on feature type
 function getColor(type) {
     switch (type) {
         case 'Feuillus': return 'steelblue';
@@ -268,7 +289,6 @@ function getColor(type) {
     }
 }
 
-// Style function for GeoJSON features
 function style(feature) {
     return {
         fillColor: getColor(feature.properties.Type),
@@ -277,7 +297,6 @@ function style(feature) {
     };
 }
 
-// Highlight functions for mouseover
 function highlightFeature(e) {
     e.target.setStyle({
         weight: 1,
@@ -290,15 +309,13 @@ function resetHighlight(e, layer) {
     layer.resetStyle(e.target);
 }
 
-// Load the GeoJSON polygons and CSV data, then add to map
+// Main map setup
 (async function() {
-    // Create custom panes with specific z-indexes
     ['pane1', 'pane2', 'pane3'].forEach((pane, index) => {
         map.createPane(pane);
         map.getPane(pane).style.zIndex = 400 + (index * 100);
     });
 
-    // Load and add AOI layer
     const aoiData = await loadGeoJSON('communes_results/19136_commune.geojson');
     const aoiLayer = L.geoJSON(aoiData, {
         style: {
@@ -310,7 +327,6 @@ function resetHighlight(e, layer) {
     }).addTo(map);
     map.fitBounds(aoiLayer.getBounds());
 
-    // Load and add BDF layer
     const bdfData = await loadGeoJSON('communes_results/19136_bdforet.geojson');
     const bdfLayer = L.geoJSON(bdfData, {
         style: style,
@@ -320,7 +336,6 @@ function resetHighlight(e, layer) {
             const area = (feature.properties.area / 10000).toFixed(2);
             const popupContent = `
                 <b>Zone Forestière</b><br><br>
-                
                 <b>Type :</b> ${tfvG11}<br>
                 <b>Essence :</b> ${essence}<br>
                 <b>Surface (ha) :</b> ${area}<br><br>
@@ -335,11 +350,13 @@ function resetHighlight(e, layer) {
         pane: "pane2"
     }).addTo(map);
 
-    // Load and add CR layer with CSV data integration
+    // CR Layer with Year Filtering
     const geojsonData = await loadGeoJSON('communes_results/19136_cr_mask_pr.geojson');
     const csvData = await loadCSV('communes_results/19136_ts.csv');
+    const availableYears = getUniqueYears(geojsonData);
+    let originalFeatures = geojsonData.features;
 
-    const CR_layer = L.geoJSON(geojsonData, {
+    const CR_layer = L.geoJSON(null, {
         style: {
             color: 'firebrick',
             weight: 1,
@@ -347,7 +364,6 @@ function resetHighlight(e, layer) {
             fillColor: 'firebrick',
             fillOpacity: 0.8
         },
-        
         onEachFeature: (feature, layer) => {
             layer.on({
                 mouseover: (e) => highlightFeature(e),
@@ -386,22 +402,14 @@ function resetHighlight(e, layer) {
                                             unit: 'month'
                                         },
                                         min: minDate,
-                                        title: {
-                                            display: false,
-                                            text: 'Date'
-                                        }
+                                        title: { display: false, text: 'Date' }
                                     },
                                     y: {
                                         type: 'linear',
                                         min: 0,
                                         max: 1,
-                                        ticks: {
-                                            stepSize: 0.2
-                                        },
-                                        title: {
-                                            display: true,
-                                            text: 'Indice'
-                                        }
+                                        ticks: { stepSize: 0.2 },
+                                        title: { display: true, text: 'Indice' }
                                     }
                                 }
                             }
@@ -415,13 +423,38 @@ function resetHighlight(e, layer) {
         pane: "pane3"
     }).addTo(map);
 
-    // Add layer control to toggle layers
+    function updateLayer(selectedYears) {
+        CR_layer.clearLayers();
+        const filteredFeatures = originalFeatures.filter(feature => 
+            selectedYears.length === 0 || selectedYears.includes(feature.properties.year)
+        );
+        CR_layer.addData({
+            type: "FeatureCollection",
+            features: filteredFeatures
+        });
+    }
+
+    const yearControl = new L.Control.YearSelector({ position: 'bottomleft' });
+    yearControl.addTo(map);
+
+    const $yearSelect = $('#yearSelect').select2({
+        placeholder: "Selection des années",
+        data: availableYears.map(year => ({ id: year, text: year })),
+        width: '200px'
+    });
+
+    updateLayer([]);
+
+    $yearSelect.on('change', function(e) {
+        const selectedYears = $(this).val() || [];
+        updateLayer(selectedYears);
+    });
+
     var layerControl = L.control.layers(null, {
         "Perturbations": CR_layer,
         "BDForêt V2": bdfLayer
     }, { collapsed: false }).addTo(map);
-    
-    // Add title "Couches" above the layer control
+
     var layerControlContainer = layerControl.getContainer();
     var title = document.createElement("div");
     title.innerHTML = "<b>Couches</b>";
@@ -429,12 +462,8 @@ function resetHighlight(e, layer) {
     title.style.padding = "0px";
     title.style.fontSize = "12px";
     title.style.backgroundColor = "white";
-    
-    // Insert the title before the layer list
     layerControlContainer.insertBefore(title, layerControlContainer.firstChild);
-    
 
-    // Add legend to map
     const legend = L.control({ position: 'bottomright' });
     legend.onAdd = function() {
         const div = L.DomUtil.create('div', 'info legend');
@@ -443,7 +472,6 @@ function resetHighlight(e, layer) {
         div.style.borderRadius = '5px';
         div.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.2)';
         div.style.border = '1px solid rgba(0, 0, 0, 0.1)';
-
         const types = ['Feuillus', 'Conifères', 'Autres / Mixtes'];
         div.innerHTML = types.map(type =>
             `<i style="background:${getColor(type)}; width: 12px; height: 12px; display: inline-block;"></i> ${type}`
@@ -452,8 +480,22 @@ function resetHighlight(e, layer) {
     };
     legend.addTo(map);
 })();
-
 </script>
+<style>
+.year-selector {
+    background: white;
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 1000;
+}
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #aaa;
+}
+</style>
 
 <hr>
 <ul>
@@ -556,8 +598,8 @@ function resetHighlight(e, layer) {
 <br>
 </div>
 <div class="cell-output-display">
-<div id="htmlwidget-b3d8aa27f529d396e578" style="width:100%;height:241px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b3d8aa27f529d396e578">{"x":{"visdat":{"5f946e2812ac":["function () ","plotlyVisDat"]},"cur_data":"5f946e2812ac","attrs":{"5f946e2812ac":{"x":{},"y":{},"text":{},"textposition":"none","hoverinfo":"text","marker":{"line":{"width":1,"color":"white"},"opacity":0.90000000000000002,"pattern":{"shape":""}},"color":{},"colors":["forestgreen","chocolate","steelblue"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"height":250,"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"🌿 Surface de forêt coupée par an","x":0.5,"font":{"size":18}},"xaxis":{"domain":[0,1],"automargin":true,"title":"Année","tickangle":-45,"showgrid":false,"zeroline":false,"type":"category","categoryorder":"array","categoryarray":["2018","2019","2020","2021","2022","2023","2024"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Surface (hectares)","showgrid":false,"zeroline":false},"barmode":"relative","plot_bgcolor":"rgba(0,0,0,0)","paper_bgcolor":"rgba(0,0,0,0)","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":false},"data":[{"x":["2018","2019","2020","2021","2022","2023","2024"],"y":[6.5469999999999997,6.532,19.009,12.353,6.8390000000000004,10.045999999999999,7.1310000000000002],"text":["Surface : 6.547 ha","Surface : 6.532 ha","Surface : 19.009 ha","Surface : 12.353 ha","Surface : 6.839 ha","Surface : 10.046 ha","Surface : 7.131 ha"],"textposition":["none","none","none","none","none","none","none"],"hoverinfo":["text","text","text","text","text","text","text"],"marker":{"color":"rgba(34,139,34,1)","line":{"color":"white","width":1},"opacity":0.90000000000000002,"pattern":{"shape":""}},"type":"bar","name":"Autres / Mixtes","textfont":{"color":"rgba(34,139,34,1)"},"error_y":{"color":"rgba(34,139,34,1)"},"error_x":{"color":"rgba(34,139,34,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2018","2019","2020","2021","2022","2023","2024"],"y":[21.879000000000001,27.151,23.797999999999998,63.805,72.283000000000001,26.986000000000001,9.0809999999999995],"text":["Surface : 21.879 ha","Surface : 27.151 ha","Surface : 23.798 ha","Surface : 63.805 ha","Surface : 72.283 ha","Surface : 26.986 ha","Surface : 9.081 ha"],"textposition":["none","none","none","none","none","none","none"],"hoverinfo":["text","text","text","text","text","text","text"],"marker":{"color":"rgba(210,105,30,1)","line":{"color":"white","width":1},"opacity":0.90000000000000002,"pattern":{"shape":""}},"type":"bar","name":"Conifères","textfont":{"color":"rgba(210,105,30,1)"},"error_y":{"color":"rgba(210,105,30,1)"},"error_x":{"color":"rgba(210,105,30,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2018","2019","2020","2021","2022","2023","2024"],"y":[0.49099999999999999,2.008,1.8120000000000001,25.038,3.081,10.903,0.50600000000000001],"text":["Surface : 0.491 ha","Surface : 2.008 ha","Surface : 1.812 ha","Surface : 25.038 ha","Surface : 3.081 ha","Surface : 10.903 ha","Surface : 0.506 ha"],"textposition":["none","none","none","none","none","none","none"],"hoverinfo":["text","text","text","text","text","text","text"],"marker":{"color":"rgba(70,130,180,1)","line":{"color":"white","width":1},"opacity":0.90000000000000002,"pattern":{"shape":""}},"type":"bar","name":"Feuillus","textfont":{"color":"rgba(70,130,180,1)"},"error_y":{"color":"rgba(70,130,180,1)"},"error_x":{"color":"rgba(70,130,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-41aeca320ab17b13dfe9" style="width:100%;height:241px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-41aeca320ab17b13dfe9">{"x":{"visdat":{"6be8d902da4":["function () ","plotlyVisDat"]},"cur_data":"6be8d902da4","attrs":{"6be8d902da4":{"x":{},"y":{},"text":{},"textposition":"none","hoverinfo":"text","marker":{"line":{"width":1,"color":"white"},"opacity":0.90000000000000002,"pattern":{"shape":""}},"color":{},"colors":["forestgreen","chocolate","steelblue"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"height":250,"margin":{"b":40,"l":60,"t":25,"r":10},"title":{"text":"🌿 Surface de forêt coupée par an","x":0.5,"font":{"size":18}},"xaxis":{"domain":[0,1],"automargin":true,"title":"Année","tickangle":-45,"showgrid":false,"zeroline":false,"type":"category","categoryorder":"array","categoryarray":["2018","2019","2020","2021","2022","2023","2024"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Surface (hectares)","showgrid":false,"zeroline":false},"barmode":"relative","plot_bgcolor":"rgba(0,0,0,0)","paper_bgcolor":"rgba(0,0,0,0)","showlegend":true,"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":false},"data":[{"x":["2018","2019","2020","2021","2022","2023","2024"],"y":[6.5469999999999997,6.532,19.009,12.353,6.8390000000000004,10.045999999999999,7.1310000000000002],"text":["Surface : 6.547 ha","Surface : 6.532 ha","Surface : 19.009 ha","Surface : 12.353 ha","Surface : 6.839 ha","Surface : 10.046 ha","Surface : 7.131 ha"],"textposition":["none","none","none","none","none","none","none"],"hoverinfo":["text","text","text","text","text","text","text"],"marker":{"color":"rgba(34,139,34,1)","line":{"color":"white","width":1},"opacity":0.90000000000000002,"pattern":{"shape":""}},"type":"bar","name":"Autres / Mixtes","textfont":{"color":"rgba(34,139,34,1)"},"error_y":{"color":"rgba(34,139,34,1)"},"error_x":{"color":"rgba(34,139,34,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2018","2019","2020","2021","2022","2023","2024"],"y":[21.879000000000001,27.151,23.797999999999998,63.805,72.283000000000001,26.986000000000001,9.0809999999999995],"text":["Surface : 21.879 ha","Surface : 27.151 ha","Surface : 23.798 ha","Surface : 63.805 ha","Surface : 72.283 ha","Surface : 26.986 ha","Surface : 9.081 ha"],"textposition":["none","none","none","none","none","none","none"],"hoverinfo":["text","text","text","text","text","text","text"],"marker":{"color":"rgba(210,105,30,1)","line":{"color":"white","width":1},"opacity":0.90000000000000002,"pattern":{"shape":""}},"type":"bar","name":"Conifères","textfont":{"color":"rgba(210,105,30,1)"},"error_y":{"color":"rgba(210,105,30,1)"},"error_x":{"color":"rgba(210,105,30,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["2018","2019","2020","2021","2022","2023","2024"],"y":[0.49099999999999999,2.008,1.8120000000000001,25.038,3.081,10.903,0.50600000000000001],"text":["Surface : 0.491 ha","Surface : 2.008 ha","Surface : 1.812 ha","Surface : 25.038 ha","Surface : 3.081 ha","Surface : 10.903 ha","Surface : 0.506 ha"],"textposition":["none","none","none","none","none","none","none"],"hoverinfo":["text","text","text","text","text","text","text"],"marker":{"color":"rgba(70,130,180,1)","line":{"color":"white","width":1},"opacity":0.90000000000000002,"pattern":{"shape":""}},"type":"bar","name":"Feuillus","textfont":{"color":"rgba(70,130,180,1)"},"error_y":{"color":"rgba(70,130,180,1)"},"error_x":{"color":"rgba(70,130,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -565,8 +607,8 @@ function resetHighlight(e, layer) {
 <h2 class="anchored" data-anchor-id="et-si-on-continuait-à-ce-rythme">Et si on continuait à ce rythme ?</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div id="htmlwidget-3ffc312fcfc491e69bb6" style="width:100%;height:174px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3ffc312fcfc491e69bb6">{"x":{"visdat":{"5f9425216859":["function () ","plotlyVisDat"],"5f94d0c513":["function () ","data"],"5f94170c2da6":["function () ","data"],"5f94143e7172":["function () ","data"]},"cur_data":"5f94143e7172","attrs":{"5f94d0c513":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"bar","orientation":"h","marker":{"color":"#b7d693"},"name":"Jeune Forêt (+ de 40 ans)","hovertemplate":{},"inherit":true},"5f94170c2da6":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"bar","orientation":"h","marker":{"color":"#ff0f0f","pattern":{"bgcolor":"#b7d693","shape":"x","solidity":0.20000000000000001,"size":4}},"name":"Forêt rasée","hovertemplate":{},"inherit":true},"5f94143e7172":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"bar","orientation":"h","marker":{"color":"#6a994e"},"name":"Forêt vivante","hovertemplate":{},"inherit":true}},"layout":{"width":"100%","height":150,"margin":{"b":40,"l":60,"t":25,"r":10},"barmode":"stack","xaxis":{"domain":[0,1],"automargin":true,"title":"","showticklabels":false,"zeroline":false},"yaxis":{"domain":[0,1],"automargin":true,"title":"","categoryorder":"array","categoryarray":["Dans 50 ans","Dans 20 ans","Aujourd'hui"],"type":"category"},"legend":{"title":{"text":"Type de Forêt"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":false},"data":[{"x":[0,0,15.869999999999999],"y":["Aujourd'hui","Dans 20 ans","Dans 50 ans"],"type":"bar","orientation":"h","marker":{"color":"#b7d693","line":{"color":"rgba(31,119,180,1)"}},"name":"Jeune Forêt (+ de 40 ans)","hovertemplate":["Type : Jeune Forêt (+ de 40 ans) <br>Valeur : 0  %","Type : Jeune Forêt (+ de 40 ans) <br>Valeur : 0  %","Type : Jeune Forêt (+ de 40 ans) <br>Valeur : 15.87  %"],"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[6.4400000000000004,25.300000000000001,37.710000000000001],"y":["Aujourd'hui","Dans 20 ans","Dans 50 ans"],"type":"bar","orientation":"h","marker":{"color":"#ff0f0f","pattern":{"bgcolor":"#b7d693","shape":"x","solidity":0.20000000000000001,"size":4},"line":{"color":"rgba(255,127,14,1)"}},"name":"Forêt rasée","hovertemplate":["Type : Forêt rasée <br>Valeur : 6.44  %","Type : Forêt rasée <br>Valeur : 25.3  %","Type : Forêt rasée <br>Valeur : 37.71  %"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[93.560000000000002,74.700000000000003,46.420000000000002],"y":["Aujourd'hui","Dans 20 ans","Dans 50 ans"],"type":"bar","orientation":"h","marker":{"color":"#6a994e","line":{"color":"rgba(44,160,44,1)"}},"name":"Forêt vivante","hovertemplate":["Type : Forêt vivante <br>Valeur : 93.56  %","Type : Forêt vivante <br>Valeur : 74.7  %","Type : Forêt vivante <br>Valeur : 46.42  %"],"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-63bfba5166e9c28349e9" style="width:100%;height:174px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-63bfba5166e9c28349e9">{"x":{"visdat":{"6be8589348ba":["function () ","plotlyVisDat"],"6be84bf6779e":["function () ","data"],"6be83426871":["function () ","data"],"6be844c05faa":["function () ","data"]},"cur_data":"6be844c05faa","attrs":{"6be84bf6779e":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"bar","orientation":"h","marker":{"color":"#b7d693"},"name":"Jeune Forêt (+ de 40 ans)","hovertemplate":{},"inherit":true},"6be83426871":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"bar","orientation":"h","marker":{"color":"#ff0f0f","pattern":{"bgcolor":"#b7d693","shape":"x","solidity":0.20000000000000001,"size":4}},"name":"Forêt rasée","hovertemplate":{},"inherit":true},"6be844c05faa":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"type":"bar","orientation":"h","marker":{"color":"#6a994e"},"name":"Forêt vivante","hovertemplate":{},"inherit":true}},"layout":{"width":"100%","height":150,"margin":{"b":40,"l":60,"t":25,"r":10},"barmode":"stack","xaxis":{"domain":[0,1],"automargin":true,"title":"","showticklabels":false,"zeroline":false},"yaxis":{"domain":[0,1],"automargin":true,"title":"","categoryorder":"array","categoryarray":["Dans 50 ans","Dans 20 ans","Aujourd'hui"],"type":"category"},"legend":{"title":{"text":"Type de Forêt"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":false},"data":[{"x":[0,0,15.869999999999999],"y":["Aujourd'hui","Dans 20 ans","Dans 50 ans"],"type":"bar","orientation":"h","marker":{"color":"#b7d693","line":{"color":"rgba(31,119,180,1)"}},"name":"Jeune Forêt (+ de 40 ans)","hovertemplate":["Type : Jeune Forêt (+ de 40 ans) <br>Valeur : 0  %","Type : Jeune Forêt (+ de 40 ans) <br>Valeur : 0  %","Type : Jeune Forêt (+ de 40 ans) <br>Valeur : 15.87  %"],"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[6.4400000000000004,25.300000000000001,37.710000000000001],"y":["Aujourd'hui","Dans 20 ans","Dans 50 ans"],"type":"bar","orientation":"h","marker":{"color":"#ff0f0f","pattern":{"bgcolor":"#b7d693","shape":"x","solidity":0.20000000000000001,"size":4},"line":{"color":"rgba(255,127,14,1)"}},"name":"Forêt rasée","hovertemplate":["Type : Forêt rasée <br>Valeur : 6.44  %","Type : Forêt rasée <br>Valeur : 25.3  %","Type : Forêt rasée <br>Valeur : 37.71  %"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[93.560000000000002,74.700000000000003,46.420000000000002],"y":["Aujourd'hui","Dans 20 ans","Dans 50 ans"],"type":"bar","orientation":"h","marker":{"color":"#6a994e","line":{"color":"rgba(44,160,44,1)"}},"name":"Forêt vivante","hovertemplate":["Type : Forêt vivante <br>Valeur : 93.56  %","Type : Forêt vivante <br>Valeur : 74.7  %","Type : Forêt vivante <br>Valeur : 46.42  %"],"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
