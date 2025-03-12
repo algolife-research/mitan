@@ -34,7 +34,8 @@ format:
   
 resources:
   - "communes_results/*"
-
+  - CNAME
+  
 language: 
   search-text-placeholder: "Rechercher une commune"
 
