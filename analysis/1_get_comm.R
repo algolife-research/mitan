@@ -4,46 +4,44 @@ library(mitan)
 library(dplyr)
 library(sf)
 
-# comms <- read.csv("./data/communes_pnr_millevaches.csv", header = TRUE)
 comms <- read.csv("./site/comm_list.csv", header = TRUE)
-# comms <- comms[4, ]
 
-for(i in 1:nrow(comms)) {
-  print(i)
+communes_ndvi_dir <- "./data/communes_ndvi"
+communes_shp_dir <- "./site/communes_results"
+download_data <- TRUE
+force_update <- FALSE
+
+for(i in c(5, 6, 10, 14)) { #nrow(comms)
+  message(paste0("Processing: ", comms[i, 2]))
   comm_id <- comms[i, 1]
-  
   dptt <- substr(comm_id, 1, 2)
-  communes_ndvi_dir <- "./data/communes_ndvi"
-  communes_shp_dir <- "./site/communes_results"
-  sentinel_data_dir <- file.path(communes_ndvi_dir, comm_id)
-  
   bdforet_path <- file.path("./data/dptt_bdforetv2", dptt, "FORMATION_VEGETALE.shp")
   
-  download_data <- TRUE
+  sentinel_data_dir <- file.path(communes_ndvi_dir, comm_id)
+  
+  fname_shp_commune <- file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
   
   ## First time for a community, if doesn't exist
-  if(download_data) {
+  if(!file.exists(fname_shp_commune) | force_update) {
     all_comm_path <- "./data/france_commune-frmetdrom/COMMUNE_FRMETDROM.shp"
-    comm <- sf::read_sf(all_comm_path)
+    comm <- sf::read_sf(all_comm_path, quiet = TRUE)
     id <- comm$INSEE_COM == comm_id
     sf::write_sf(
       comm[id, ],
       append = FALSE,
-      dsn = file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
+      dsn = fname_shp_commune
     )
   }
 
   ### BD Forets
-  path <- file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
-  comm <- sf::read_sf(path)
+  comm <- sf::read_sf(fname_shp_commune, quiet = TRUE)
   comm <- comm[!duplicated(comm), ]
-  
-  geom <- comm$geometry
-  
-  if(download_data) {
+  fname_bd_commune <- file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson"))
+            
+  if(!file.exists(fname_bd_commune) | force_update) {
     bd <- extract_comm_from_bdforet(
       bd_path = bdforet_path,
-      comm_geom = geom
+      comm_geom = comm$geometry
     )
     bd <- bd[!bd$TFV_G11 %in% c("Lande", "Formation herbacée"), ]
     
@@ -56,20 +54,20 @@ for(i in 1:nrow(comms)) {
     bd$area <- sf::st_area(bd)
     sf::st_write(
       bd,
-      dsn = file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson")),
-      dataset_options = c("ENCODING=ISO-8859-1"), delete_dsn = TRUE, quiet = TRUE
+      dsn = fname_bd_commune,
+      dataset_options = c("ENCODING=ISO-8859-1"),
+      delete_dsn = TRUE,
+      quiet = TRUE
     )
-  } else {
-    bd <- sf::st_read(dsn = file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson")))
   }
-
+  
   ## IF no sentinel data
   ## Fix parallelisation, iterate until we have everything
   
   if(download_data) {
-    message("Downloading data...")
+    message("Downloading Sentinel Data...")
     download_comm_ndvi(
-        comm_geom = geom,
+        comm_geom = comm$geometry,
         min_date = "2016-01-01",
         max_date = "2026-01-01",
         output_dir = sentinel_data_dir,
@@ -77,15 +75,14 @@ for(i in 1:nrow(comms)) {
         client_secret
     )
   }
+
+  message("Aggregating Data...")
   
   bd <- sf::st_read(
-    dsn = file.path(
-      communes_shp_dir,
-      paste0(comm$INSEE_COM, "_bdforet.geojson")
-    )
+    dsn = fname_bd_commune,
+    quiet = TRUE
   )
   
-  message("Aggregating data...")
   ndvi.y <- aggregate_ndvi(
     data_dir = sentinel_data_dir,
     bd_foret_shp = bd,
@@ -95,7 +92,7 @@ for(i in 1:nrow(comms)) {
     )
   )
   
-  message("Computing NDVI diff...")
+  message("Computing NDVI Difference...")
   ndvi_diff <- mitan::get_ndvi_diff(
     ndvi.y,
     n_years_lag = 1,
@@ -181,17 +178,6 @@ for(i in 1:nrow(comms)) {
   )
   write.csv(extracted_data_with_ids, fp, row.names = FALSE)
   
-  dptt <- substr(comm_id, 1, 2)
-  
-  path <- file.path(communes_shp_dir, paste0(comm_id, "_commune.geojson"))
-  comm <- sf::read_sf(path)
-  comm <- comm[!duplicated(comm), ]
-  geom <- comm$geometry
-  
-  bd_shp <- sf::read_sf(
-    file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson"))
-  )
-  
   ndvi_diff <- terra::rast(file.path(
     communes_ndvi_dir,
     paste0(comm$INSEE_COM, "_ndvi_diff.tif")
@@ -200,13 +186,13 @@ for(i in 1:nrow(comms)) {
   cr_mask_pr <- sf::st_read(file.path(
     communes_shp_dir,
     paste0(comm$INSEE_COM, "_cr_mask_pr.geojson")
-  ))
+  ), quiet = TRUE)
   
   map <- get_leaflet_map(
     cr_mask = cr_mask_pr,
-    bd_shp,
+    bd,
     comm_geom = comm$geometry
-  );map
+  )#;map
   
   out <- get_summary_stats(cr_mask_pr, comm_code = comm_id, ndvi_diff = ndvi_diff)
   
