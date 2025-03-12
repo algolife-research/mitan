@@ -58,32 +58,45 @@ convert_coordinates <- function(
 
 
 #' @export
-get_elevation_open <- function(lat, lon) {
-  
-  # prep_req <- paste0(lat, ",", lon, collapse = "|")
-  prep_req <- paste0(
-    "?lon=",
-    paste0(lon, collapse = "|"),
-    "&lat=",
-    paste0(lat, collapse = "|"),
-    "&resource=ign_rge_alti_wld&delimiter=|&indent=false&measures=false&zonly=true"
-  )
+get_elevation_open <- function(lat, lon, chunk_size = 50) {
   base_url <- "https://data.geopf.fr/altimetrie/1.0/calcul/alti/rest/elevation.json"
-  url <- paste0(base_url, prep_req)
   
-  response <- httr::GET(url)
-  if (httr::status_code(response) == 200) {
-    elevation_data <- jsonlite::fromJSON(httr::content(response, "text"), flatten = TRUE)
-    if (length(elevation_data$elevations) > 0) {
-      elevation <- elevation_data$elevations
+  results <- vector("list", length = ceiling(length(lat) / chunk_size))
+  
+  for (i in seq(1, length(lat), by = chunk_size)) {
+    lat_chunk <- lat[i:min(i + chunk_size - 1, length(lat))]
+    lon_chunk <- lon[i:min(i + chunk_size - 1, length(lon))]
+    
+    # Construct the request
+    prep_req <- paste0(
+      "?lon=",
+      paste0(lon_chunk, collapse = "|"),
+      "&lat=",
+      paste0(lat_chunk, collapse = "|"),
+      "&resource=ign_rge_alti_wld&delimiter=|&indent=false&measures=false&zonly=true"
+    )
+    
+    url <- paste0(base_url, prep_req)
+    
+    response <- tryCatch({
+      httr::GET(url)
+    }, error = function(e) {
+      warning("Request failed: ", conditionMessage(e))
+      return(NULL)
+    })
+    
+    if (!is.null(response) && httr::status_code(response) == 200) {
+      elevation_data <- fromJSON(httr::content(response, "text"), flatten = TRUE)
+      if (length(elevation_data$elevations) > 0) {
+        results[[i]] <- elevation_data$elevations
+      } else {
+        results[[i]] <- rep(NA, length(lat_chunk))
+      }
     } else {
-      elevation <- NA
+      warning("Failed to retrieve data from API")
+      results[[i]] <- rep(NA, length(lat_chunk))
     }
-  } else {
-    # Gestion des erreurs
-    warning("Erreur lors de la récupération des données d'élévation")
-    elevation <- NA
   }
   
-  return(elevation)
+  return(unlist(results))
 }
