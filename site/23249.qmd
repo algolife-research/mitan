@@ -1,5 +1,5 @@
 ---
-title: "Orcines"
+title: "Saint-Yrieix-la-Montagne"
 format: html
 echo: false
 warning: false
@@ -19,11 +19,11 @@ library(shiny)
 library(bslib)
 library(bsicons)
 
-map <- readRDS("./communes_results/63263_map.rds") 
+map <- readRDS("./communes_results/23249_map.rds") 
 df_cr <- read.csv("./communes_results/comm_summary_stats.csv", header = TRUE) %>%
-  filter(comm_code == "63263")
+  filter(comm_code == "23249")
 df_cr_y <- read.csv("./communes_results/comm_summary_stats_year.csv", header = TRUE) %>%
-  filter(comm_code == "63263")
+  filter(comm_code == "23249")
 ```
 
 
@@ -142,7 +142,7 @@ function resetHighlight(e, layer) {
     });
 
     // Load and add AOI layer
-    const aoiData = await loadGeoJSON('communes_results/63263_commune.geojson');
+    const aoiData = await loadGeoJSON('communes_results/23249_commune.geojson');
     const aoiLayer = L.geoJSON(aoiData, {
         style: {
             color: '#ffffff88',
@@ -154,7 +154,7 @@ function resetHighlight(e, layer) {
     map.fitBounds(aoiLayer.getBounds());
 
     // Load and add BDF layer
-    const bdfData = await loadGeoJSON('communes_results/63263_bdforet.geojson');
+    const bdfData = await loadGeoJSON('communes_results/23249_bdforet.geojson');
     const bdfLayer = L.geoJSON(bdfData, {
         style: style,
         onEachFeature: (feature, layer) => {
@@ -179,8 +179,8 @@ function resetHighlight(e, layer) {
     }).addTo(map);
 
     // Load and add CR layer with CSV data integration
-    const geojsonData = await loadGeoJSON('communes_results/63263_cr_mask_pr.geojson');
-    const csvData = await loadCSV('communes_results/63263_ts.csv');
+    const geojsonData = await loadGeoJSON('communes_results/23249_cr_mask_pr.geojson');
+    const csvData = await loadCSV('communes_results/23249_ts.csv');
 
     const CR_layer = L.geoJSON(geojsonData, {
         style: {
