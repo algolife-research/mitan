@@ -155,6 +155,78 @@ ul.task-list li input[type="checkbox"] {
 <center>
 <a href="communes.html" class="btn btn-secondary" role="button">Voir la liste des communes disponibles</a>
 </center>
+<p><br></p>
+<p>Voir les <strong>communes disponibles</strong> sur la carte et <strong>cliquer</strong> sur votre commune pour accéder à sa page.</p>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+Leaflet Map
+</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+<style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+
+<div id="map">
+
+</div>
+<script>
+var map = L.map('map'); // Initialize map without centering
+
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        minZoom: 0,
+        maxZoom: 18,
+        attribution: "IGN-F/Geoportail",
+        tileSize: 256
+    }
+).addTo(map);
+
+// Load GeoJSON file
+fetch("./communes_results/merged_commune.geojson") // Change to actual GeoJSON path
+    .then(response => response.json())
+    .then(data => {
+        var geojsonLayer = L.geoJSON(data, {
+            style: {
+                color: "#f79873",
+                weight: 2,
+                fillOpacity: 0.
+            },
+            onEachFeature: function (feature, layer) {
+                var popup = L.popup().setContent(feature.properties.NOM || "Unknown");
+                
+                // Highlight effect on hover and show text
+                layer.on('mouseover', function (e) {
+                    layer.setStyle({ weight: 3, fillOpacity: 1 });
+                    popup.setLatLng(e.latlng).openOn(map);
+                });
+                layer.on('mouseout', function () {
+                    layer.setStyle({ weight: 2, fillOpacity: 0. });
+                    map.closePopup();
+                });
+                
+                // Click event to redirect
+                layer.on('click', function () {
+                    if (feature.properties && feature.properties.ID) {
+                        window.location.href = `./${feature.properties.INSEE_COM}.html`;
+                    }
+                });
+            }
+        }).addTo(map);
+        
+        // Fit map bounds to GeoJSON data
+        map.fitBounds(geojsonLayer.getBounds());
+    })
+    .catch(error => console.error('Error loading GeoJSON:', error));
+
+</script>
+
 
 
 </section>
