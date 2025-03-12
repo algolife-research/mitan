@@ -37,6 +37,8 @@ df_cr_y <- read.csv("./communes_results/comm_summary_stats_year.csv", header = T
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 </head>
 <body>
 
@@ -46,6 +48,20 @@ df_cr_y <- read.csv("./communes_results/comm_summary_stats_year.csv", header = T
 
 // Initialize the map
 var map = L.map('map').setView([37.8, -96], 4);
+
+// Add address search bar
+L.Control.geocoder({
+    defaultMarkGeocode: false,
+    placeholder: "Chercher une adresse...",
+    collapsed: false
+})
+.on('markgeocode', function(e) {
+    var latlng = e.geocode.center;
+    map.setView(latlng, 12); // Zoom to the selected location
+    L.marker(latlng).addTo(map) // Add a marker at the found location
+        .bindPopup(e.geocode.name);
+})
+.addTo(map);
 
 // Add base map layer
 L.tileLayer(
@@ -259,10 +275,23 @@ function resetHighlight(e, layer) {
     }).addTo(map);
 
     // Add layer control to toggle layers
-    L.control.layers(null, {
+    var layerControl = L.control.layers(null, {
         "Perturbations": CR_layer,
         "BDForêt V2": bdfLayer
     }, { collapsed: false }).addTo(map);
+    
+    // Add title "Couches" above the layer control
+    var layerControlContainer = layerControl.getContainer();
+    var title = document.createElement("div");
+    title.innerHTML = "<b>Couches</b>";
+    title.style.textAlign = "left";
+    title.style.padding = "0px";
+    title.style.fontSize = "12px";
+    title.style.backgroundColor = "white";
+    
+    // Insert the title before the layer list
+    layerControlContainer.insertBefore(title, layerControlContainer.firstChild);
+    
 
     // Add legend to map
     const legend = L.control({ position: 'bottomright' });
