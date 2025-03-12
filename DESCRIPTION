@@ -16,4 +16,5 @@ Imports:
     landscapemetrics,
     leaflet,
     sf,
-    terra
+    terra,
+    tidyr
