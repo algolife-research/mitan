@@ -96,6 +96,8 @@ get_ndvi_diff <- function(
         # clamped <- terra::clamp(prev, lower = min_past_ndvi, upper = Inf, values=FALSE)
         ndvi_diff[[i]] <- curr - prev
       }
+    } else {
+      ndvi_diff[[i]] <- NA
     }
   }
   
@@ -357,7 +359,7 @@ update_or_append_csv <- function(new_data, file_path) {
 
 #' get_summary_stats
 #' @export
-get_summary_stats <- function(cr_mask_pr, comm_code) {
+get_summary_stats <- function(cr_mask_pr, comm_code, ndvi_diff) {
   
   res_elev <- get_elevation_open(lat = cr_mask_pr$centroid_y, lon = cr_mask_pr$centroid_x)
   cr_mask_pr$altitude = res_elev
