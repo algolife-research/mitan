@@ -61,7 +61,7 @@ extract_comm_from_bdforet <- function(
   }
   
   message("Finding intersection...")
-  it <- st_intersection(x = bd_shp, y = comm_geom)
+  it <- st_intersection(x = bd_shp[st_is_valid(bd_shp), ], y = comm_geom)
   
   message("Cleaning...")
   remove_linestrings_from_collection <- function(geometry) {
