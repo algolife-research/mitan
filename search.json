@@ -280,25 +280,18 @@
     "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: IGN-F/Geoportail.\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Bienvenue dans Mitan",
+    "objectID": "foret-score.html",
+    "href": "foret-score.html",
+    "title": "Forêt-Score - Un indicateur de qualité des forêts communales",
     "section": "",
-    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises.\nEn utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de compréhension. Il peut être utilisé par citoyens, chercheurs et gestionnaires des milieux naturels pour réfléchir ensemble à notre rapport au milieu environnant, prendre des décisions face aux données et trouver le juste milieu."
+    "text": "Le Forêt-Score est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs critères liés à la gestion forestière, aux pratiques d’exploitation et à la préservation de la biodiversité."
   },
   {
-    "objectID": "index.html#comment-démarrer",
-    "href": "index.html#comment-démarrer",
-    "title": "Bienvenue dans Mitan",
-    "section": "Comment démarrer ?",
-    "text": "Comment démarrer ?\n\nVous trouverez dans la barre de navigation en haut un champ de recherche.\nTapez le nom de votre commune pour trouver sa page.\n\nVous pouvez aussi…\n\nVoir un exemple\n\n\n\nVoir la liste des communes disponibles\n\n\nVoir les communes disponibles sur la carte et cliquer sur votre commune pour accéder à sa page.\n\n\n\n\nLeaflet Map"
-  },
-  {
-    "objectID": "communes.html",
-    "href": "communes.html",
-    "title": "Liste des communes disponibles",
-    "section": "",
-    "text": "Communes\n\n\n\n\n\n\nAugne\n\n\n\n\nEymoutiers\n\n\n\n\nFaux-la-Montagne\n\n\n\n\nGentioux-Pigerolles\n\n\n\n\nLimoges\n\n\n\n\nMeymac\n\n\n\n\nOrcines\n\n\n\n\nPeyrat-le-Château\n\n\n\n\nPeyrelevade\n\n\n\n\nRazès\n\n\n\n\nRoyère-de-Vassivière\n\n\n\n\nSaint-Julien-le-Petit\n\n\n\n\nSaint-Sylvestre\n\n\n\n\nSaint-Yrieix-la-Montagne\n\n\n\n\nSornac\n\n\n\n\nTarnac\n\n\n\n\n\nNo matching items"
+    "objectID": "foret-score.html#forêt-score-sur-le-territoire-du-pnr-millevaches",
+    "href": "foret-score.html#forêt-score-sur-le-territoire-du-pnr-millevaches",
+    "title": "Forêt-Score - Un indicateur de qualité des forêts communales",
+    "section": "Forêt-Score sur le territoire du PNR Millevaches",
+    "text": "Forêt-Score sur le territoire du PNR Millevaches\nCliquez sur une commune pour plus d’informations.\n\n\n\n\n\n\n\nInterprétation du Forêt-Score\n\n\n\n\n\n\n\n\nScore\nCatégorie\nSignification\n\n\n\n\n\nA (Excellent)\nProportion non négligeable de la forêt en bonne santé\n\n\n\nB (Bon)\nQuelques faiblesses, des améliorations dans la gestion sont possibles\n\n\n\nC (Moyen)\nÉquilibre fragile, vigilance nécessaire pour éviter des dérives, risques écologiques\n\n\n\nD (Médiocre)\nExploitation préoccupante, impact sur l’environnement et l’avenir de la filière\n\n\n\nE (Critique)\nSituation alarmante, perte de valeur durable si aucune action rapide\n\n\n\n\n\nCritères du Forêt-Score\nLe score est basé sur quatre variables clés :\n\nTaux de boisement (nouvelle surface boisée / surface communale totale). Un boisement accru, notamment en forêts diversifiées, est positif pour le climat et la biodiversité. Un taux élevé améliore le score.\nTaux de plantations (surface de plantations artificielles / surface forestière totale). Une forêt à forte proportion de plantations artificielles (notamment en monoculture) est moins résiliente et abrite moins de biodiversité qu’une forêt naturelle. Un taux élevé diminue la qualité forestière.\nTaux de coupes rases (surface de coupes rases / surface forestière totale). Un fort taux de coupes rases entraîne une dégradation des écosystèmes et une perte de biodiversité. Plus ce taux est élevé, plus l’impact est négatif.\nTaux de coupes dans des espaces à haute valeur environnementale (surface des coupes dans ces espaces / surface totale des espaces concernés). Couper du bois dans ces zones (forêts anciennes, zones humides forestières, réserves naturelles) est très impactant. Un taux élevé détériore fortement le score."
   },
   {
     "objectID": "details.html",
@@ -313,6 +306,27 @@
     "title": "Détails",
     "section": "Source des données",
     "text": "Source des données\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\nFond de carte: ESRI\nPerturbations et calculs associés - Algorithme maison sous Licence CC-BY-SA"
+  },
+  {
+    "objectID": "communes.html",
+    "href": "communes.html",
+    "title": "Liste des communes disponibles",
+    "section": "",
+    "text": "Communes\n\n\n\n\n\n\nAugne\n\n\n\n\nEymoutiers\n\n\n\n\nFaux-la-Montagne\n\n\n\n\nForêt-Score - Un indicateur de qualité des forêts communales\n\n\n\n\nGentioux-Pigerolles\n\n\n\n\nLimoges\n\n\n\n\nMeymac\n\n\n\n\nOrcines\n\n\n\n\nPeyrat-le-Château\n\n\n\n\nPeyrelevade\n\n\n\n\nRazès\n\n\n\n\nRoyère-de-Vassivière\n\n\n\n\nSaint-Julien-le-Petit\n\n\n\n\nSaint-Sylvestre\n\n\n\n\nSaint-Yrieix-la-Montagne\n\n\n\n\nSornac\n\n\n\n\nTarnac\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bienvenue dans Mitan",
+    "section": "",
+    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises.\nEn utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de compréhension. Il peut être utilisé par citoyens, chercheurs et gestionnaires des milieux naturels pour réfléchir ensemble à notre rapport au milieu environnant, prendre des décisions face aux données et trouver le juste milieu."
+  },
+  {
+    "objectID": "index.html#comment-démarrer",
+    "href": "index.html#comment-démarrer",
+    "title": "Bienvenue dans Mitan",
+    "section": "Comment démarrer ?",
+    "text": "Comment démarrer ?\n\nVous trouverez dans la barre de navigation en haut un champ de recherche.\nTapez le nom de votre commune pour trouver sa page.\n\nVous pouvez aussi…\n\nVoir un exemple\n\n\n\nVoir la liste des communes disponibles\n\n\nVoir les communes disponibles sur la carte et cliquer sur votre commune pour accéder à sa page.\n\n\n\n\nLeaflet Map"
   },
   {
     "objectID": "19136.html#cartographie-forestière",
