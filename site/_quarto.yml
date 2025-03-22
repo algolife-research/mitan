@@ -8,6 +8,7 @@ project:
 website:
   title: "Mitan"
   favicon: assets/IconMitan.png
+  open-graph: true
   search: 
     location: navbar
     type: textbox 
@@ -19,13 +20,13 @@ website:
       - href: index.qmd
         text: Accueil
       - href: communes.qmd
-        text: Communes
+        text: Communes Disponibles
       - href: foret-score.qmd
-        text: Forêt-Score
-      - href: details.qmd
-        text: Détails
-      - href: mentions.qmd
-        text: Mentions légales
+        text: Le Forêt-Score
+  page-footer: |
+    [Plus d'informations sur les données](./details.html) |
+    [Mentions légales](./mentions.html)
+
 format:
   html:
     include-in-header:
