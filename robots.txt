@@ -1,1 +1,2 @@
-Sitemap: https://aumitan.com/sitemap.xml
+User-agent: *
+Disallow: /mentions.html

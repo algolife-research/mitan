@@ -69,6 +69,9 @@ ul.task-list li input[type="checkbox"] {
 <script>window.onload = function() {document.getElementById('autocomplete-0-input').placeholder = 'Commune';};</script>
 
 
+<meta property="og:title" content="Détails – Mitan">
+<meta property="og:description" content="">
+<meta property="og:site_name" content="Mitan">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -94,15 +97,11 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./communes.html"> 
-<span class="menu-text">Communes</span></a>
+<span class="menu-text">Communes Disponibles</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./foret-score.html"> 
-<span class="menu-text">Forêt-Score</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./details.html" aria-current="page"> 
-<span class="menu-text">Détails</span></a>
+<span class="menu-text">Le Forêt-Score</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -166,8 +165,33 @@ ul.task-list li input[type="checkbox"] {
 <li><p><strong>Fond de carte</strong>: ESRI</p></li>
 <li><p><strong>Perturbations et calculs associés</strong> - Algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr">Licence CC-BY-SA</a></p></li>
 </ul>
+</section>
+<section id="comment-est-calculé-le-forêt-score" class="level2">
+<h2 class="anchored" data-anchor-id="comment-est-calculé-le-forêt-score">Comment est calculé le Forêt-Score?</h2>
+<section id="composantes-du-score" class="level3">
+<h3 class="anchored" data-anchor-id="composantes-du-score">Composantes du score</h3>
+<p>Le score est basé sur quatre variables clés :</p>
+<p><strong>Taux de boisement</strong></p>
+<p>Représente la proportion de la surface forestière par rapport à la surface totale d’un territoire. Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.</p>
+<p>Échelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).</p>
+<p><strong>Taux de coupes rases</strong></p>
+<p>Indique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.</p>
+<p>Échelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).</p>
+<p><strong>Taux de coupes en espaces à haute valeur environnementale</strong></p>
+<p>Mesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.) ayant subi des coupes rases.</p>
+<p>Échelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).</p>
+<p><strong>Taux de monocultures</strong></p>
+<p>Correspond à la proportion approximative de forêt plantée après exploitation ou déforestation. Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.</p>
+<p>Échelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).</p>
+</section>
+<section id="calcul-du-forêt-score" class="level3">
+<h3 class="anchored" data-anchor-id="calcul-du-forêt-score">Calcul du Forêt Score</h3>
+<p>Chaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).</p>
+<p><strong>Le score final est le plus bas des quatre scores obtenus.</strong></p>
+<p>Exemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt Score sera E.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -592,6 +616,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="./details.html">Plus d’informations sur les données</a> | <a href="./mentions.html">Mentions légales</a></p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 
