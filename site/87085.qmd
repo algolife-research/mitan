@@ -1,5 +1,5 @@
 ---
-title: "Sornac"
+title: "Limoges"
 format: html
 echo: false
 warning: false
@@ -19,11 +19,11 @@ library(shiny)
 library(bslib)
 library(bsicons)
 
-map <- readRDS("./communes_results/19261_map.rds") 
+map <- readRDS("./communes_results/87085_map.rds") 
 df_cr <- read.csv("./communes_results/comm_summary_stats.csv", header = TRUE) %>%
-  filter(comm_code == "19261")
+  filter(comm_code == "87085")
 df_cr_y <- read.csv("./communes_results/comm_summary_stats_year.csv", header = TRUE) %>%
-  filter(comm_code == "19261")
+  filter(comm_code == "87085")
 ```
 
 
@@ -175,7 +175,7 @@ function resetHighlight(e, layer) {
         map.getPane(pane).style.zIndex = 400 + (index * 100);
     });
 
-    const aoiData = await loadGeoJSON('communes_results/19261_commune.geojson');
+    const aoiData = await loadGeoJSON('communes_results/87085_commune.geojson');
     const aoiLayer = L.geoJSON(aoiData, {
         style: {
             color: '#ffffff88',
@@ -186,7 +186,7 @@ function resetHighlight(e, layer) {
     }).addTo(map);
     map.fitBounds(aoiLayer.getBounds());
 
-    const bdfData = await loadGeoJSON('communes_results/19261_bdforet.geojson');
+    const bdfData = await loadGeoJSON('communes_results/87085_bdforet.geojson');
     const bdfLayer = L.geoJSON(bdfData, {
         style: style,
         onEachFeature: (feature, layer) => {
@@ -210,8 +210,8 @@ function resetHighlight(e, layer) {
     }).addTo(map);
 
     // CR Layer with Year Filtering
-    const geojsonData = await loadGeoJSON('communes_results/19261_cr_mask_pr.geojson');
-    const csvData = await loadCSV('communes_results/19261_ts.csv');
+    const geojsonData = await loadGeoJSON('communes_results/87085_cr_mask_pr.geojson');
+    const csvData = await loadCSV('communes_results/87085_ts.csv');
     const availableYears = getUniqueYears(geojsonData);
     let originalFeatures = geojsonData.features;
 
