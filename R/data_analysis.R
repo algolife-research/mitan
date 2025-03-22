@@ -93,7 +93,6 @@ get_ndvi_diff <- function(
       if(length(index_prev) > 0) {
         prev <- terra::app(ndvi.y[[index_prev]], mean, na.rm = TRUE)
         curr <- terra::app(ndvi.y[[index_curr]], mean, na.rm = TRUE)
-        # clamped <- terra::clamp(prev, lower = min_past_ndvi, upper = Inf, values=FALSE)
         ndvi_diff[[i]] <- curr - prev
       }
     } else {
@@ -359,12 +358,12 @@ update_or_append_csv <- function(new_data, file_path) {
 
 #' get_summary_stats
 #' @export
-get_summary_stats <- function(cr_mask_pr, comm_code, ndvi_diff) {
-  
+get_summary_stats <- function(cr_mask_pr, comm_code, ndvi_diff, bd_shp) {
+  require(jsonlite)
   res_elev <- get_elevation_open(lat = cr_mask_pr$centroid_y, lon = cr_mask_pr$centroid_x)
   cr_mask_pr$altitude = res_elev
   
-  surface_comm <- get_surface_commune(comm_id)
+  surface_comm <- get_surface_commune(comm_code)
   taux_boisement <- sum(bd_shp$area)/1e4 / surface_comm
   
   dts_suivi <- paste0(gsub("X", "", names(ndvi_diff)), ".15") %>%
