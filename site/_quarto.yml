@@ -20,8 +20,12 @@ website:
         text: Accueil
       - href: communes.qmd
         text: Communes
+      - href: foret-score.qmd
+        text: Forêt-Score
       - href: details.qmd
         text: Détails
+      - href: mentions.qmd
+        text: Mentions légales
 format:
   html:
     include-in-header:
