@@ -11,4 +11,4 @@ for(i in seq_len(nrow(df))) {
 geojson_files <- list.files(path = "./site/communes_results/", pattern = "\\_commune.geojson$", full.names = TRUE)
 geojson_list <- lapply(geojson_files, sf::st_read, quiet = TRUE)
 merged_geojson <- do.call(rbind, geojson_list)
-sf::st_write(merged_geojson, dsn = "./site/communes_results/merged_commune.geojson", quiet = TRUE)
+sf::st_write(merged_geojson, dsn = "./site/communes_results/merged_commune.geojson", append = FALSE, quiet = TRUE)
