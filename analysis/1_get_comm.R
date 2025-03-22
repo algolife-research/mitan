@@ -3,15 +3,16 @@
 library(mitan)
 library(dplyr)
 library(sf)
+library(jsonlite)
 
 comms <- read.csv("./site/comm_list.csv", header = TRUE)
 
 communes_ndvi_dir <- "./data/communes_ndvi"
 communes_shp_dir <- "./site/communes_results"
-download_data <- TRUE
+download_data <- FALSE
 force_update <- FALSE
 
-for(i in c(5, 6, 10, 14)) { #nrow(comms)
+for(i in 1:nrow(comms)) { #nrow(comms)
   message(paste0("Processing: ", comms[i, 2]))
   comm_id <- comms[i, 1]
   dptt <- substr(comm_id, 1, 2)
@@ -75,13 +76,16 @@ for(i in c(5, 6, 10, 14)) { #nrow(comms)
         client_secret
     )
   }
-
-  message("Aggregating Data...")
   
   bd <- sf::st_read(
     dsn = fname_bd_commune,
     quiet = TRUE
   )
+
+  if(process_ndvi) {
+    message("Aggregating Data...")
+  
+
   
   ndvi.y <- aggregate_ndvi(
     data_dir = sentinel_data_dir,
@@ -91,7 +95,7 @@ for(i in c(5, 6, 10, 14)) { #nrow(comms)
       paste0(comm$INSEE_COM, "_ndvi_agg.tif")
     )
   )
-  
+
   message("Computing NDVI Difference...")
   ndvi_diff <- mitan::get_ndvi_diff(
     ndvi.y,
@@ -99,7 +103,7 @@ for(i in c(5, 6, 10, 14)) { #nrow(comms)
     max_difference_days = 15,
     min_past_ndvi = 0.7
   )
-  
+
   terra::writeRaster(
     ndvi_diff,
     file.path(
@@ -128,8 +132,8 @@ for(i in c(5, 6, 10, 14)) { #nrow(comms)
     datatype = "FLT4S",
     gdal = c("COMPRESS=DEFLATE", "PREDICTOR=2", "ZLEVEL=9")
   )
-
-  dptt <- substr(comm_id, 1, 2)
+  
+  }
 
   cr_mask <- terra::rast(file.path(
     communes_ndvi_dir,
@@ -141,17 +145,14 @@ for(i in c(5, 6, 10, 14)) { #nrow(comms)
     min_area = 1e3
   )
   
-  cr_mask_pr <- sf::st_as_sf(pls)
-  bd_shp <- sf::st_read(dsn = file.path(communes_shp_dir, paste0(comm$INSEE_COM, "_bdforet.geojson")))
-  
-  cr_mask_pr <- sf::st_transform(cr_mask_pr, sf::st_crs(bd_shp))
-  cr_mask_pr <- sf::st_join(
-    cr_mask_pr,
-    bd_shp[, c("Type", "ESSENCE")],
-    join = sf::st_intersects,
-    largest = TRUE
-  )
-  cr_mask_pr <- cr_mask_pr %>% select(-dr)
+  cr_mask_pr <- sf::st_as_sf(pls) %>%
+    sf::st_transform(sf::st_crs(bd)) %>%
+    sf::st_join(
+      bd[, c("Type", "ESSENCE")],
+      join = sf::st_intersects,
+      largest = TRUE
+    ) %>% 
+    select(-dr)
   
   fp <- file.path(
     communes_shp_dir,
@@ -194,8 +195,7 @@ for(i in c(5, 6, 10, 14)) { #nrow(comms)
     comm_geom = comm$geometry
   )#;map
   
-  out <- get_summary_stats(cr_mask_pr, comm_code = comm_id, ndvi_diff = ndvi_diff)
-  
+  out <- get_summary_stats(cr_mask_pr, comm_code = comm_id, ndvi_diff = ndvi_diff, bd_shp = bd)
   update_or_append_csv(out, file_path = "./site/communes_results/comm_summary_stats.csv")
   
   df_per_year <- cr_mask_pr %>% 
