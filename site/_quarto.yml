@@ -9,9 +9,6 @@ website:
   title: "Mitan"
   favicon: assets/IconMitan.png
   open-graph: true
-  search: 
-    location: navbar
-    type: textbox 
   navbar:
     title: false
     logo: assets/LogoMitanRect.png
@@ -38,9 +35,10 @@ format:
     minify: true
   
 resources:
-  - "communes_results/*"
   - CNAME
-  
+  - "comm_list.csv"
+  - "a-com2022.json"
+
 language: 
   search-text-placeholder: "Rechercher une commune"
 
