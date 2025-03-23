@@ -45,13 +45,14 @@ ul.task-list li input[type="checkbox"] {
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
-  "type": "textbox",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
     "/",
     "s"
   ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -137,6 +138,17 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    #map { height: 100vh; }
+  </style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<p><link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"></p>
+
 <p><strong>Mitan</strong>, le <em>milieu</em> en occitan, est une plateforme dédiée à <strong>l’exploration</strong> et au <strong>suivi</strong> du <strong>patrimoine forestier</strong> des communes françaises.</p>
 <center>
 <img src="./assets/LogoMitanRect.png" width="242px">
@@ -147,92 +159,40 @@ ul.task-list li input[type="checkbox"] {
 <section id="comment-démarrer" class="level2">
 <h2 class="anchored" data-anchor-id="comment-démarrer">Comment démarrer ?</h2>
 <ul>
-<li><p>Vous trouverez dans la barre de navigation en haut un <strong>champ de recherche</strong>.</p></li>
-<li><p><strong>Tapez le nom de votre commune</strong> pour trouver sa page.</p></li>
+<li><p>Vous trouverez la liste des dommunes disponibles ci-dessous.</p></li>
+<li><p><strong>Tapez le nom de votre commune</strong> pour trouver sa page. Vous pouvez aussi…</p></li>
 </ul>
-<p>Vous pouvez aussi…</p>
 <center>
-<a href="87153.html" class="btn btn-secondary" role="button">Voir un exemple</a>
+<a href="carte.html?commune=19136" class="btn btn-secondary" role="button">Voir un exemple</a>
 </center>
-<br>
-<center>
-<a href="communes.html" class="btn btn-secondary" role="button">Voir la liste des communes disponibles</a>
-</center>
-<p><br></p>
-<p>Voir les <strong>communes disponibles</strong> sur la carte et <strong>cliquer</strong> sur votre commune pour accéder à sa page.</p>
-
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>
-Leaflet Map
-</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-<style>
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
-
+</section>
+<section id="les-communes-disponibles" class="level2">
+<h2 class="anchored" data-anchor-id="les-communes-disponibles">Les communes disponibles</h2>
+<table id="communeTable" class="display" style="width:100%">
+<thead>
+<tr>
+<th>
+Code
+</th>
+<th>
+Nom
+</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="communes.js"></script>
+</section>
+<section id="la-carte" class="level2">
+<h2 class="anchored" data-anchor-id="la-carte">La carte</h2>
+<p>Naviguez sur la carte et <strong>cliquez</strong> sur votre commune pour accéder à sa page.</p>
 <div id="map">
 
 </div>
-<script>
-var map = L.map('map'); // Initialize map without centering
-
-L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        minZoom: 0,
-        maxZoom: 18,
-        attribution: "IGN-F/Geoportail",
-        tileSize: 256
-    }
-).addTo(map);
-
-// Load GeoJSON file
-fetch("./communes_results/merged_commune.geojson") // Change to actual GeoJSON path
-    .then(response => response.json())
-    .then(data => {
-        var geojsonLayer = L.geoJSON(data, {
-            style: {
-                color: "#f79873",
-                weight: 2,
-                fillOpacity: 0
-            },
-            onEachFeature: function (feature, layer) {
-                if (feature.properties) {
-                    var communeName = feature.properties.NOM || "Unknown";
-                    var communeID = feature.properties.INSEE_COM || "";
-                    var linkHTML = communeID ? `<br><a href="./${communeID}.html" target="_blank">Consulter la page</a>` : "";
-                    
-                    var popupContent = `<strong>${communeName}</strong>${linkHTML}`;
-                    
-                    layer.bindPopup(popupContent);
-
-                    // Highlight effect on hover
-                    layer.on('mouseover', function (e) {
-                        layer.setStyle({ weight: 3, fillOpacity: 0.5 });
-                    });
-
-                    layer.on('mouseout', function () {
-                        layer.setStyle({ weight: 2, fillOpacity: 0 });
-                    });
-
-                    // Click event to show popup
-                    layer.on('click', function (e) {
-                        layer.openPopup();
-                    });
-                }
-            }
-        }).addTo(map);
-        
-        // Fit map bounds to GeoJSON data
-        map.fitBounds(geojsonLayer.getBounds());
-    })
-    .catch(error => console.error('Error loading GeoJSON:', error));
-</script>
+<script src="carte_index.js"></script>
 
 
 
