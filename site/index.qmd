@@ -2,6 +2,18 @@
 title: "Bienvenue dans Mitan"
 ---
 
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #map { height: 100vh; }
+  </style>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+</head>
+
 __Mitan__, le _milieu_ en occitan, est une plateforme dédiée à __l'exploration__ et au 
 __suivi__ du __patrimoine forestier__ des communes françaises. 
 
@@ -16,91 +28,33 @@ Plus qu'un simple outil de suivi, Mitan se veut un __espace d'échange et de com
 
 ## Comment démarrer ?
 
-* Vous trouverez dans la barre de navigation en haut un __champ de recherche__. 
+* Vous trouverez la liste des dommunes disponibles ci-dessous. 
 
-* __Tapez le nom de votre commune__ pour trouver sa page.
+* __Tapez le nom de votre commune__ pour trouver sa page. Vous pouvez aussi...
 
+<center>[Voir un exemple](carte.html?commune=19136){.btn .btn-secondary .btn role="button"}</center>
 
-Vous pouvez aussi...
+## Les communes disponibles
 
-<center>[Voir un exemple](87153.html){.btn .btn-secondary .btn role="button"}</center>
-<br>
-<center>[Voir la liste des communes disponibles](communes.html){.btn .btn-secondary .btn role="button"}</center>
-<br>
+<table id="communeTable" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Nom</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-Voir les __communes disponibles__ sur la carte et __cliquer__ sur votre commune pour accéder à sa page. 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="communes.js"></script>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaflet Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-    <style>
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
-</head>
+## La carte
 
+Naviguez sur la carte et __cliquez__ sur votre commune pour accéder à sa page. 
 
 <div id="map"></div>
-
-<script>
-var map = L.map('map'); // Initialize map without centering
-
-L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        minZoom: 0,
-        maxZoom: 18,
-        attribution: "IGN-F/Geoportail",
-        tileSize: 256
-    }
-).addTo(map);
-
-// Load GeoJSON file
-fetch("./communes_results/merged_commune.geojson") // Change to actual GeoJSON path
-    .then(response => response.json())
-    .then(data => {
-        var geojsonLayer = L.geoJSON(data, {
-            style: {
-                color: "#f79873",
-                weight: 2,
-                fillOpacity: 0
-            },
-            onEachFeature: function (feature, layer) {
-                if (feature.properties) {
-                    var communeName = feature.properties.NOM || "Unknown";
-                    var communeID = feature.properties.INSEE_COM || "";
-                    var linkHTML = communeID ? `<br><a href="./${communeID}.html" target="_blank">Consulter la page</a>` : "";
-                    
-                    var popupContent = `<strong>${communeName}</strong>${linkHTML}`;
-                    
-                    layer.bindPopup(popupContent);
-
-                    // Highlight effect on hover
-                    layer.on('mouseover', function (e) {
-                        layer.setStyle({ weight: 3, fillOpacity: 0.5 });
-                    });
-
-                    layer.on('mouseout', function () {
-                        layer.setStyle({ weight: 2, fillOpacity: 0 });
-                    });
-
-                    // Click event to show popup
-                    layer.on('click', function (e) {
-                        layer.openPopup();
-                    });
-                }
-            }
-        }).addTo(map);
-        
-        // Fit map bounds to GeoJSON data
-        map.fitBounds(geojsonLayer.getBounds());
-    })
-    .catch(error => console.error('Error loading GeoJSON:', error));
-</script>
+<script src="carte_index.js"></script>
 
 </body>

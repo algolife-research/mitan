@@ -1,27 +1,25 @@
 ---
-title: "Liste des communes disponibles"
-listing: 
-  contents:
-    - "*.qmd"
-    - "!index.qmd"
-    - "!communes.qmd"
-    - "!soutien.qmd"
-    - "!foret-score.qmd"
-    - "!mentions.qmd"
-    - "!details.qmd"
-    - "!dev.qmd"
-    - "!404.qmd"
-  type: table
-  fields: [title]
-  field-display-names:
-    title: "Communes"
-  sort-ui: false
-  filter-ui: [title]
-
-format:
-  html:
-    include-in-header:
-      - text: <script>window.onload = function() {document.getElementByClass('search form-control').placeholder = 'YOLO';};</script>
-
+title: "Rechercher une commune"
+format: html
 ---
 
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+  <table id="communeTable" class="display" style="width:100%">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Nom</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="communes.js"></script>
+
+</body>
