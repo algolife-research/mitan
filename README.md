@@ -5,27 +5,13 @@ using satellite imagery at the community level.
 
 ## Workflow
 
-For a given community:
+For a given area of interest:
 
-- Get data from Sentinel-Hub: NDVI time series
-- Detect forest perturbations
-- Process results
-- Auto-generate website page
+- Get data from Sentinel-Hub: Sentinel-2 satellite, get NDVI time series
+- Dat Processing: clear-cut / forest fire detection, formatting, BDForêt preprocessing
+- Export data to mitan_data repository
+- Generate website using Quarto
 
-## Roadmap
+## Deployment
 
-#### Forest perturbation detection
-
-- Handle water proximity
-- Handle small holes
-- Use optimal local threshold
-
-#### Processing
-
-- get CR per year
-- get CR dataframe function
-
-#### App
-
-- display map over time
-- 
+[https://aumitan.com](https://aumitan.com)
