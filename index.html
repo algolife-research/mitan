@@ -98,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./communes.html"> 
-<span class="menu-text">Communes Disponibles</span></a>
+<span class="menu-text">Chercher une Commune</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./foret-score.html"> 
@@ -140,34 +140,38 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    #map { height: 100vh; }
-  </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<p><link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"></p>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">
 
 <p><strong>Mitan</strong>, le <em>milieu</em> en occitan, est une plateforme dédiée à <strong>l’exploration</strong> et au <strong>suivi</strong> du <strong>patrimoine forestier</strong> des communes françaises.</p>
 <center>
 <img src="./assets/LogoMitanRect.png" width="242px">
 </center>
 <p><br></p>
-<p>En utilisant des <strong>données satellitaires</strong> régulières, Mitan détecte et quantifie en temps quasi-réel les <strong>perturbations</strong> subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.</p>
+<p>En utilisant des <strong>données satellitaires</strong> régulières, Mitan détecte et quantifie régulièrement les <strong>perturbations</strong> subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.</p>
 <p>Plus qu’un simple outil de suivi, Mitan se veut un <strong>espace d’échange et de compréhension</strong>. Il peut être utilisé par citoyens, chercheurs et gestionnaires des milieux naturels pour réfléchir ensemble à notre rapport au milieu environnant, prendre des décisions face aux données et trouver <strong>le juste milieu</strong>.</p>
 <section id="comment-démarrer" class="level2">
 <h2 class="anchored" data-anchor-id="comment-démarrer">Comment démarrer ?</h2>
 <ul>
-<li><p>Vous trouverez la liste des dommunes disponibles ci-dessous.</p></li>
-<li><p><strong>Tapez le nom de votre commune</strong> pour trouver sa page. Vous pouvez aussi…</p></li>
+<li><p>Vous trouverez la <strong>liste ou carte des communes</strong> disponibles <strong>ci-dessous</strong></p></li>
+<li><p>Vous pouvez aussi <strong>Consulter des exemples</strong>…</p></li>
 </ul>
 <center>
-<a href="carte.html?commune=19136" class="btn btn-secondary" role="button">Voir un exemple</a>
+<a href="carte.html?commune=19136" class="btn btn-secondary" role="button">Limousin - Plateau de Millevaches (Meymac)</a>
 </center>
-</section>
-<section id="les-communes-disponibles" class="level2">
-<h2 class="anchored" data-anchor-id="les-communes-disponibles">Les communes disponibles</h2>
+<br>
+<center>
+<a href="carte.html?commune=19136" class="btn btn-secondary" role="button">Alpes - Chartreuse (Saint-Pierre-de-Chartreuse)</a>
+</center>
+<br>
+<center>
+<a href="carte.html?commune=19136" class="btn btn-secondary" role="button">Landes (La Teste-de-Buch)</a>
+</center>
+<p><br></p>
+<p><br></p>
 <table id="communeTable" class="display" style="width:100%">
 <thead>
 <tr>
@@ -182,6 +186,9 @@ Nom
 <tbody>
 </tbody>
 </table>
+<div id="loading">
+Chargement des données…
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="communes.js"></script>
@@ -626,7 +633,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p><a href="./details.html">Plus d’informations sur les données</a> | <a href="./mentions.html">Mentions légales</a></p>
+<p>Ce site est optimisé pour une navigation sur ordinateur. Dernière mise-à-jour : mars 2025 | <a href="./details.html">Détails sur les données</a> | <a href="./mentions.html">Mentions légales</a></p>
 </div>
     <div class="nav-footer-right">
       &nbsp;

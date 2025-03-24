@@ -39,42 +39,35 @@
     "href": "details.html#comment-est-calculé-le-forêt-score",
     "title": "Détails",
     "section": "Comment est calculé le Forêt-Score?",
-    "text": "Comment est calculé le Forêt-Score?\n\nComposantes du score\nLe score est basé sur quatre variables clés :\nTaux de boisement\nReprésente la proportion de la surface forestière par rapport à la surface totale d’un territoire. Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.\nÉchelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).\nTaux de coupes rases\nIndique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.\nÉchelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).\nTaux de coupes en espaces à haute valeur environnementale\nMesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.) ayant subi des coupes rases.\nÉchelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).\nTaux de monocultures\nCorrespond à la proportion approximative de forêt plantée après exploitation ou déforestation. Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.\nÉchelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).\n\n\nCalcul du Forêt Score\nChaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).\nLe score final est le plus bas des quatre scores obtenus.\nExemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt Score sera E."
+    "text": "Comment est calculé le Forêt-Score?\n\nComposantes du score\nLe score est basé sur deux variables :\nTaux de boisement\nReprésente la proportion de la surface forestière par rapport à la surface totale d’un territoire. Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.\nÉchelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).\nTaux de coupes rases\nIndique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.\nÉchelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).\nLe score sera bientôt enrichi par ces deux variables :\n[A VENIR] Taux de coupes en espaces à haute valeur environnementale\nMesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.) ayant subi des coupes rases.\nÉchelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).\n[A VENIR] Taux de monocultures\nCorrespond à la proportion approximative de forêt plantée après exploitation ou déforestation. Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.\nÉchelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).\n\n\nCalcul du Forêt Score\nChaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).\nLe score final est le plus bas des scores obtenus à chaque composante.\nExemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt-Score sera E."
   },
   {
     "objectID": "carte.html",
     "href": "carte.html",
     "title": "Ma commune",
     "section": "",
-    "text": "Cliquez sur une zone forestière pour obtenir plus d’informations.\n\n\nLes perturbations, en rouge, sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente. Elles sont principalement expliquées par des coupes rases.\n\n\n\n\n\nÀ savoir\n\n\nComme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.\n\n\nNous vous invitons à consulter la page Détails pour en apprendre plus sur les limites de la classification des types de forêts ainsi que de la détection des perturbations.\n\n\nNos recommandations\n\n\nIl est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.\n\n\nBien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision.\n\n\nSource des données\n\n\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\n\n\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\n\n\nDonnées satellite: Copernicus ( satellite Sentinel 2 ) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\n\n\nFond de carte: IGN-F / Geoportail.\n\n\nPerturbations et calculs associés – Algorithme maison sous Licence CC-BY-SA"
+    "text": "Utilisation\n\n\n\nCliquez sur une zone forestière pour obtenir plus d’informations.\n\n\nCliquez sur une année du graphique pour filtrer les perturbations sur la carte.\n\n\n\n\n\nÀ savoir\n\n\n\nLes perturbations, en rouge, sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente. Elles sont principalement expliquées par des coupes rases.\n\n\nLe Forêt-Score est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs critères liés à la gestion forestière, aux pratiques d’exploitation et à la préservation de la biodiversité.\n\n\nComme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.\n\n\nIl est toujours judicieux de se questionner face à des données. Nous vous invitons à consulter la page Détails pour en apprendre plus sur les limites de la classification des types de forêts ainsi que de la détection des perturbations.\n\n\nBien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision. Elles reposent en effet sur des processus automatisés qui peuvent les rendre approximatives.\n\n\n\nSources\n\n\n\nAnnotation des forêts: BDForêt® V2 sous Licence ETALAB-Licence-Ouverte-v2.0\n\n\nAltitudes: Service Géoplateforme de calcul altimétrique sous Licence ETALAB-Licence-Ouverte-v2.0\n\n\nDonnées satellite: Copernicus (satellite Sentinel 2) obtenues par Sentinel-Hub, sous Licence CC-BY-SA\n\n\nFond de carte: IGN-F / Geoportail.\n\n\nPerturbations et calculs associés – S. Mermoz et al. sous licence Licence CC-BY-NC, et algorithme maison sous Licence CC-BY-SA"
   },
   {
     "objectID": "communes.html",
     "href": "communes.html",
     "title": "Rechercher une commune",
     "section": "",
-    "text": "Code\n\n\nNom"
+    "text": "Code\n\n\nNom\n\n\n\n\n\n\n\nChargement des données…"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Bienvenue dans Mitan",
     "section": "",
-    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises.\nEn utilisant des données satellitaires régulières, Mitan détecte et quantifie en temps quasi-réel les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de compréhension. Il peut être utilisé par citoyens, chercheurs et gestionnaires des milieux naturels pour réfléchir ensemble à notre rapport au milieu environnant, prendre des décisions face aux données et trouver le juste milieu."
+    "text": "Mitan, le milieu en occitan, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises.\nEn utilisant des données satellitaires régulières, Mitan détecte et quantifie régulièrement les perturbations subies par les écosystèmes forestiers, qu’il s’agisse de changements liés aux conditions climatiques, à l’exploitation des ressources ou à d’autres impacts humains.\nPlus qu’un simple outil de suivi, Mitan se veut un espace d’échange et de compréhension. Il peut être utilisé par citoyens, chercheurs et gestionnaires des milieux naturels pour réfléchir ensemble à notre rapport au milieu environnant, prendre des décisions face aux données et trouver le juste milieu."
   },
   {
     "objectID": "index.html#comment-démarrer",
     "href": "index.html#comment-démarrer",
     "title": "Bienvenue dans Mitan",
     "section": "Comment démarrer ?",
-    "text": "Comment démarrer ?\n\nVous trouverez la liste des dommunes disponibles ci-dessous.\nTapez le nom de votre commune pour trouver sa page. Vous pouvez aussi…\n\n\nVoir un exemple"
-  },
-  {
-    "objectID": "index.html#les-communes-disponibles",
-    "href": "index.html#les-communes-disponibles",
-    "title": "Bienvenue dans Mitan",
-    "section": "Les communes disponibles",
-    "text": "Les communes disponibles\n\n\n\n\nCode\n\n\nNom"
+    "text": "Comment démarrer ?\n\nVous trouverez la liste ou carte des communes disponibles ci-dessous\nVous pouvez aussi Consulter des exemples…\n\n\nLimousin - Plateau de Millevaches (Meymac)\n\n\n\nAlpes - Chartreuse (Saint-Pierre-de-Chartreuse)\n\n\n\nLandes (La Teste-de-Buch)\n\n\n\n\n\n\n\nCode\n\n\nNom\n\n\n\n\n\n\n\nChargement des données…"
   },
   {
     "objectID": "index.html#la-carte",

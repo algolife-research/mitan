@@ -98,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./communes.html"> 
-<span class="menu-text">Communes Disponibles</span></a>
+<span class="menu-text">Chercher une Commune</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./foret-score.html"> 
@@ -171,25 +171,26 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="comment-est-calculé-le-forêt-score">Comment est calculé le Forêt-Score?</h2>
 <section id="composantes-du-score" class="level3">
 <h3 class="anchored" data-anchor-id="composantes-du-score">Composantes du score</h3>
-<p>Le score est basé sur quatre variables clés :</p>
+<p>Le score est basé sur deux variables :</p>
 <p><strong>Taux de boisement</strong></p>
 <p>Représente la proportion de la surface forestière par rapport à la surface totale d’un territoire. Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.</p>
 <p>Échelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).</p>
 <p><strong>Taux de coupes rases</strong></p>
 <p>Indique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.</p>
 <p>Échelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).</p>
-<p><strong>Taux de coupes en espaces à haute valeur environnementale</strong></p>
+<p>Le score sera bientôt enrichi par ces deux variables :</p>
+<p><strong>[A VENIR] Taux de coupes en espaces à haute valeur environnementale</strong></p>
 <p>Mesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.) ayant subi des coupes rases.</p>
 <p>Échelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).</p>
-<p><strong>Taux de monocultures</strong></p>
+<p><strong>[A VENIR] Taux de monocultures</strong></p>
 <p>Correspond à la proportion approximative de forêt plantée après exploitation ou déforestation. Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.</p>
 <p>Échelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).</p>
 </section>
 <section id="calcul-du-forêt-score" class="level3">
 <h3 class="anchored" data-anchor-id="calcul-du-forêt-score">Calcul du Forêt Score</h3>
 <p>Chaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).</p>
-<p><strong>Le score final est le plus bas des quatre scores obtenus.</strong></p>
-<p>Exemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt Score sera E.</p>
+<p><strong>Le score final est le plus bas des scores obtenus à chaque composante.</strong></p>
+<p>Exemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt-Score sera E.</p>
 
 
 </section>
@@ -623,7 +624,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p><a href="./details.html">Plus d’informations sur les données</a> | <a href="./mentions.html">Mentions légales</a></p>
+<p>Ce site est optimisé pour une navigation sur ordinateur. Dernière mise-à-jour : mars 2025 | <a href="./details.html">Détails sur les données</a> | <a href="./mentions.html">Mentions légales</a></p>
 </div>
     <div class="nav-footer-right">
       &nbsp;

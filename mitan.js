@@ -75,8 +75,8 @@ async function loadGeoJSON(url) {
     const aoiData = await loadGeoJSON(geojsonUrl);
     const aoiLayer = L.geoJSON(aoiData, {
         style: {
-            color: '#ffffff88',
-            weight: 1.2,
+            color: '#ffffffaa',
+            weight: 1.5,
             fillOpacity: 0
         },
         pane: "pane1"
@@ -146,14 +146,14 @@ async function loadGeoJSON(url) {
       .then(naturaData => {
         const naturaLayer = L.geoJSON(naturaData, {
           style: {
-            color: '#66bb6a',
+            color: '#AAFF00',
             weight: 2,
-            fillColor: '#a5d6a7',
+            fillColor: '#AAFF00',
             fillOpacity: 0.2
           },
           pane: "pane1"
         });
-        layerControl.addOverlay(naturaLayer, '<span style="display:inline-block; width:12px; height:12px; background-color:#a5d6a7; margin-right:6px; border:1px solid #555;"></span>Natura 2000 - Habitat');
+        layerControl.addOverlay(naturaLayer, '<span style="display:inline-block; width:12px; height:12px; background-color:#AAFF00; margin-right:6px; border:1px solid #555;"></span>Natura 2000 - Habitat');
       })
       .catch(err => console.error(err));
 
@@ -165,14 +165,14 @@ async function loadGeoJSON(url) {
       .then(naturaData => {
         const naturaLayer2 = L.geoJSON(naturaData, {
           style: {
-            color: '#66bb6a',
+            color: '#7DF9FF',
             weight: 2,
-            fillColor: '#a5d6a7',
+            fillColor: '#7DF9FF',
             fillOpacity: 0.2
           },
           pane: "pane1"
         });
-        layerControl.addOverlay(naturaLayer2, '<span style="display:inline-block; width:12px; height:12px; background-color:#a5d6a7; margin-right:6px; border:1px solid #555;"></span>Natura 2000 - Oiseaux');
+        layerControl.addOverlay(naturaLayer2, '<span style="display:inline-block; width:12px; height:12px; background-color:#7DF9FF; margin-right:6px; border:1px solid #555;"></span>Natura 2000 - Oiseaux');
       })
       .catch(err => console.error(err));
 
@@ -184,14 +184,14 @@ async function loadGeoJSON(url) {
       .then(naturaData => {
         const naturaLayer3 = L.geoJSON(naturaData, {
           style: {
-            color: '#66bb6a',
+            color: '#E4D00A',
             weight: 2,
-            fillColor: '#a5d6a7',
+            fillColor: '#E4D00A',
             fillOpacity: 0.2
           },
           pane: "pane1"
         });
-        layerControl.addOverlay(naturaLayer3, '<span style="display:inline-block; width:12px; height:12px; background-color:#a5d6a7; margin-right:6px; border:1px solid #555;"></span>ZNIEFF1');
+        layerControl.addOverlay(naturaLayer3, '<span style="display:inline-block; width:12px; height:12px; background-color:#E4D00A; margin-right:6px; border:1px solid #555;"></span>ZNIEFF1');
       })
       .catch(err => console.error(err));
       
@@ -203,14 +203,14 @@ async function loadGeoJSON(url) {
       .then(naturaData => {
         const naturaLayer4 = L.geoJSON(naturaData, {
           style: {
-            color: '#66bb6a',
+            color: '#DFFF00',
             weight: 2,
-            fillColor: '#a5d6a7',
+            fillColor: '#DFFF00',
             fillOpacity: 0.2
           },
           pane: "pane1"
         });
-        layerControl.addOverlay(naturaLayer4, '<span style="display:inline-block; width:12px; height:12px; background-color:#a5d6a7; margin-right:6px; border:1px solid #555;"></span>ZNIEFF2');
+        layerControl.addOverlay(naturaLayer4, '<span style="display:inline-block; width:12px; height:12px; background-color:#DFFF00; margin-right:6px; border:1px solid #555;"></span>ZNIEFF2');
       })
       .catch(err => console.error(err));
 
@@ -362,8 +362,8 @@ async function loadGeoJSON(url) {
       <b>Surface de la commune :</b>  ${Math.round(surfaceTotal).toLocaleString()} hectares<br>
       <b>Surface boisée :</b>  ${Math.round(surfaceBoisee).toLocaleString()} hectares<br>
       <b>Taux de boisement :</b> ${tauxBoisement.toFixed(2)} %<br>
-      <b>Taux de coupes (surface) :</b> ${coupesHa.toFixed(3)} hectares par an<br>
-      <b>Taux de coupes (pourcentage de forêt) :</b> ${coupesPct.toFixed(3)} % par an
+      <b>Coupes / Perturbations (surface) :</b> ${coupesHa.toFixed(3)} hectares par an<br>
+      <b>Coupes / Perturbations (% forêt) :</b> ${coupesPct.toFixed(3)} % par an
     `;
 
     document.getElementById("foret-score-box").style.display = "flex";

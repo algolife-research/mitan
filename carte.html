@@ -71,7 +71,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta property="og:title" content="Ma commune – Mitan">
-<meta property="og:description" content="">
 <meta property="og:site_name" content="Mitan">
 </head>
 
@@ -98,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./communes.html"> 
-<span class="menu-text">Communes Disponibles</span></a>
+<span class="menu-text">Chercher une Commune</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./foret-score.html"> 
@@ -150,9 +149,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://unpkg.com/georaster"></script>
 <script src="https://unpkg.com/georaster-layer-for-leaflet"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-      #map { height: 100vh; }
-    </style>
 
 
 <div id="foret-score-box" style="
@@ -182,37 +178,42 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <script src="mitan.js"></script>
 <p><br></p>
+<h3 class="anchored">
+Utilisation
+</h3>
 <ul>
 <li>
 <strong>Cliquez</strong> sur une <strong>zone forestière</strong> pour obtenir plus d’informations.
 </li>
 <li>
-Les <strong>perturbations</strong>, en rouge, sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente. Elles sont principalement expliquées par des <strong>coupes rases</strong>.
+<strong>Cliquez</strong> sur une <strong>année du graphique</strong> pour filtrer les perturbations sur la carte.
 </li>
 </ul>
 <p><br></p>
 <section>
-<h2 class="anchored">
-À savoir
-</h2>
-<p>
-Comme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.
-</p>
-<p>
-Nous vous invitons à consulter la page <a href="details.html">Détails</a> pour en apprendre plus sur les limites de la classification des types de forêts ainsi que de la détection des perturbations.
-</p>
 <h3 class="anchored">
-Nos recommandations
+À savoir
 </h3>
-<p>
-Il est toujours judicieux de vérifier les données sur plusieurs sites, notamment dans des communes aux caractéristiques environnementales différentes de celles où le modèle a été conçu.
-</p>
-<p>
-Bien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision.
-</p>
-<h2 class="anchored">
-Source des données
-</h2>
+<ul>
+<li>
+Les <strong>perturbations</strong>, en rouge, sont des changements majeurs dans un indice de végétation par rapport au même mois de l’année précédente. Elles sont principalement expliquées par des <strong>coupes rases</strong>.
+</li>
+<li>
+Le <strong>Forêt-Score</strong> est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs <strong>critères</strong> liés à la <strong>gestion forestière</strong>, aux <strong>pratiques d’exploitation</strong> et à la <strong>préservation de la biodiversité</strong>.
+</li>
+<li>
+Comme pour toutes les données, il est important de connaître leurs limites afin de mieux comprendre ce qu’elles peuvent vraiment nous révéler.
+</li>
+<li>
+Il est toujours judicieux de se questionner face à des données. Nous vous invitons à consulter la page <a href="details.html">Détails</a> pour en apprendre plus sur les limites de la classification des types de forêts ainsi que de la détection des perturbations.
+</li>
+<li>
+Bien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision. Elles reposent en effet sur des processus automatisés qui peuvent les rendre approximatives.
+</li>
+</ul>
+<h3 class="anchored">
+Sources
+</h3>
 <ul>
 <li>
 <strong>Annotation des forêts</strong>: <a href="https://geoservices.ign.fr/bdforet" target="_blank" rel="noopener noreferrer">BDForêt® V2</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank" rel="noopener noreferrer">Licence ETALAB-Licence-Ouverte-v2.0</a>
@@ -221,13 +222,13 @@ Source des données
 <strong>Altitudes</strong>: <a href="https://geoservices.ign.fr/services-geoplateforme-altimetrie" target="_blank" rel="noopener noreferrer">Service Géoplateforme de calcul altimétrique</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank" rel="noopener noreferrer">Licence ETALAB-Licence-Ouverte-v2.0</a>
 </li>
 <li>
-<strong>Données satellite</strong>: Copernicus ( <a href="https://sentiwiki.copernicus.eu/web/s2-mission" target="_blank" rel="noopener noreferrer">satellite Sentinel 2</a> ) obtenues par <a href="https://www.sentinel-hub.com/" target="_blank" rel="noopener noreferrer">Sentinel-Hub</a>, sous <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-SA</a>
+<strong>Données satellite</strong>: Copernicus (<a href="https://sentiwiki.copernicus.eu/web/s2-mission" target="_blank" rel="noopener noreferrer">satellite Sentinel 2</a>) obtenues par <a href="https://www.sentinel-hub.com/" target="_blank" rel="noopener noreferrer">Sentinel-Hub</a>, sous <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-SA</a>
 </li>
 <li>
 <strong>Fond de carte</strong>: IGN-F / Geoportail.
 </li>
 <li>
-<strong>Perturbations et calculs associés</strong> – Algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-SA</a>
+<strong>Perturbations et calculs associés</strong> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank" rel="noopener noreferrer">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-NC</a>, et algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-SA</a>
 </li>
 </ul>
 </section>
@@ -663,7 +664,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p><a href="./details.html">Plus d’informations sur les données</a> | <a href="./mentions.html">Mentions légales</a></p>
+<p>Ce site est optimisé pour une navigation sur ordinateur. Dernière mise-à-jour : mars 2025 | <a href="./details.html">Détails sur les données</a> | <a href="./mentions.html">Mentions légales</a></p>
 </div>
     <div class="nav-footer-right">
       &nbsp;
