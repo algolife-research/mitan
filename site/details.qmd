@@ -42,7 +42,7 @@ La détection des perturbations majeures de l'écosystème forestier, même si e
 
 ### Composantes du score
 
-Le score est basé sur quatre variables clés :
+Le score est basé sur deux variables :
 
 __Taux de boisement__
 
@@ -57,14 +57,17 @@ Indique la part de la forêt soumise à des coupes rases (extraction totale du c
 
 Échelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).
 
-__Taux de coupes en espaces à haute valeur environnementale__
+
+Le score sera bientôt enrichi par ces deux variables :
+
+__[A VENIR] Taux de coupes en espaces à haute valeur environnementale__
 
 Mesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.)
 ayant subi des coupes rases.
 
 Échelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).
 
-__Taux de monocultures__
+__[A VENIR] Taux de monocultures__
 
 Correspond à la proportion approximative de forêt plantée après exploitation ou déforestation.
 Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.
@@ -76,9 +79,9 @@ Un bon équilibre entre régénération naturelle et plantation contrôlée est 
 
 Chaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).
 
-__Le score final est le plus bas des quatre scores obtenus.__
+__Le score final est le plus bas des scores obtenus à chaque composante.__
 
 Exemple :
 Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation,
-→ Le Forêt Score sera E.
+→ Le Forêt-Score sera E.
 
