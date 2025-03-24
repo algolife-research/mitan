@@ -11,7 +11,7 @@
     "href": "foret-score.html#forêt-score-sur-le-territoire-du-pnr-millevaches",
     "title": "Forêt-Score - Un indicateur de santé et résilience des forêts",
     "section": "Forêt-Score sur le territoire du PNR Millevaches",
-    "text": "Forêt-Score sur le territoire du PNR Millevaches\nCliquez sur une commune pour plus d’informations.\n\n\n\n\n\n\n\nInterprétation du Forêt-Score\n\n\n\n\n\n\n\n\nScore\nCatégorie\nSignification\n\n\n\n\n\nA (Excellent)\nForêt globalement bien gérée et résiliente\n\n\n\nB (Bon)\nBonne gestion, mais avec des axes d’amélioration dans la gestion à considérer\n\n\n\nC (Moyen)\nGestion moyenne et équilibre fragile, vigilance nécessaire pour éviter des dérives, présence de risques écologiques\n\n\n\nD (Médiocre)\nPression excessive sur la forêt, impact sur l’environnement et l’avenir de la filière\n\n\n\nE (Critique)\nForêt surexploitée ou gravement menacée, perte de valeur durable sans action rapide\n\n\n\nLes détails concernant le calcul du score peuvent être retrouvés sur cette page. En résumé, il dépend de quatre composantes : Taux de boisement, Taux de coupes forestières, Taux de coupes en espaces à haute valeur environnementale, Taux de monocultures."
+    "text": "Forêt-Score sur le territoire du PNR Millevaches\n\n\nInterprétation du Forêt-Score\n\n\n\n\n\n\n\n\nScore\nCatégorie\nSignification\n\n\n\n\n\nA (Excellent)\nForêt globalement bien gérée et résiliente\n\n\n\nB (Bon)\nBonne gestion, mais avec des axes d’amélioration dans la gestion à considérer\n\n\n\nC (Moyen)\nGestion moyenne et équilibre fragile, vigilance nécessaire pour éviter des dérives, présence de risques écologiques\n\n\n\nD (Médiocre)\nPression excessive sur la forêt, impact sur l’environnement et l’avenir de la filière\n\n\n\nE (Critique)\nForêt surexploitée ou gravement menacée, perte de valeur durable sans action rapide\n\n\n\nLes détails concernant le calcul du score peuvent être retrouvés ci-dessous. En résumé, il dépend de quatre composantes : Taux de boisement, Taux de coupes forestières, Taux de coupes en espaces à haute valeur environnementale, Taux de monocultures.\n\n\nComposantes du score\nLe score est basé sur deux variables :\nTaux de boisement\nReprésente la proportion de la surface forestière par rapport à la surface totale d’un territoire. Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.\nÉchelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).\nTaux de coupes rases\nIndique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.\nÉchelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).\nLe score sera bientôt enrichi par ces deux variables :\n[A VENIR] Taux de coupes en espaces à haute valeur environnementale\nMesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.) ayant subi des coupes rases.\nÉchelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).\n[A VENIR] Taux de monocultures\nCorrespond à la proportion approximative de forêt plantée après exploitation ou déforestation. Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.\nÉchelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).\n\n\nCalcul du Forêt Score\nChaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).\nLe score final est le plus bas des scores obtenus à chaque composante.\nExemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt-Score sera E."
   },
   {
     "objectID": "mentions.html",
@@ -67,14 +67,7 @@
     "href": "index.html#comment-démarrer",
     "title": "Bienvenue !",
     "section": "Comment démarrer ?",
-    "text": "Comment démarrer ?\n\nCherchez votre commune ! Vous trouverez la liste ou carte des communes disponibles ci-dessous\nVous pouvez aussi Consulter des exemples…\n\n\nLimousin - Plateau de Millevaches (Meymac)\n\n\n\nAlpes - Chartreuse (Saint-Pierre-de-Chartreuse)\n\n\n\nLandes (La Teste-de-Buch)\n\n\n\n\n\n\n\nCode\n\n\nNom\n\n\n\n\n\n\n\nChargement des données…"
-  },
-  {
-    "objectID": "index.html#la-carte",
-    "href": "index.html#la-carte",
-    "title": "Bienvenue !",
-    "section": "La carte",
-    "text": "La carte\nNaviguez sur la carte, zoomez et cliquez sur votre commune pour accéder à sa page."
+    "text": "Comment démarrer ?\n\nCherchez votre commune ! Vous trouverez la liste des communes disponibles ci-dessous\nVous pouvez aussi Consulter des exemples…\n\n\nLimousin - Plateau de Millevaches (Meymac)\n\n\n\nAlpes - Chartreuse (Saint-Pierre-de-Chartreuse)\n\n\n\nLandes (La Teste-de-Buch)\n\n\n\n\n\n\n\nCode\n\n\nNom\n\n\n\n\n\n\n\nChargement des données…"
   },
   {
     "objectID": "soutien.html",
