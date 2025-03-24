@@ -2,7 +2,7 @@
 $primary: #44644c; //44644c, c43926
 $primary-light: #44644c; //44644c, c43926
 $secondary: #f79873;// #d38b5d;
-$light-color: #f4ece2;
+$light-color: #fcf8f2dd;
 
 $link-color: $secondary;
 $navbar-bg: $primary;
@@ -38,4 +38,60 @@ h1, h2, h3, h4, h5, h6 {
 .btn-secondary:hover {
   color: #fff;
   background-color: #f5865b;
+}
+
+
+#loading {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  background: $light-color;
+  padding: 15px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+#map { 
+  height: 100vh;
+}
+
+#foret-score-box {
+    position: relative;
+    background-color: $light-color;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    max-width: 800px;
+    font-family: sans-serif;
+    font-size: 14px;
+    display: none;
+}
+
+.info-box {
+  border: 1px solid #ccc;       /* Light gray border */
+  background-color: $light-color; 
+  padding: 1rem;               /* Inner padding */
+  margin-bottom: 1rem;         /* Spacing between boxes */
+  border-radius: 4px;          /* Rounded corners */
+}
+
+.info-box h3 {
+  margin-top: 0;               /* Remove default top margin */
+  margin-bottom: 0.5rem;       /* Small space below heading */
+}
+
+.info-box ul {
+  margin: 0;                   /* Remove default margins */
+  padding-left: 1.2rem;        /* Indent bullets a bit */
+}
+
+.info-box li {
+  margin-bottom: 0.5rem;       /* Spacing between list items */
 }
