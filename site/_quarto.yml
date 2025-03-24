@@ -17,11 +17,12 @@ website:
       - href: index.qmd
         text: Accueil
       - href: communes.qmd
-        text: Communes Disponibles
+        text: Chercher une Commune
       - href: foret-score.qmd
         text: Le Forêt-Score
   page-footer: |
-    [Plus d'informations sur les données](./details.html) |
+    Ce site est optimisé pour une navigation sur ordinateur. Dernière mise-à-jour : mars 2025 |
+    [Détails sur les données](./details.html) |
     [Mentions légales](./mentions.html)
 
 format:
@@ -33,6 +34,9 @@ format:
       - custom.scss
     toc: false
     minify: true
+    grid:
+      margin-width: 100px
+      body-width: 800px
   
 resources:
   - CNAME
