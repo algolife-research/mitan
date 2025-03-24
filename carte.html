@@ -151,22 +151,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-<div id="foret-score-box" style="
-    position: relative;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 1000;
-    max-width: 800px;
-    font-family: sans-serif;
-    font-size: 14px;
-    display: none;
-">
+<div id="foret-score-box">
 <img id="foret-score-img" src="" alt="Forêt Score" style="width: 400px; height: 64px;">
 <div id="foret-score-details">
 
@@ -178,19 +163,20 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <script src="mitan.js"></script>
 <p><br></p>
+<div class="info-box">
 <h3 class="anchored">
 Utilisation
 </h3>
 <ul>
 <li>
-<strong>Cliquez</strong> sur une <strong>zone forestière</strong> pour obtenir plus d’informations.
+Cliquez sur une zone forestière pour obtenir des informations.
 </li>
 <li>
-<strong>Cliquez</strong> sur une <strong>année du graphique</strong> pour filtrer les perturbations sur la carte.
+Cliquez sur une année du graphique pour filtrer les perturbations.
 </li>
 </ul>
-<p><br></p>
-<section>
+</div>
+<div class="info-box">
 <h3 class="anchored">
 À savoir
 </h3>
@@ -211,6 +197,11 @@ Il est toujours judicieux de se questionner face à des données. Nous vous invi
 Bien qu’elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une validation manuelle pour plus de précision. Elles reposent en effet sur des processus automatisés qui peuvent les rendre approximatives.
 </li>
 </ul>
+</div>
+<div class="info-box">
+<h3 class="anchored">
+Autres informations
+</h3>
 <h3 class="anchored">
 Sources
 </h3>
@@ -231,7 +222,7 @@ Sources
 <strong>Perturbations et calculs associés</strong> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank" rel="noopener noreferrer">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-NC</a>, et algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-SA</a>
 </li>
 </ul>
-</section>
+</div>
 
 
 
