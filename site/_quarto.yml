@@ -12,7 +12,7 @@ website:
   navbar:
     title: false
     logo: assets/LogoMitanRect.png
-    search: true
+    search: false
     left:
       - href: index.qmd
         text: Accueil
@@ -42,7 +42,4 @@ resources:
   - CNAME
   - "comm_list.csv"
   - "a-com2022.json"
-
-language: 
-  search-text-placeholder: "Rechercher une commune"
 
