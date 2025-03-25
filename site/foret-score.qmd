@@ -14,61 +14,61 @@ Le **Forêt-Score** est un indicateur destiné à évaluer la qualité et la dur
 
 ## Forêt-Score sur le territoire du PNR Millevaches
 
-Cliquez sur une commune pour plus d'informations.
+<!-- Cliquez sur une commune pour plus d'informations. -->
 
 ```{r setup, include=FALSE}
-library(leaflet)
-library(sf)
-library(dplyr)
-library(RColorBrewer)
-communes <- st_read("./a-com2022.json", quiet = TRUE)
-indicators <- read.csv("./Coupes_PNR_Millevaches.csv") %>% mutate(commune_code_insee = as.character(commune_code_insee))
-communes <- communes %>% 
-  left_join(indicators, by = join_by(codgeo == commune_code_insee)) %>%
-  filter(!is.na(taux_coupes_pc))
+# library(leaflet)
+# library(sf)
+# library(dplyr)
+# library(RColorBrewer)
+# communes <- st_read("./a-com2022.json", quiet = TRUE)
+# indicators <- read.csv("./Coupes_PNR_Millevaches.csv") %>% mutate(commune_code_insee = as.character(commune_code_insee))
+# communes <- communes %>% 
+#   left_join(indicators, by = join_by(codgeo == commune_code_insee)) %>%
+#   filter(!is.na(taux_coupes_pc))
 
 ```
 
 ```{r leaflet-map}
 # Define color palette function
-pal <- colorNumeric(palette = "Spectral", domain = NULL, na.color = "transparent", reverse = TRUE)
-category_colors <- c("A" = "#248B05",  # Green
-                     "B" = "#83CC58",  # Light Green
-                     "C" = "#F5E42A",  # Yellow
-                     "D" = "#FFC019",  # Orange
-                     "E" = "#FA6243")  # Red
-pal <- colorFactor(palette = category_colors, domain = names(category_colors), na.color = "transparent")
-labs <- lapply(seq(nrow(communes)), function(i) {
-      htmltools::HTML(paste0(
-        "<div style='text-align: center;'>",
-        "<strong>", communes$Nom[i], "</strong><br>",
-        "<img src='assets/Foret-Score-", communes$foret_score[i], ".svg' width='100px' height='100px'>",
-      "<br><strong>Taux de boisement</strong> : ", round(communes$taux_boisement_pc[i], 2), " %",
-      "<br><strong>Coupes rases</strong> : ", round(communes$taux_coupes_pc[i], 2), " % par an",
-      "<br><strong>Coupes rases en espaces protégés</strong> : ", round(communes$taux_coupes_ep_pc[i], 2), " % par an",
-        "</div>"
-      ))
-    })
-
-# Create Leaflet map
-leaflet(communes) %>% 
-  addTiles() %>% 
-  # setView(lng = 2.5, lat = 46.5, zoom = 6) %>%  # Adjust coordinates for your region
-  addPolygons(
-    fillColor = ~pal(foret_score),  # Default indicator
-    fillOpacity = 0.9,
-    color = "white",
-    weight = 1,
-    popup = labs,
-    label = labs,
-    labelOptions = labelOptions(
-      style = list("font-weight" = "bold", "color" = "black"),
-      textsize = "14px",
-      direction = "auto",
-      interactive = TRUE
-    )
-  ) %>%
-  addLegend(pal = pal, values = communes$foret_score, title = "Forêt-Score", opacity = 0.7)
+# pal <- colorNumeric(palette = "Spectral", domain = NULL, na.color = "transparent", reverse = TRUE)
+# category_colors <- c("A" = "#248B05",  # Green
+#                      "B" = "#83CC58",  # Light Green
+#                      "C" = "#F5E42A",  # Yellow
+#                      "D" = "#FFC019",  # Orange
+#                      "E" = "#FA6243")  # Red
+# pal <- colorFactor(palette = category_colors, domain = names(category_colors), na.color = "transparent")
+# labs <- lapply(seq(nrow(communes)), function(i) {
+#       htmltools::HTML(paste0(
+#         "<div style='text-align: center;'>",
+#         "<strong>", communes$Nom[i], "</strong><br>",
+#         "<img src='assets/Foret-Score-", communes$foret_score[i], ".svg' width='100px' height='100px'>",
+#       "<br><strong>Taux de boisement</strong> : ", round(communes$taux_boisement_pc[i], 2), " %",
+#       "<br><strong>Coupes rases</strong> : ", round(communes$taux_coupes_pc[i], 2), " % par an",
+#       "<br><strong>Coupes rases en espaces protégés</strong> : ", round(communes$taux_coupes_ep_pc[i], 2), " % par an",
+#         "</div>"
+#       ))
+#     })
+# 
+# # Create Leaflet map
+# leaflet(communes) %>% 
+#   addTiles() %>% 
+#   # setView(lng = 2.5, lat = 46.5, zoom = 6) %>%  # Adjust coordinates for your region
+#   addPolygons(
+#     fillColor = ~pal(foret_score),  # Default indicator
+#     fillOpacity = 0.9,
+#     color = "white",
+#     weight = 1,
+#     popup = labs,
+#     label = labs,
+#     labelOptions = labelOptions(
+#       style = list("font-weight" = "bold", "color" = "black"),
+#       textsize = "14px",
+#       direction = "auto",
+#       interactive = TRUE
+#     )
+#   ) %>%
+#   addLegend(pal = pal, values = communes$foret_score, title = "Forêt-Score", opacity = 0.7)
 ```
 
 ### Interprétation du Forêt-Score
@@ -81,6 +81,51 @@ leaflet(communes) %>%
 | ![D](./assets/Foret-Score-D.svg){width="100"} | **D** (Médiocre) | Pression excessive sur la forêt, impact sur l’environnement et l’avenir de la filière |
 | ![E](./assets/Foret-Score-E.svg){width="100"} | **E** (Critique) | Forêt surexploitée ou gravement menacée, perte de valeur durable sans action rapide |
 
-Les détails concernant le calcul du score peuvent être retrouvés [sur cette page](./details.html).
-En résumé, il dépend de quatre composantes : Taux de boisement, Taux de coupes forestières,
+Les détails concernant le calcul du score peuvent être retrouvés ci-dessous. En résumé, il dépend de quatre composantes : Taux de boisement, Taux de coupes forestières,
 Taux de coupes en espaces à haute valeur environnementale, Taux de monocultures.
+
+
+### Composantes du score
+
+Le score est basé sur deux variables :
+
+__Taux de boisement__
+
+Représente la proportion de la surface forestière par rapport à la surface totale d’un territoire.
+Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.
+
+Échelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).
+
+__Taux de coupes rases__
+
+Indique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.
+
+Échelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).
+
+
+Le score sera bientôt enrichi par ces deux variables :
+
+__[A VENIR] Taux de coupes en espaces à haute valeur environnementale__
+
+Mesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.)
+ayant subi des coupes rases.
+
+Échelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).
+
+__[A VENIR] Taux de monocultures__
+
+Correspond à la proportion approximative de forêt plantée après exploitation ou déforestation.
+Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.
+
+Échelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).
+
+
+### Calcul du Forêt Score
+
+Chaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).
+
+__Le score final est le plus bas des scores obtenus à chaque composante.__
+
+Exemple :
+Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation,
+→ Le Forêt-Score sera E.

@@ -1,5 +1,5 @@
 ---
-title: "Bienvenue dans Mitan"
+title: "Bienvenue !"
 ---
 
 <head>
@@ -8,35 +8,48 @@ title: "Bienvenue dans Mitan"
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <style>
+    /* Float the logo to the left, add some spacing so text doesn't butt up against it */
+    .logo-dropcap {
+      float: left;
+      width: 120px;      /* Adjust as needed */
+      margin: 0 1rem 1rem 0;
+      height: auto;      /* Maintain aspect ratio */
+    }
+  </style>
 </head>
 
-__Mitan__, le _milieu_, est une plateforme dédiée à __l'exploration__ et au 
-__suivi__ du __patrimoine forestier__ des communes françaises.
 
-<center><img src="./assets/LogoMitanRect.png" width=242px></img></center>
+<body>
+  <p>
+    <img src="./assets/LogoMitanRect.png" alt="Logo Mitan" class="logo-dropcap" />
+    <strong>Mitan</strong>, <em>le milieu</em>, est une plateforme dédiée à 
+    <strong>l'exploration</strong> et au <strong>suivi</strong> du 
+    <strong>patrimoine forestier</strong> des communes françaises.
+    Grâce à des <strong>données satellitaires</strong> régulières, Mitan détecte 
+    et quantifie les <strong>perturbations</strong> du milieu naturel, 
+    qu'elles soient climatiques, liées à l'exploitation des ressources ou autres.
+  </p>
 
-<br>
+  <p>
+    Plus qu'un outil de suivi, Mitan offre un <strong>espace d'échange</strong> 
+    réunissant citoyens, gestionnaires des milieux naturels et chercheurs pour 
+    repenser ensemble notre relation à notre <strong>milieu</strong>, prendre 
+    des décisions informées et trouver <strong>un juste milieu</strong>.
+  </p>
 
-Grâce à des __données satellitaires__ régulières, Mitan détecte et quantifie 
-les __perturbations__ du milieu naturel, qu'elles soient climatiques, 
-liées à l'exploitation des ressources ou autres.
-
-Plus qu'un outil de suivi, Mitan offre un __espace d'échange__ réunissant citoyens, 
-gestionnaires des milieux naturels et chercheurs pour repenser ensemble notre 
-relation à notre __milieu__, prendre des décisions informées et trouver
-__un juste milieu__.
 
 ## Comment démarrer ?
 
-* Cherchez votre commune ! Vous trouverez la __liste ou carte des communes__ disponibles __ci-dessous__ 
+* Cherchez votre commune ! Vous trouverez la __liste des communes__ disponibles __ci-dessous__ 
 
 * Vous pouvez aussi __Consulter des exemples__...
 
 <center>[Limousin - Plateau de Millevaches (Meymac)](carte.html?commune=19136){.btn .btn-secondary role="button"}</center>
 <br>
-<center>[Alpes - Chartreuse (Saint-Pierre-de-Chartreuse)](carte.html?commune=19136){.btn .btn-secondary style="background-color:#6f9685;" role="button"}</center>
+<center>[Alpes - Chartreuse (Saint-Pierre-de-Chartreuse)](carte.html?commune=38442){.btn .btn-secondary style="background-color:#6f9685;" role="button"}</center>
 <br>
-<center>[Landes (La Teste-de-Buch)](carte.html?commune=19136){.btn .btn-secondary role="button"}</center>
+<center>[Landes (La Teste-de-Buch)](carte.html?commune=33529){.btn .btn-secondary role="button"}</center>
 <br>
 
 <br>
@@ -57,12 +70,12 @@ __un juste milieu__.
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="communes.js"></script>
 
-## La carte
+<!-- ## La carte -->
 
-__Naviguez__ sur la carte, __zoomez__ et __cliquez__ sur votre commune 
-pour accéder à sa page. 
+<!-- __Naviguez__ sur la carte, __zoomez__ et __cliquez__ sur votre commune  -->
+<!-- pour accéder à sa page.  -->
 
-<div id="map"></div>
-<script src="carte_index.js"></script>
+<!-- <div id="map"></div> -->
+<!-- <script src="carte_index.js"></script> -->
 
 </body>
