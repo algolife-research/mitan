@@ -160,7 +160,6 @@ async function loadGeoJSON(url) {
         try {
           // 1. Get CR layer value
           try {
-            console.log("Fetching CR layer from:", crUrl);
             const crResponse = await fetchWithTimeout(crUrl, {});
             if (!crResponse.ok) throw new Error(`CR fetch failed: ${crResponse.status}`);
             const crBuffer = await crResponse.arrayBuffer();
@@ -178,11 +177,9 @@ async function loadGeoJSON(url) {
                 const year = 2000 + Math.floor(crValue / 1000);
                 detailedContent += `<b>Perturbation</b>: ${year}<br>`;
               } else {
-                console.log("No valid CR value at coordinates:", crValue);
                 detailedContent += `<b>Perturbation</b>: Non détectée<br>`;
               }
             } else {
-              console.log("Click outside CR raster bounds:", { rasterX, rasterY, width, height });
               detailedContent += `<b>Perturbation</b>: Hors limites<br>`;
             }
           } catch (crError) {
@@ -193,7 +190,6 @@ async function loadGeoJSON(url) {
           // 2. Get altitude from IGN geoservices using GET
           try {
             const altitudeUrl = `https://data.geopf.fr/altimetrie/1.0/calcul/alti/rest/elevation.json?lon=${lng}&lat=${lat}&resource=ign_rge_alti_wld&zonly=true`;
-            console.log("Altitude request URL:", altitudeUrl);
     
             const altitudeResponse = await fetchWithTimeout(altitudeUrl, {
               method: "GET",
@@ -208,7 +204,6 @@ async function loadGeoJSON(url) {
             }
     
             const altitudeData = await altitudeResponse.json();
-            console.log("Altitude response:", altitudeData);
     
             if (altitudeData && altitudeData.elevations && altitudeData.elevations.length > 0) {
               const altitude = altitudeData.elevations[0];
@@ -217,7 +212,6 @@ async function loadGeoJSON(url) {
               const altitude = altitudeData[0];
               detailedContent += `<b>Altitude</b>: ${altitude.toFixed(1)} m<br>`;
             } else {
-              console.log("No valid altitude data:", altitudeData);
               detailedContent += `<b>Altitude</b>: Non disponible<br>`;
             }
           } catch (altitudeError) {
@@ -231,7 +225,6 @@ async function loadGeoJSON(url) {
                               `&LAYER=LANDCOVER.FORESTINVENTORY.V2&STYLE=LANDCOVER.FORESTINVENTORY.V2` +
                               `&TILEMATRIXSET=PM&TILEMATRIX=${zoom}&TILECOL=${tileX}&TILEROW=${tileY}` +
                               `&FORMAT=image/png&INFOFORMAT=text/html&I=${i}&J=${j}`;
-            console.log("Forest request URL:", forestUrl);
     
             const forestResponse = await fetchWithTimeout(forestUrl, {});
             if (!forestResponse.ok) throw new Error(`Forest fetch failed: ${forestResponse.status}`);
@@ -264,7 +257,6 @@ async function loadGeoJSON(url) {
               detailedContent += `Type générique: ${forestData.generic}<br>`;
               detailedContent += `Essence: ${forestData.essence}<br>`;
             } else {
-              console.log("No valid forest data:", cleanForestHtml);
               detailedContent += `<b>BDForêt V2</b>: Non disponible<br>`;
             }
           } catch (forestError) {
@@ -276,7 +268,6 @@ async function loadGeoJSON(url) {
           console.error("General error in More Info fetch:", generalError);
           detailedContent += `<br><b>Erreur</b>: Impossible de charger les détails`;
         } finally {
-          console.log("Updating popup with content:", detailedContent);
           popup.setContent(detailedContent);
           popup.update();
         }
@@ -303,7 +294,6 @@ async function loadGeoJSON(url) {
         try {
           // Fetch INSEE code using geo.api.gouv.fr
           const geocodeUrl = `https://geo.api.gouv.fr/communes?lat=${lat}&lon=${lng}`;
-          console.log("Geocode request URL:", geocodeUrl);
     
           const geocodeResponse = await fetchWithTimeout(geocodeUrl, {
             method: "GET",
@@ -318,8 +308,7 @@ async function loadGeoJSON(url) {
           }
     
           const geocodeData = await geocodeResponse.json();
-          console.log("Geocode response:", geocodeData);
-    
+
           // Extract INSEE code from the first commune in the response
           const inseeCode = geocodeData[0]?.code || "unknown";
           if (inseeCode === "unknown") {
