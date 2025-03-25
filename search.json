@@ -1,24 +1,24 @@
 [
   {
-    "objectID": "foret-score.html",
-    "href": "foret-score.html",
-    "title": "Forêt-Score - Un indicateur de santé et résilience des forêts",
+    "objectID": "soutien.html",
+    "href": "soutien.html",
+    "title": "Nous soutenir",
     "section": "",
-    "text": "Le Forêt-Score est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs critères liés à la gestion forestière, aux pratiques d’exploitation et à la préservation de la biodiversité."
+    "text": "Nous soutenir\nMitan est pour le moment développé bénévolement. Vous pouvez nous soutenir afin de couvrir les frais de fonctionnement, d’acquisition et stockage des données. A titre d’exemple, il faut quelques euros, l’équivalent d’un café pour obtenir et traiter les données d’un commune.\nVous retrouverez plus d’explications et les moyens de nous soutenir sur Tipeee, une plateforme de financement participatif :\nhttps://fr.tipeee.com/mitan\nMerci pour votre soutien !"
   },
   {
-    "objectID": "foret-score.html#forêt-score-sur-le-territoire-du-pnr-millevaches",
-    "href": "foret-score.html#forêt-score-sur-le-territoire-du-pnr-millevaches",
-    "title": "Forêt-Score - Un indicateur de santé et résilience des forêts",
-    "section": "Forêt-Score sur le territoire du PNR Millevaches",
-    "text": "Forêt-Score sur le territoire du PNR Millevaches\n\n\nInterprétation du Forêt-Score\n\n\n\n\n\n\n\n\nScore\nCatégorie\nSignification\n\n\n\n\n\nA (Excellent)\nForêt globalement bien gérée et résiliente\n\n\n\nB (Bon)\nBonne gestion, mais avec des axes d’amélioration dans la gestion à considérer\n\n\n\nC (Moyen)\nGestion moyenne et équilibre fragile, vigilance nécessaire pour éviter des dérives, présence de risques écologiques\n\n\n\nD (Médiocre)\nPression excessive sur la forêt, impact sur l’environnement et l’avenir de la filière\n\n\n\nE (Critique)\nForêt surexploitée ou gravement menacée, perte de valeur durable sans action rapide\n\n\n\nLes détails concernant le calcul du score peuvent être retrouvés ci-dessous. En résumé, il dépend de quatre composantes : Taux de boisement, Taux de coupes forestières, Taux de coupes en espaces à haute valeur environnementale, Taux de monocultures.\n\n\nComposantes du score\nLe score est basé sur deux variables :\nTaux de boisement\nReprésente la proportion de la surface forestière par rapport à la surface totale d’un territoire. Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.\nÉchelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).\nTaux de coupes rases\nIndique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.\nÉchelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).\nLe score sera bientôt enrichi par ces deux variables :\n[A VENIR] Taux de coupes en espaces à haute valeur environnementale\nMesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.) ayant subi des coupes rases.\nÉchelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).\n[A VENIR] Taux de monocultures\nCorrespond à la proportion approximative de forêt plantée après exploitation ou déforestation. Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.\nÉchelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).\n\n\nCalcul du Forêt Score\nChaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).\nLe score final est le plus bas des scores obtenus à chaque composante.\nExemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt-Score sera E."
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bienvenue !",
+    "section": "",
+    "text": "Mitan, le milieu, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Grâce à des données satellitaires régulières, Mitan détecte et quantifie les perturbations du milieu naturel, qu’elles soient climatiques, liées à l’exploitation des ressources ou autres.\nPlus qu’un outil de suivi, Mitan offre un espace d’échange réunissant citoyens, gestionnaires des milieux naturels et chercheurs pour repenser ensemble notre relation à notre milieu, prendre des décisions informées et trouver un juste milieu."
   },
   {
-    "objectID": "mentions.html",
-    "href": "mentions.html",
-    "title": "Mentions légales",
-    "section": "",
-    "text": "Qui sommes nous ?\nLe site aumitan.com est géré avec amour au coeur du Limousin par AlgoLife SARL, à Saint-Julien-le-Petit.\nContact : Alexandre Gouy - aumitan@proton.me\n\n\nRegistraire du nom de domaine\nLe nom de domaine aumitan.com est enregistré chez :\nOVH\nSiège social : 2 rue Kellermann, 59100 Roubaix, France\nRCS Lille Métropole 424 761 419\nSite web : https://www.ovh.com/\n\n\nHébergeur du site\nLe site est hébergé par :\nGitHub Pages\nGitHub Inc.\n88 Colin P. Kelly Jr St, San Francisco, CA 94107, USA\nSite web : https://pages.github.com/\n\n\nPropriété intellectuelle\nTout le contenu de ce site (textes, images, visuels, sons, etc.) est proposé librement à la lecture et à la découverte. Vous pouvez le réutiliser, le partager ou même vous en inspirer — tant que vous mentionnez la source.\nLe contenu de ce site est mis à disposition selon les termes de la licence Creative Commons Attribution - Pas d’Utilisation Commerciale 4.0 International (CC BY-NC 4.0).\nPour toute demande, contactez-nous à aumitan@proton.me.\n\n\nProtection des données personnelles\nChez aumitan.com, on respecte votre vie privée ! Conformément au Règlement Général sur la Protection des Données (RGPD), vous avez un droit d’accès, de modification et de suppression de vos données personnelles.\nLes infos collectées via le site sont exclusivement destinées à AlgoLife SARL et ne seront jamais revendues ou partagées avec des tiers.\n\n\nCookies\nBonne nouvelle : aumitan.com n’utilise pas de cookies ! Pas de pistage, pas de pub, juste du contenu utile.\n\n\nResponsabilité\nNous faisons de notre mieux pour vous fournir un site fiable, mais nous ne pouvons garantir qu’il soit toujours parfait ! L’utilisation du site se fait sous votre propre responsabilité.\nNous ne pouvons donc pas être tenus responsables des dommages directs ou indirects causés à l’utilisateur lors de l’utilisation du site aumitan.com.\nLe site peut contenir des liens vers d’autres sites, mais nous ne pouvons pas être tenus responsables de leur contenu.\n\n\nDroit applicable\nCes mentions légales sont soumises au droit français. En cas de souci juridique, les tribunaux compétents seront ceux du ressort du siège social d’AlgoLife SARL."
+    "objectID": "index.html#comment-démarrer",
+    "href": "index.html#comment-démarrer",
+    "title": "Bienvenue !",
+    "section": "Comment démarrer ?",
+    "text": "Comment démarrer ?\n\nCherchez votre commune ! Vous trouverez la liste des communes disponibles ci-dessous\nVous pouvez aussi Consulter des exemples…\n\n\nLimousin - Plateau de Millevaches (Meymac)\n\n\n\nAlpes - Chartreuse (Saint-Pierre-de-Chartreuse)\n\n\n\nLandes (La Teste-de-Buch)\n\n\n\n\n\n\n\nCode\n\n\nNom\n\n\n\n\n\n\n\nChargement des données…"
   },
   {
     "objectID": "details.html",
@@ -56,24 +56,24 @@
     "text": "Code\n\n\nNom\n\n\n\n\n\n\n\nChargement des données…"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Bienvenue !",
+    "objectID": "foret-score.html",
+    "href": "foret-score.html",
+    "title": "Forêt-Score - Un indicateur de santé et résilience des forêts",
     "section": "",
-    "text": "Mitan, le milieu, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Grâce à des données satellitaires régulières, Mitan détecte et quantifie les perturbations du milieu naturel, qu’elles soient climatiques, liées à l’exploitation des ressources ou autres.\nPlus qu’un outil de suivi, Mitan offre un espace d’échange réunissant citoyens, gestionnaires des milieux naturels et chercheurs pour repenser ensemble notre relation à notre milieu, prendre des décisions informées et trouver un juste milieu."
+    "text": "Le Forêt-Score est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs critères liés à la gestion forestière, aux pratiques d’exploitation et à la préservation de la biodiversité."
   },
   {
-    "objectID": "index.html#comment-démarrer",
-    "href": "index.html#comment-démarrer",
-    "title": "Bienvenue !",
-    "section": "Comment démarrer ?",
-    "text": "Comment démarrer ?\n\nCherchez votre commune ! Vous trouverez la liste des communes disponibles ci-dessous\nVous pouvez aussi Consulter des exemples…\n\n\nLimousin - Plateau de Millevaches (Meymac)\n\n\n\nAlpes - Chartreuse (Saint-Pierre-de-Chartreuse)\n\n\n\nLandes (La Teste-de-Buch)\n\n\n\n\n\n\n\nCode\n\n\nNom\n\n\n\n\n\n\n\nChargement des données…"
+    "objectID": "foret-score.html#forêt-score-sur-le-territoire-du-pnr-millevaches",
+    "href": "foret-score.html#forêt-score-sur-le-territoire-du-pnr-millevaches",
+    "title": "Forêt-Score - Un indicateur de santé et résilience des forêts",
+    "section": "Forêt-Score sur le territoire du PNR Millevaches",
+    "text": "Forêt-Score sur le territoire du PNR Millevaches\n\n\nInterprétation du Forêt-Score\n\n\n\n\n\n\n\n\nScore\nCatégorie\nSignification\n\n\n\n\n\nA (Excellent)\nForêt globalement bien gérée et résiliente\n\n\n\nB (Bon)\nBonne gestion, mais avec des axes d’amélioration dans la gestion à considérer\n\n\n\nC (Moyen)\nGestion moyenne et équilibre fragile, vigilance nécessaire pour éviter des dérives, présence de risques écologiques\n\n\n\nD (Médiocre)\nPression excessive sur la forêt, impact sur l’environnement et l’avenir de la filière\n\n\n\nE (Critique)\nForêt surexploitée ou gravement menacée, perte de valeur durable sans action rapide\n\n\n\nLes détails concernant le calcul du score peuvent être retrouvés ci-dessous. En résumé, il dépend de quatre composantes : Taux de boisement, Taux de coupes forestières, Taux de coupes en espaces à haute valeur environnementale, Taux de monocultures.\n\n\nComposantes du score\nLe score est basé sur deux variables :\nTaux de boisement\nReprésente la proportion de la surface forestière par rapport à la surface totale d’un territoire. Un taux élevé est généralement préférable, sauf en cas de surexploitation ou de monoculture excessive.\nÉchelle : 0 % (pas de forêt) à 100 % (territoire entièrement boisé).\nTaux de coupes rases\nIndique la part de la forêt soumise à des coupes rases (extraction totale du couvert forestier sur une surface donnée). Un faible taux est préférable pour la biodiversité et la résilience écologique.\nÉchelle : 0 % (aucune coupe rase) à 3 % et plus (forte pression).\nLe score sera bientôt enrichi par ces deux variables :\n[A VENIR] Taux de coupes en espaces à haute valeur environnementale\nMesure la part des zones forestières protégées (Natura 2000, réserves naturelles, ZNIEFF, etc.) ayant subi des coupes rases.\nÉchelle : 0 % (aucune coupe en zone protégée) à 1 % et plus (forte pression).\n[A VENIR] Taux de monocultures\nCorrespond à la proportion approximative de forêt plantée après exploitation ou déforestation. Un bon équilibre entre régénération naturelle et plantation contrôlée est crucial.\nÉchelle : 0 % (pure forêt plantée mixte ou naturelle) à 100 % (monocultures).\n\n\nCalcul du Forêt Score\nChaque composante est évaluée sur une échelle de A (Excellent) à E (Critique).\nLe score final est le plus bas des scores obtenus à chaque composante.\nExemple : Si une forêt obtient A en boisement, B en coupes rases, C en espaces protégés, mais E en taux de plantation, → Le Forêt-Score sera E."
   },
   {
-    "objectID": "soutien.html",
-    "href": "soutien.html",
-    "title": "Nous soutenir",
+    "objectID": "mentions.html",
+    "href": "mentions.html",
+    "title": "Mentions légales",
     "section": "",
-    "text": "Nous soutenir\nMitan est pour le moment développé bénévolement. Vous pouvez nous soutenir afin de couvrir les frais de fonctionnement, d’acquisition et stockage des données. A titre d’exemple, il faut quelques euros, l’équivalent d’un café pour obtenir et traiter les données d’un commune.\nVous retrouverez plus d’explications et les moyens de nous soutenir sur Tipeee, une plateforme de financement participatif :\nhttps://fr.tipeee.com/mitan\nMerci pour votre soutien !"
+    "text": "Qui sommes nous ?\nLe site aumitan.com est géré avec amour au coeur du Limousin par AlgoLife SARL, à Saint-Julien-le-Petit.\nContact : Alexandre Gouy - aumitan@proton.me\n\n\nRegistraire du nom de domaine\nLe nom de domaine aumitan.com est enregistré chez :\nOVH\nSiège social : 2 rue Kellermann, 59100 Roubaix, France\nRCS Lille Métropole 424 761 419\nSite web : https://www.ovh.com/\n\n\nHébergeur du site\nLe site est hébergé par :\nGitHub Pages\nGitHub Inc.\n88 Colin P. Kelly Jr St, San Francisco, CA 94107, USA\nSite web : https://pages.github.com/\n\n\nPropriété intellectuelle\nTout le contenu de ce site (textes, images, visuels, sons, etc.) est proposé librement à la lecture et à la découverte. Vous pouvez le réutiliser, le partager ou même vous en inspirer — tant que vous mentionnez la source.\nLe contenu de ce site est mis à disposition selon les termes de la licence Creative Commons Attribution - Pas d’Utilisation Commerciale 4.0 International (CC BY-NC 4.0).\nPour toute demande, contactez-nous à aumitan@proton.me.\n\n\nProtection des données personnelles\nChez aumitan.com, on respecte votre vie privée ! Conformément au Règlement Général sur la Protection des Données (RGPD), vous avez un droit d’accès, de modification et de suppression de vos données personnelles.\nLes infos collectées via le site sont exclusivement destinées à AlgoLife SARL et ne seront jamais revendues ou partagées avec des tiers.\n\n\nCookies\nBonne nouvelle : aumitan.com n’utilise pas de cookies ! Pas de pistage, pas de pub, juste du contenu utile.\n\n\nResponsabilité\nNous faisons de notre mieux pour vous fournir un site fiable, mais nous ne pouvons garantir qu’il soit toujours parfait ! L’utilisation du site se fait sous votre propre responsabilité.\nNous ne pouvons donc pas être tenus responsables des dommages directs ou indirects causés à l’utilisateur lors de l’utilisation du site aumitan.com.\nLe site peut contenir des liens vers d’autres sites, mais nous ne pouvons pas être tenus responsables de leur contenu.\n\n\nDroit applicable\nCes mentions légales sont soumises au droit français. En cas de souci juridique, les tribunaux compétents seront ceux du ressort du siège social d’AlgoLife SARL."
   }
 ]

@@ -1,5 +1,3 @@
-
-
 function getQueryParam(param) {
   const params = new URLSearchParams(window.location.search);
   return params.get(param);
@@ -55,10 +53,17 @@ L.tileLayer(
     {
         minZoom: 0,
         maxZoom: 18,
-        attribution: "IGN-F/Geoportail",
+        attribution: "Fond, Hydrographie, BDForêt V2, Espaces Protégés © IGN/Géoplateforme",
         tileSize: 256
     }
 ).addTo(map);
+
+L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&LAYER=HYDROGRAPHY.HYDROGRAPHY&FORMAT=image/png&STYLE=normal&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}', {
+  minZoom: 0,
+  maxZoom: 18,
+  tileSize: 256,
+  opacity: 0.9
+}).addTo(map);
 
 // Utility functions
 async function loadGeoJSON(url) {
@@ -75,8 +80,8 @@ async function loadGeoJSON(url) {
     const aoiData = await loadGeoJSON(geojsonUrl);
     const aoiLayer = L.geoJSON(aoiData, {
         style: {
-            color: '#ffffffaa',
-            weight: 1.5,
+            color: '#ffffff',
+            weight: 2.5,
             fillOpacity: 0
         },
         pane: "pane1"
@@ -89,7 +94,6 @@ async function loadGeoJSON(url) {
         tileSize: 256,
         pane: "pane2",
         opacity: 0.3, // semi-transparent
-        attribution: "BDForêt V2 - © IGN",
         minZoom: 0,
         maxZoom: 18,
       }
@@ -97,31 +101,231 @@ async function loadGeoJSON(url) {
 
     map.on("click", function (e) {
       const latlng = e.latlng;
-      const zoom = map.getZoom();
+      const lat = latlng.lat;
+      const lng = latlng.lng;
     
-      const tileSize = 256;
-      const point = map.project(latlng, zoom);
-      const tileX = Math.floor(point.x / tileSize);
-      const tileY = Math.floor(point.y / tileSize);
-      const i = Math.floor(point.x) % tileSize;
-      const j = Math.floor(point.y) % tileSize;
+      // Initial popup content with two buttons
+      let popupContent = `
+        <b>Coordonnées</b><br>
+        Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br>
+        <button id="more-info-btn" style="margin-top: 5px;">Plus d'infos sur ce lieu...</button><br>
+        <button id="commune-page-btn" style="margin-top: 5px;">Aller voir la page de cette commune</button>
+      `;
     
-      const url = `https://data.geopf.fr/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetFeatureInfo` +
-                  `&LAYER=LANDCOVER.FORESTINVENTORY.V2&STYLE=LANDCOVER.FORESTINVENTORY.V2` +
-                  `&TILEMATRIXSET=PM&TILEMATRIX=${zoom}&TILECOL=${tileX}&TILEROW=${tileY}` +
-                  `&FORMAT=image/png&INFOFORMAT=text/html&I=${i}&J=${j}`;
+      const popup = L.popup()
+        .setLatLng(latlng)
+        .setContent(popupContent)
+        .openOn(map);
     
-      fetch(url)
-        .then(response => response.text())
-        .then(html => {
-          const cleanHtml = html.trim();
-          if (cleanHtml && !cleanHtml.includes("ServiceExceptionReport") && cleanHtml.length > 30) {
-            L.popup()
-              .setLatLng(latlng)
-              .setContent(cleanHtml)
-              .openOn(map);
+      // Get the buttons and attach listeners immediately
+      const moreInfoButton = document.getElementById("more-info-btn");
+      const communePageButton = document.getElementById("commune-page-btn");
+    
+      if (!moreInfoButton || !communePageButton) {
+        console.error("One or both buttons not found in popup");
+        return;
+      }
+    
+      // "Plus d'infos" button listener
+      moreInfoButton.addEventListener("click", async function () {
+        moreInfoButton.textContent = "Chargement...";
+        moreInfoButton.disabled = true;
+    
+        const zoom = map.getZoom();
+        const tileSize = 256;
+        const point = map.project(latlng, zoom);
+        const tileX = Math.floor(point.x / tileSize);
+        const tileY = Math.floor(point.y / tileSize);
+        const i = Math.floor(point.x) % tileSize;
+        const j = Math.floor(point.y) % tileSize;
+    
+        let detailedContent = `
+          <b>Coordonnées</b><br>
+          Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br>
+        `;
+    
+        const fetchWithTimeout = async (url, options, timeout = 10000) => {
+          const controller = new AbortController();
+          const id = setTimeout(() => controller.abort(), timeout);
+          try {
+            const response = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(id);
+            return response;
+          } catch (error) {
+            clearTimeout(id);
+            throw error;
           }
-        });
+        };
+    
+        try {
+          // 1. Get CR layer value
+          try {
+            const crResponse = await fetchWithTimeout(crUrl, {});
+            if (!crResponse.ok) throw new Error(`CR fetch failed: ${crResponse.status}`);
+            const crBuffer = await crResponse.arrayBuffer();
+            const georaster = await parseGeoraster(crBuffer);
+    
+            const { xmin, xmax, ymin, ymax, width, height } = georaster;
+            const xRatio = (lng - xmin) / (xmax - xmin);
+            const yRatio = (ymax - lat) / (ymax - ymin);
+            const rasterX = Math.floor(xRatio * width);
+            const rasterY = Math.floor(yRatio * height);
+    
+            if (rasterX >= 0 && rasterX < width && rasterY >= 0 && rasterY < height) {
+              const crValue = georaster.values[0][rasterY][rasterX];
+              if (crValue && crValue !== 4294967295 && !isNaN(crValue)) {
+                const year = 2000 + Math.floor(crValue / 1000);
+                detailedContent += `<b>Perturbation</b>: ${year}<br>`;
+              } else {
+                detailedContent += `<b>Perturbation</b>: Non détectée<br>`;
+              }
+            } else {
+              detailedContent += `<b>Perturbation</b>: Hors limites<br>`;
+            }
+          } catch (crError) {
+            console.error("CR layer error:", crError);
+            detailedContent += `<b>Perturbation</b>: Erreur de chargement<br>`;
+          }
+    
+          // 2. Get altitude from IGN geoservices using GET
+          try {
+            const altitudeUrl = `https://data.geopf.fr/altimetrie/1.0/calcul/alti/rest/elevation.json?lon=${lng}&lat=${lat}&resource=ign_rge_alti_wld&zonly=true`;
+    
+            const altitudeResponse = await fetchWithTimeout(altitudeUrl, {
+              method: "GET",
+              headers: {
+                "Accept": "application/json",
+              },
+            });
+    
+            if (!altitudeResponse.ok) {
+              const errorText = await altitudeResponse.text();
+              throw new Error(`Altitude fetch failed: ${altitudeResponse.status} - ${errorText}`);
+            }
+    
+            const altitudeData = await altitudeResponse.json();
+    
+            if (altitudeData && altitudeData.elevations && altitudeData.elevations.length > 0) {
+              const altitude = altitudeData.elevations[0];
+              detailedContent += `<b>Altitude</b>: ${altitude.toFixed(1)} m<br>`;
+            } else if (Array.isArray(altitudeData) && altitudeData.length > 0) {
+              const altitude = altitudeData[0];
+              detailedContent += `<b>Altitude</b>: ${altitude.toFixed(1)} m<br>`;
+            } else {
+              detailedContent += `<b>Altitude</b>: Non disponible<br>`;
+            }
+          } catch (altitudeError) {
+            console.error("Altitude error:", altitudeError);
+            detailedContent += `<b>Altitude</b>: Erreur de chargement<br>`;
+          }
+    
+          // 3. Get forest information from BDForêt
+          try {
+            const forestUrl = `https://data.geopf.fr/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetFeatureInfo` +
+                              `&LAYER=LANDCOVER.FORESTINVENTORY.V2&STYLE=LANDCOVER.FORESTINVENTORY.V2` +
+                              `&TILEMATRIXSET=PM&TILEMATRIX=${zoom}&TILECOL=${tileX}&TILEROW=${tileY}` +
+                              `&FORMAT=image/png&INFOFORMAT=text/html&I=${i}&J=${j}`;
+    
+            const forestResponse = await fetchWithTimeout(forestUrl, {});
+            if (!forestResponse.ok) throw new Error(`Forest fetch failed: ${forestResponse.status}`);
+            const forestHtml = await forestResponse.text();
+            const cleanForestHtml = forestHtml.trim();
+    
+            if (cleanForestHtml && !cleanForestHtml.includes("ServiceExceptionReport") && cleanForestHtml.length > 30) {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(cleanForestHtml, "text/html");
+              const paragraphs = doc.querySelectorAll(".geoportail-popup-content p");
+              let forestData = {
+                code: "Non disponible",
+                formation: "Non disponible",
+                generic: "Non disponible",
+                essence: "Non disponible"
+              };
+    
+              paragraphs.forEach(p => {
+                const text = p.textContent;
+                const value = p.querySelector("strong")?.textContent || "Non disponible";
+                if (text.startsWith("Code :")) forestData.code = value;
+                else if (text.startsWith("Type de formation végétale :")) forestData.formation = value;
+                else if (text.startsWith("Type générique :")) forestData.generic = value;
+                else if (text.startsWith("Essence :")) forestData.essence = value;
+              });
+    
+              detailedContent += `<b>BDForêt V2</b>:<br>`;
+              detailedContent += `Code: ${forestData.code}<br>`;
+              detailedContent += `Type de formation: ${forestData.formation}<br>`;
+              detailedContent += `Type générique: ${forestData.generic}<br>`;
+              detailedContent += `Essence: ${forestData.essence}<br>`;
+            } else {
+              detailedContent += `<b>BDForêt V2</b>: Non disponible<br>`;
+            }
+          } catch (forestError) {
+            console.error("Forest error:", forestError);
+            detailedContent += `<b>BDForêt V2</b>: Erreur de chargement<br>`;
+          }
+    
+        } catch (generalError) {
+          console.error("General error in More Info fetch:", generalError);
+          detailedContent += `<br><b>Erreur</b>: Impossible de charger les détails`;
+        } finally {
+          popup.setContent(detailedContent);
+          popup.update();
+        }
+      });
+    
+      // "Aller voir la page de cette commune" button listener
+      communePageButton.addEventListener("click", async function () {
+        communePageButton.textContent = "Chargement...";
+        communePageButton.disabled = true;
+    
+        const fetchWithTimeout = async (url, options, timeout = 10000) => {
+          const controller = new AbortController();
+          const id = setTimeout(() => controller.abort(), timeout);
+          try {
+            const response = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(id);
+            return response;
+          } catch (error) {
+            clearTimeout(id);
+            throw error;
+          }
+        };
+    
+        try {
+          // Fetch INSEE code using geo.api.gouv.fr
+          const geocodeUrl = `https://geo.api.gouv.fr/communes?lat=${lat}&lon=${lng}`;
+    
+          const geocodeResponse = await fetchWithTimeout(geocodeUrl, {
+            method: "GET",
+            headers: {
+              "Accept": "application/json",
+            },
+          });
+    
+          if (!geocodeResponse.ok) {
+            const errorText = await geocodeResponse.text();
+            throw new Error(`Geocode fetch failed: ${geocodeResponse.status} - ${errorText}`);
+          }
+    
+          const geocodeData = await geocodeResponse.json();
+
+          // Extract INSEE code from the first commune in the response
+          const inseeCode = geocodeData[0]?.code || "unknown";
+          if (inseeCode === "unknown") {
+            throw new Error("No INSEE code found in response");
+          }
+    
+          // Redirect to the commune page
+          const communeUrl = `https://aumitan.com/carte.html?commune=${inseeCode}`;
+          window.location.href = communeUrl;
+    
+        } catch (error) {
+          console.error("Error fetching INSEE code:", error);
+          alert("Erreur lors de la récupération du code INSEE. Veuillez réessayer.");
+          communePageButton.textContent = "Aller voir la page de cette commune";
+          communePageButton.disabled = false;
+        }
+      });
     });
 
     const bounds = aoiLayer.getBounds();
