@@ -1,8 +1,9 @@
 /*-- scss:defaults --*/
 $primary: #44644c; //44644c, c43926
-$primary-light: #44644c; //44644c, c43926
+$primary-light: #b4cdc2; //44644c, c43926
 $secondary: #f79873;// #d38b5d;
 $light-color: #fcf8f2dd;
+$dark-color: #824062;
 
 $link-color: $secondary;
 $navbar-bg: $primary;
@@ -99,4 +100,36 @@ h1, h2, h3, h4, h5, h6 {
 .logo-dropcap {
   float: left;
   margin: 0 1rem 1rem 0;
+}
+
+.chart-container {
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 8px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+#more-info-btn {
+  background-color: $dark-color;
+  color: $light-color;
+  border: 1px solid $primary-light;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#commune-page-btn {
+  background-color: $secondary;
+  color: $light-color;
+  border: 1px solid $secondary;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
 }
