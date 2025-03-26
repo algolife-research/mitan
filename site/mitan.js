@@ -480,14 +480,15 @@ async function loadGeoJSON(url) {
             georaster: georaster,
             pixelValuesToColorFn: values => {
               const [val] = values;
-              if (val == null || isNaN(val) || val === 4294967295) return null;
+              if (val == null || isNaN(val) || val === georaster.noDataValue) return null; // Ensure no color for invalid values
               const yy = Math.floor(val / 1000);
               const year = 2000 + yy;
               if (selectedYear && year !== selectedYear) return null;
               return "#D70040";
             },
             resolution: 256,
-            pane: "pane3"
+            pane: "pane3",
+            noDataValue: georaster.noDataValue // Explicitly set noDataValue to avoid coloring the bbox
           });
           layerControl.addOverlay(CR_layer, '<span style="display:inline-block; width:12px; height:12px; background-color:firebrick; margin-right:6px; border:1px solid #555;"></span>Perturbations');
           CR_layer.addTo(map);
@@ -498,7 +499,7 @@ async function loadGeoJSON(url) {
           for (let row = 0; row < values.length; row++) {
             for (let col = 0; col < values[0].length; col++) {
               const val = values[row][col];
-              if (val == null || isNaN(val) || val === 4294967295) continue;
+              if (val == null || isNaN(val) || val === georaster.noDataValue) continue;
               const yy = Math.floor(val / 1000);
               if (yy < 18 || yy > 25) continue;
               const year = 2000 + yy;
