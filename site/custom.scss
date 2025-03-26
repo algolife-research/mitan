@@ -69,10 +69,40 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     gap: 12px;
     z-index: 1000;
-    max-width: 800px;
+    max-width: 600px;
     font-family: sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     display: none;
+    flex-direction: column; /* Stack rows vertically */
+    align-items: stretch; /* Stretch rows to full width */
+}
+
+#foret-score-box .title {
+  margin-bottom: 3px; /* Add spacing below the title */
+  margin-left: 10px; /* Add spacing below the title */
+  text-align: left; /* Center align the title */
+  font-size: 24px; // Larger font size
+  font-weight: bold; // Larger font size
+}
+
+#foret-score-box .row {
+  display: flex;
+  flex-direction: row; /* Arrange items in a row */
+  gap: 10px; /* Add spacing between items in the row */
+}
+
+#foret-score-box .row .image-column {
+  flex: 1; /* Image column takes up equal space */
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+}
+
+#foret-score-box .row .text-column {
+  flex: 2; /* Text column takes up more space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center the text vertically */
 }
 
 .info-box {
@@ -132,4 +162,125 @@ h1, h2, h3, h4, h5, h6 {
   padding: 8px 12px;
   font-size: 14px;
   cursor: pointer;
+}
+
+.layer-natura-habitat {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #AAFF00;
+  margin-right: 6px;
+  border: 1px solid #555;
+}
+
+.layer-natura-oiseaux {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #7DF9FF;
+  margin-right: 6px;
+  border: 1px solid #555;
+}
+
+.layer-znieff1 {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #E4D00A;
+  margin-right: 6px;
+  border: 1px solid #555;
+}
+
+.layer-znieff2 {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #DFFF00;
+  margin-right: 6px;
+  border: 1px solid #555;
+}
+
+#searchContainer {
+  position: relative;
+  width: 100%; /* Full width for responsiveness */
+  max-width: 500px; /* Limit the maximum width */
+  margin: 20px auto; /* Center the search bar */
+}
+
+#searchInput {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 25px; /* Rounded corners */
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+#searchInput:focus {
+  border-color: $primary; /* Highlight border on focus */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow on focus */
+}
+
+#autocompleteList {
+  position: absolute;
+  top: calc(100% + 5px); /* Slight gap below the input */
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Rounded corners for dropdown */
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.autocomplete-item {
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.autocomplete-item:hover {
+  background-color: $primary-light; /* Highlight on hover */
+  color: $primary; /* Text color on hover */
+}
+
+.no-results {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+}
+
+/* Ensure links in the Sources box are not affected by Leaflet styles */
+.sources-content {
+  line-height: 1.2; /* Reduce line spacing */
+}
+
+.sources-content a {
+  display: inline !important; /* Force inline display to override Leaflet styles */
+  width: auto; /* Reset width */
+  height: auto; /* Reset height */
+  line-height: normal; /* Reset line-height for links */
+  color: $link-color; /* Use the default link color */
+  text-decoration: underline; /* Add underline for links */
+  font-weight: normal; /* Ensure normal font weight */
+  padding: 0; /* Remove padding if any */
+  border: none; /* Remove border if any */
+  background: none; /* Remove background if any */
+  cursor: pointer; /* Ensure the pointer cursor is used */
+}
+
+.sources-content a:hover {
+  color: darken($link-color, 10%); /* Slightly darken the color on hover */
+  text-decoration: none; /* Optionally remove underline on hover */
+}
+
+.foret-score-img {
+  width: 400px;
+  height: 64px;
 }
