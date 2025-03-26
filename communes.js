@@ -1,49 +1,57 @@
-    function parseCSV(csvText) {
-      const lines = csvText.trim().split('\n');
-      const headers = lines[0].split(',');
-      const rows = lines.slice(1).map(line => line.split(','));
-      return { headers, rows };
-    }
+const searchHTML = `
+  <div id="searchContainer">
+    <input type="text" id="searchInput" placeholder="Code postal ou Commune" />
+    <div id="autocompleteList" class="autocomplete-list"></div>
+    <div id="searchResult"></div>
+  </div>
+`;
 
-    // Fetch the CSV file and populate the table
-    fetch('comm_list.csv')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Network error: ${response.statusText}`);
-        }
-        return response.text();
-      })
-      .then(csvText => {
-        const { rows } = parseCSV(csvText);
-        const $tbody = $('#communeTable tbody');
+// Append the search element to the #searchSection in index.qmd
+$('#searchSection').append(searchHTML);
 
-        // Build a single HTML string for all rows
-        let rowsHTML = '';
-        rows.forEach(row => {
-          const [code, nom] = row;
-          rowsHTML += `<tr><td>${code}</td><td><a href="./carte.html?commune=${code}">${nom}</a></td></tr>`;
-        });
+// Handle input for autocomplete
+$('#searchInput').on('input', () => {
+  const query = $('#searchInput').val().trim();
+  if (!query) {
+    $('#autocompleteList').empty();
+    return;
+  }
 
-        // Inject all rows at once
-        $tbody.html(rowsHTML);
+  // Query the gouv API for autocomplete suggestions
+  fetch(`https://geo.api.gouv.fr/communes?fields=nom,code,codesPostaux&boost=population&limit=5&${isNaN(query) ? `nom=${query}` : `codePostal=${query}`}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`API error: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.length === 0) {
+        $('#autocompleteList').html('<div class="no-results">Aucune commune trouvée.</div>');
+        return;
+      }
 
-        // Initialize DataTables with French language options
-        $('#communeTable').DataTable({
-          language: {
-            search: "Rechercher:",
-            lengthMenu: "Afficher _MENU_ entrées",
-            info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
-            paginate: {
-              previous: "Précédent",
-              next: "Suivant"
-            }
-          }
-        });
+      // Display suggestions in a custom dropdown
+      const suggestionsHTML = data.map(({ nom, code, codesPostaux }) => {
+        const codePostal = codesPostaux && codesPostaux.length > 0 ? codesPostaux[0] : 'N/A';
+        return `<div class="autocomplete-item" data-code="${code}" data-value="${nom}">${codePostal} - ${nom}</div>`;
+      }).join('');
+      $('#autocompleteList').html(suggestionsHTML);
 
-        // Hide the loading widget
-        $('#loading').hide();
-      })
-      .catch(error => {
-        console.error("Error loading CSV file:", error);
-        $('#loading').html("Error loading data.");
+      // Add click event to each suggestion item
+      $('.autocomplete-item').on('click', function () {
+        const selectedCode = $(this).data('code');
+        window.location.href = `./carte.html?commune=${selectedCode}`;
       });
+    })
+    .catch(error => {
+      console.error("Error querying API for autocomplete:", error);
+    });
+});
+
+// Close the dropdown when clicking outside
+$(document).on('click', function (e) {
+  if (!$(e.target).closest('#searchContainer').length) {
+    $('#autocompleteList').empty();
+  }
+});
