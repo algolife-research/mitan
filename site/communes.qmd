@@ -8,19 +8,8 @@ format: html
 </head>
 
 <body>
-  <table id="communeTable" class="display" style="width:100%">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Nom</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-  <div id="loading">Chargement des données...</div>
+  <div id="searchSection"></div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="communes.js"></script>
-
 </body>
