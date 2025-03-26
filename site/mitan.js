@@ -19,8 +19,57 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(response => response.json())
       .then(data => {
         if (data && data.length > 0 && data[0].nom) {
-          // Update the h1 element with class "title" to the commune name
-          document.querySelector("h1.title").textContent = data[0].nom;
+          const communeName = data[0].nom;
+
+          // Update the page title
+          document.title = communeName;
+
+          // Update the title and structure the Foret Score box
+          const foretScoreBox = document.getElementById("foret-score-box");
+          if (foretScoreBox) {
+            // Ensure the box has a title row and a content row
+            let titleRow = foretScoreBox.querySelector(".title");
+            let contentRow = foretScoreBox.querySelector(".row");
+        
+            if (!titleRow) {
+              titleRow = document.createElement("div");
+              titleRow.className = "title";
+              foretScoreBox.appendChild(titleRow);
+            }
+            titleRow.textContent = communeName;
+        
+            if (!contentRow) {
+              contentRow = document.createElement("div");
+              contentRow.className = "row";
+              foretScoreBox.appendChild(contentRow);
+            }
+        
+            // Add the image to the left column
+            let imageColumn = contentRow.querySelector(".image-column");
+            if (!imageColumn) {
+              imageColumn = document.createElement("div");
+              imageColumn.className = "image-column";
+              contentRow.appendChild(imageColumn);
+            }
+            const imageElement = document.getElementById("foret-score-img");
+            if (imageElement && !imageColumn.contains(imageElement)) {
+              imageColumn.appendChild(imageElement);
+            }
+        
+            // Add the text to the right column
+            let textColumn = contentRow.querySelector(".text-column");
+            if (!textColumn) {
+              textColumn = document.createElement("div");
+              textColumn.className = "text-column";
+              contentRow.appendChild(textColumn);
+            }
+            const detailsElement = document.getElementById("foret-score-details");
+            if (detailsElement && !textColumn.contains(detailsElement)) {
+              textColumn.appendChild(detailsElement);
+            }
+          } else {
+            console.warn("Foret score box not found.");
+          }
         } else {
           console.warn("No commune data returned.");
         }
@@ -31,7 +80,10 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-var map = L.map('map');
+var map = L.map('map', {
+    zoomControl: false,
+    attributionControl: false
+});
 
 // Address search bar
 L.Control.geocoder({
@@ -51,7 +103,6 @@ L.tileLayer(
     {
         minZoom: 0,
         maxZoom: 18,
-        attribution: "Fond, Hydrographie, BDForêt V2, Espaces Protégés © IGN/Géoplateforme",
         tileSize: 256
     }
 ).addTo(map);
@@ -108,6 +159,11 @@ async function loadGeoJSON(url) {
 
 
     map.on("click", function (e) {
+      // Check if a popup is already open
+      if (map.hasLayer(map._popup)) {
+        return; // Do nothing if a popup is already open
+      }
+    
       const latlng = e.latlng;
       const lat = latlng.lat;
       const lng = latlng.lng;
@@ -259,7 +315,7 @@ async function loadGeoJSON(url) {
                 else if (text.startsWith("Essence :")) forestData.essence = value;
               });
     
-              detailedContent += `<b>BDForêt V2</b>:<br>`;
+              detailedContent += `<br><b>BDForêt V2</b>:<br>`;
               detailedContent += `Code: ${forestData.code}<br>`;
               detailedContent += `Type de formation: ${forestData.formation}<br>`;
               detailedContent += `Type générique: ${forestData.generic}<br>`;
@@ -324,7 +380,7 @@ async function loadGeoJSON(url) {
           }
     
           // Redirect to the commune page
-          const communeUrl = `https://aumitan.com/carte.html?commune=${inseeCode}`;
+          const communeUrl = `carte.html?commune=${inseeCode}`;
           window.location.href = communeUrl;
     
         } catch (error) {
@@ -350,81 +406,69 @@ async function loadGeoJSON(url) {
 
     const geomParam = encodeURIComponent(JSON.stringify(bboxGeoJSON));
 
-    fetch(`https://apicarto.ign.fr/api/nature/natura-habitat?geom=${geomParam}`)
-      .then(response => {
-        if (!response.ok) throw new Error("Erreur lors de la récupération des données Natura 2000.");
-        return response.json();
-      })
-      .then(naturaData => {
-        const naturaLayer = L.geoJSON(naturaData, {
-          style: {
-            color: '#AAFF00',
-            weight: 2,
-            fillColor: '#AAFF00',
-            fillOpacity: 0.2
-          },
-          pane: "pane1"
-        });
-        layerControl.addOverlay(naturaLayer, '<span style="display:inline-block; width:12px; height:12px; background-color:#AAFF00; margin-right:6px; border:1px solid #555;"></span>Natura 2000 - Habitat');
-      })
-      .catch(err => console.error(err));
-
-    fetch(`https://apicarto.ign.fr/api/nature/natura-oiseaux?geom=${geomParam}`)
-      .then(response => {
-        if (!response.ok) throw new Error("Erreur lors de la récupération des données Natura 2000.");
-        return response.json();
-      })
-      .then(naturaData => {
-        const naturaLayer2 = L.geoJSON(naturaData, {
-          style: {
-            color: '#7DF9FF',
-            weight: 2,
-            fillColor: '#7DF9FF',
-            fillOpacity: 0.2
-          },
-          pane: "pane1"
-        });
-        layerControl.addOverlay(naturaLayer2, '<span style="display:inline-block; width:12px; height:12px; background-color:#7DF9FF; margin-right:6px; border:1px solid #555;"></span>Natura 2000 - Oiseaux');
-      })
-      .catch(err => console.error(err));
-
-    fetch(`https://apicarto.ign.fr/api/nature/znieff1?geom=${geomParam}`)
-      .then(response => {
-        if (!response.ok) throw new Error("Erreur lors de la récupération des données Natura 2000.");
-        return response.json();
-      })
-      .then(naturaData => {
-        const naturaLayer3 = L.geoJSON(naturaData, {
-          style: {
-            color: '#E4D00A',
-            weight: 2,
-            fillColor: '#E4D00A',
-            fillOpacity: 0.2
-          },
-          pane: "pane1"
-        });
-        layerControl.addOverlay(naturaLayer3, '<span style="display:inline-block; width:12px; height:12px; background-color:#E4D00A; margin-right:6px; border:1px solid #555;"></span>ZNIEFF1');
-      })
-      .catch(err => console.error(err));
-      
-    fetch(`https://apicarto.ign.fr/api/nature/znieff2?geom=${geomParam}`)
-      .then(response => {
-        if (!response.ok) throw new Error("Erreur lors de la récupération des données Natura 2000.");
-        return response.json();
-      })
-      .then(naturaData => {
-        const naturaLayer4 = L.geoJSON(naturaData, {
-          style: {
-            color: '#DFFF00',
-            weight: 2,
-            fillColor: '#DFFF00',
-            fillOpacity: 0.2
-          },
-          pane: "pane1"
-        });
-        layerControl.addOverlay(naturaLayer4, '<span style="display:inline-block; width:12px; height:12px; background-color:#DFFF00; margin-right:6px; border:1px solid #555;"></span>ZNIEFF2');
-      })
-      .catch(err => console.error(err));
+    function fetchAndAddLayer(url, style, label) {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error("Erreur lors de la récupération des données.");
+          return response.json();
+        })
+        .then(layerData => {
+          const layer = L.geoJSON(layerData, {
+            style: style,
+            pane: "pane1"
+          });
+          layerControl.addOverlay(layer, label);
+        })
+        .catch(err => console.error(err));
+    }
+    
+    const layersConfig = [
+      {
+        url: `https://apicarto.ign.fr/api/nature/natura-habitat?geom=${geomParam}`,
+        style: {
+          color: '#AAFF00',
+          weight: 2,
+          fillColor: '#AAFF00',
+          fillOpacity: 0.2
+        },
+        label: '<span class="layer-natura-habitat"></span>Natura 2000 - Habitat'
+      },
+      {
+        url: `https://apicarto.ign.fr/api/nature/natura-oiseaux?geom=${geomParam}`,
+        style: {
+          color: '#7DF9FF',
+          weight: 2,
+          fillColor: '#7DF9FF',
+          fillOpacity: 0.2
+        },
+        label: '<span class="layer-natura-oiseaux"></span>Natura 2000 - Oiseaux'
+      },
+      {
+        url: `https://apicarto.ign.fr/api/nature/znieff1?geom=${geomParam}`,
+        style: {
+          color: '#E4D00A',
+          weight: 2,
+          fillColor: '#E4D00A',
+          fillOpacity: 0.2
+        },
+        label: '<span class="layer-znieff1"></span>ZNIEFF1'
+      },
+      {
+        url: `https://apicarto.ign.fr/api/nature/znieff2?geom=${geomParam}`,
+        style: {
+          color: '#DFFF00',
+          weight: 2,
+          fillColor: '#DFFF00',
+          fillOpacity: 0.2
+        },
+        label: '<span class="layer-znieff2"></span>ZNIEFF2'
+      }
+    ];
+    
+    // Loop through the configuration and fetch layers
+    layersConfig.forEach(config => {
+      fetchAndAddLayer(config.url, config.style, config.label);
+    });
 
     fetch(crUrl)
       .then(response => response.arrayBuffer())
@@ -526,6 +570,78 @@ async function loadGeoJSON(url) {
     title.style.padding = "5px";
     title.style.backgroundColor = "white";
     layerControlContainer.insertBefore(title, layerControlContainer.firstChild);
+
+
+    // Add a collapsed "Sources" button at the bottom left corner
+/*     Le <strong>Forêt-Score</strong> est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs <strong>critères</strong> liés à la <strong>gestion forestière</strong>, aux <strong>pratiques d’exploitation</strong> et à la <strong>préservation de la biodiversité</strong>.<br>
+ */
+    const sourcesContent = `
+      <b>À savoir</b><br>
+      Les <strong>perturbations</strong>, en rouge, sont des changements brutaux de la végétation détectées par satellite. Ce sont surtout des <strong>coupes rases et incendies</strong>.<br>
+      Il est judicieux de se questionner face à des données : consultez la page <a href="details.html">Détails</a> pour en apprendre plus sur les limites des <b>processus automatisés</b> de classification des forêts et détection des perturbations.<br>
+
+      <br><b>Sources</b><br>
+      <br><b>Annotation des forêts</b><br>
+      <a href="https://geoservices.ign.fr/bdforet" target="_blank">BDForêt® V2</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank">Licence ETALAB-Licence-Ouverte-v2.0</a><br><br>
+
+      <b>Couches de base et altitudes</b><br>
+      Fond, Hydrographie, BDForêt V2, Espaces Protégés © IGN/Géoplateforme<br>
+      <a href="https://geoservices.ign.fr/services-geoplateforme-altimetrie" target="_blank">Service Géoplateforme de calcul altimétrique</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank">Licence ETALAB-Licence-Ouverte-v2.0</a><br><br>
+
+      <b>Données satellite</b><br>
+      Copernicus (<a href="https://sentiwiki.copernicus.eu/web/s2-mission" target="_blank">satellite Sentinel 2</a>) obtenues par <a href="https://www.sentinel-hub.com/" target="_blank">Sentinel-Hub</a>, sous <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank">Licence CC-BY-SA</a><br><br>
+
+      <b>Fond de carte</b>: IGN-F / Geoportail.<br>
+      <b>Perturbations et calculs associés</b> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank">Licence CC-BY-NC</a>, et algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank">Licence CC-BY-SA</a><br>
+    `;
+    
+    const sourcesControl = L.control({ position: 'bottomleft' });
+    sourcesControl.onAdd = function () {
+      const container = L.DomUtil.create('div', 'leaflet-control-custom');
+      container.style.backgroundColor = 'white';
+      container.style.padding = '5px';
+      container.style.cursor = 'pointer';
+      container.style.textAlign = 'left';
+      container.style.border = '1px solid #ccc';
+      container.style.borderRadius = '4px';
+      container.style.width = '250px'; // Fixed width for better layout
+      container.style.fontSize = '11px'; // Smaller font size for compactness
+      container.innerHTML = '<button id="sourcesToggle" style="width: 100%; background-color: #f4f4f4; border: none; padding: 5px;">Détails et sources</button>';
+      
+      const sourcesDiv = L.DomUtil.create('div', 'sources-content', container);
+      sourcesDiv.style.display = 'none';
+      sourcesDiv.style.marginTop = '5px';
+      sourcesDiv.style.padding = '5px';
+      sourcesDiv.style.border = '1px solid #ccc';
+      sourcesDiv.style.borderRadius = '4px';
+      sourcesDiv.style.backgroundColor = 'white';
+      sourcesDiv.style.maxHeight = '200px'; // Limit height
+      sourcesDiv.style.overflowY = 'auto'; // Make scrollable
+      sourcesDiv.innerHTML = sourcesContent;
+    
+      container.querySelector('#sourcesToggle').addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent triggering map click events
+        sourcesDiv.style.display = sourcesDiv.style.display === 'none' ? 'block' : 'none';
+      });
+
+      L.DomEvent.disableClickPropagation(container); // Prevent map click events when interacting with the control
+      return container;
+    };
+    sourcesControl.addTo(map);
+    
+    // Close sources box and popups when clicking elsewhere
+    document.addEventListener('click', (e) => {
+      // Close the "Sources" box if open
+      const sourcesDiv = document.querySelector('.sources-content');
+      if (sourcesDiv && sourcesDiv.style.display === 'block' && !e.target.closest('.leaflet-control-custom')) {
+        sourcesDiv.style.display = 'none';
+      }
+    
+      // Close the popup if open
+      if (!e.target.closest('.leaflet-popup') && !e.target.closest('.leaflet-container')) {
+        map.closePopup();
+      }
+    });
 })();
     
     

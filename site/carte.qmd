@@ -1,5 +1,5 @@
 ---
-title: Ma commune
+title: ""
 format: html
 echo: false
 warning: false
@@ -23,7 +23,7 @@ warning: false
 
 
 <div id="foret-score-box">
-  <img id="foret-score-img" src="" alt="Forêt Score" style="width: 400px; height: 64px;">
+  <img id="foret-score-img" src="" alt="Forêt Score">
   <div id="foret-score-details"></div>
 </div>
 
@@ -44,52 +44,5 @@ warning: false
      
   </ul>
 </div>
-
-<div class="info-box">
-  <h3>À savoir</h3>
-  <ul>
-  <li>Les <strong>perturbations</strong>, en rouge, sont des changements majeurs dans un indice de végétation par rapport au même mois de l'année précédente. Elles sont principalement expliquées par des <strong>coupes rases</strong>.</li>
-  <li>Le <strong>Forêt-Score</strong> est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs <strong>critères</strong> liés à la <strong>gestion forestière</strong>, aux <strong>pratiques d’exploitation</strong> et à la <strong>préservation de la biodiversité</strong>.</li>
-  <li>
-  Il est toujours judicieux de se questionner face à des données. Nous vous invitons à consulter la page <a href="details.html">Détails</a> pour en apprendre plus sur les limites de la classification des types de forêts ainsi que de la détection des perturbations.
-  </li>
-  <li>
-    Bien qu'elles offrent une vision globale intéressante, ces données doivent toujours être complétées par une __validation manuelle__ pour plus de précision. Elles reposent sur des processus automatisés qui peuvent les rendre approximatives.
-  </li>
-  </ul>
-</div>
-
-<div class="info-box">
-  <h3>Sources</h3>
-  <ul>
-    <li>
-      <strong>Annotation des forêts</strong>:
-      <a href="https://geoservices.ign.fr/bdforet" target="_blank" rel="noopener noreferrer">BDForêt® V2</a>
-      sous
-      <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank" rel="noopener noreferrer">Licence ETALAB-Licence-Ouverte-v2.0</a>
-    </li>
-    <li>
-      <strong>Altitudes</strong>:
-      <a href="https://geoservices.ign.fr/services-geoplateforme-altimetrie" target="_blank" rel="noopener noreferrer">Service Géoplateforme de calcul altimétrique</a>
-      sous
-      <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank" rel="noopener noreferrer">Licence ETALAB-Licence-Ouverte-v2.0</a>
-    </li>
-    <li>
-      <strong>Données satellite</strong>:
-      Copernicus (<a href="https://sentiwiki.copernicus.eu/web/s2-mission" target="_blank" rel="noopener noreferrer">satellite Sentinel 2</a>) obtenues par
-      <a href="https://www.sentinel-hub.com/" target="_blank" rel="noopener noreferrer">Sentinel-Hub</a>,
-      sous
-      <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-SA</a>
-    </li>
-    <li>
-      <strong>Fond de carte</strong>: IGN-F / Geoportail.
-    </li>
-    <li>
-      <strong>Perturbations et calculs associés</strong> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank" rel="noopener noreferrer">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-NC</a>, et algorithme maison sous
-      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank" rel="noopener noreferrer">Licence CC-BY-SA</a>
-    </li>
-  </ul>
-</div>
-
 </body>
 
