@@ -37,8 +37,11 @@ warning: false
 <div class="info-box">
   <h3>Utilisation</h3>
   <ul>
-    <li>Cliquez sur une zone forestière pour obtenir des informations.</li>
-    <li>Cliquez sur une année du graphique pour filtrer les perturbations.</li>
+    <li>__Cliquez / touchez__ sur une zone de la carte pour __obtenir plus d'informations__ sur l'endroit sélectionné.</li>
+    <li>Vous pouvez également __naviguer vers une autre commune__ en __cliquant / touchant__ la zone sur la carte.</li>
+    <li>__Cliquez / touchez__ une année du graphique pour __filtrer les perturbations__ associées.</li>
+    <li>D'autres données sont disponibles (__zonages naturels__, __cadastre__, etc.) et peuvent être sélectionnées depuis le __menu Couches__.</li>
+     
   </ul>
 </div>
 

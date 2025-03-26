@@ -41,9 +41,7 @@ L.Control.geocoder({
 })
 .on('markgeocode', function(e) {
     var latlng = e.geocode.center;
-    map.setView(latlng, 12);
-    L.marker(latlng).addTo(map)
-        .bindPopup(e.geocode.name);
+    map.setView(latlng, 14);
 })
 .addTo(map);
 
@@ -58,12 +56,14 @@ L.tileLayer(
     }
 ).addTo(map);
 
-L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&LAYER=HYDROGRAPHY.HYDROGRAPHY&FORMAT=image/png&STYLE=normal&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}', {
-  minZoom: 0,
-  maxZoom: 18,
-  tileSize: 256,
-  opacity: 0.9
-}).addTo(map);
+var cadastreLayer = L.tileLayer(
+  'https://data.geopf.fr/wmts?layer=CADASTRALPARCELS.PARCELLAIRE_EXPRESS&style=PCI vecteur&tilematrixset=PM&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix={z}&TileCol={x}&TileRow={y}', 
+  {
+      tileSize: 256,
+      minZoom: 0,
+      maxZoom: 20,
+  }
+)
 
 // Utility functions
 async function loadGeoJSON(url) {
@@ -71,7 +71,7 @@ async function loadGeoJSON(url) {
     return await response.json();
 }
 
-(async function(geojsonUrl, crUrl) {
+(async function() {
     ['pane1', 'pane2', 'pane3', 'pane4'].forEach((pane, index) => {
         map.createPane(pane);
         map.getPane(pane).style.zIndex = 400 + (index * 100);
@@ -99,6 +99,14 @@ async function loadGeoJSON(url) {
       }
     ).addTo(map);
 
+    const hydroLayer = L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&LAYER=HYDROGRAPHY.HYDROGRAPHY&FORMAT=image/png&STYLE=normal&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}', {
+      minZoom: 0,
+      maxZoom: 18,
+      tileSize: 256,
+      opacity: 0.9
+    }).addTo(map);
+
+
     map.on("click", function (e) {
       const latlng = e.latlng;
       const lat = latlng.lat;
@@ -107,7 +115,7 @@ async function loadGeoJSON(url) {
       // Initial popup content with two buttons
       let popupContent = `
         <b>Coordonnées</b><br>
-        Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br>
+        Lat : ${lat.toFixed(5)}, Lon : ${lng.toFixed(5)}<br>
         <button id="more-info-btn" style="margin-top: 5px;">Plus d'infos sur ce lieu...</button><br>
         <button id="commune-page-btn" style="margin-top: 5px;">Aller voir la page de cette commune</button>
       `;
@@ -141,7 +149,7 @@ async function loadGeoJSON(url) {
     
         let detailedContent = `
           <b>Coordonnées</b><br>
-          Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br>
+          Lat : ${lat.toFixed(5)}, Lon : ${lng.toFixed(5)}<br>
         `;
     
         const fetchWithTimeout = async (url, options, timeout = 10000) => {
@@ -180,7 +188,7 @@ async function loadGeoJSON(url) {
                 detailedContent += `<b>Perturbation</b>: Non détectée<br>`;
               }
             } else {
-              detailedContent += `<b>Perturbation</b>: Hors limites<br>`;
+              detailedContent += `<b>Perturbation</b>: Non disponible<br>`;
             }
           } catch (crError) {
             console.error("CR layer error:", crError);
@@ -321,8 +329,8 @@ async function loadGeoJSON(url) {
     
         } catch (error) {
           console.error("Error fetching INSEE code:", error);
-          alert("Erreur lors de la récupération du code INSEE. Veuillez réessayer.");
-          communePageButton.textContent = "Aller voir la page de cette commune";
+          alert("Erreur lors de la récupération du code INSEE.");
+          communePageButton.textContent = "Voir la page de cette commune";
           communePageButton.disabled = false;
         }
       });
@@ -432,7 +440,7 @@ async function loadGeoJSON(url) {
               const yy = Math.floor(val / 1000);
               const year = 2000 + yy;
               if (selectedYear && year !== selectedYear) return null;
-              return "firebrick";
+              return "#D70040";
             },
             resolution: 256,
             pane: "pane3"
@@ -453,19 +461,12 @@ async function loadGeoJSON(url) {
               yearAreaMap[year] = (yearAreaMap[year] || 0) + 100;
             }
           }
+
           const years = Object.keys(yearAreaMap).sort();
           const areas = years.map(year => yearAreaMap[year] / 10000);
           const chartContainer = document.createElement("div");
-          chartContainer.innerHTML = `<canvas id="areaChart" width="200" height="150"></canvas>`;
-          chartContainer.style.position = "absolute";
-          chartContainer.style.bottom = "20px";
-          chartContainer.style.right = "10px";
-          chartContainer.style.backgroundColor = "rgba(255, 255, 255, 1)";
-          chartContainer.style.border = "1px solid #ccc";
-          chartContainer.style.borderRadius = "3px";
-          chartContainer.style.padding = "8px";
-          chartContainer.style.zIndex = "1000";
-          chartContainer.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+          chartContainer.innerHTML = `<canvas id="areaChart" width="150px" height="140"></canvas>`;
+          chartContainer.className = "chart-container"; // Add a class instead of inline styles
           document.getElementById("map").appendChild(chartContainer);
           L.DomEvent.disableClickPropagation(chartContainer);
 
@@ -475,9 +476,9 @@ async function loadGeoJSON(url) {
             data: {
               labels: years,
               datasets: [{
-                label: 'Coupes forestières (ha)',
+                label: 'Coupes (ha)',
                 data: areas,
-                backgroundColor: 'firebrick'
+                backgroundColor: '#D70040'
               }]
             },
             options: {
@@ -514,17 +515,18 @@ async function loadGeoJSON(url) {
 
     var layerControl = L.control.layers(null, {
         '<span style="display:inline-block; width:12px; height:12px; background-color:rgba(34,139,34,0.3); margin-right:6px; border:1px solid #555;"></span>BDForêt V2': forestLayer,
-    }, { collapsed: false }).addTo(map);
+        '<span style="display:inline-block; width:12px; height:12px; background-color:lightblue; margin-right:6px; border:1px solid #555;"></span>Hydrographie': hydroLayer,
+        '<span style="display:inline-block; width:12px; height:12px; background-color:rgba(199, 129, 23, 0.85); margin-right:6px; border:1px solid #555;"></span>Cadastre': cadastreLayer,
+    }, { collapsed: true }).addTo(map);
 
     var layerControlContainer = layerControl.getContainer();
     var title = document.createElement("div");
     title.innerHTML = "<b>Couches</b>";
-    title.style.textAlign = "left";
-    title.style.padding = "0px";
-    title.style.fontSize = "12px";
+    title.style.textAlign = "center";
+    title.style.padding = "5px";
     title.style.backgroundColor = "white";
     layerControlContainer.insertBefore(title, layerControlContainer.firstChild);
-})(geojsonUrl, crUrl);
+})();
     
     
 (async function loadAndDisplayForetScore(csvUrl) {
