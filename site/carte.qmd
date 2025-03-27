@@ -1,8 +1,8 @@
 ---
 title: ""
-format: html
-echo: false
-warning: false
+format: 
+  html:
+    page-layout: full
 ---
 
 <head>
@@ -18,21 +18,88 @@ warning: false
     <script src="https://unpkg.com/georaster"></script>
     <script src="https://unpkg.com/georaster-layer-for-leaflet"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
 </head>
 <body>
-
 
 <div id="foret-score-box">
   <img id="foret-score-img" src="" alt="Forêt Score">
   <div id="foret-score-details"></div>
 </div>
 
-<br>
-<div id="map" ></div>
+<div id="searchContainer">
+  <input type="text" id="searchInput" placeholder="Adresse, Code postal ou Commune" />
+  <div id="autocompleteList" class="autocomplete-list"></div>
+</div>
+
+<div id="map"></div>
 <script src="mitan.js"></script>
 
-<br>
+<script>
+  // Handle input for autocomplete
+  $('#searchInput').on('input', () => {
+    const query = $('#searchInput').val().trim();
+    if (!query) {
+      $('#autocompleteList').empty();
+      return;
+    }
 
+    // Query the gouv API for full address suggestions
+    const apiUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`;
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data.features || data.features.length === 0) {
+          $('#autocompleteList').html('<div class="no-results">Aucune adresse trouvée.</div>');
+          return;
+        }
+
+        // Display suggestions in a custom dropdown
+        const suggestionsHTML = data.features.map(feature => {
+          const label = feature.properties.label; // Use the correct property for the label
+          const { coordinates } = feature.geometry;
+          const postalCode = feature.properties.citycode; // Use citycode as the postal code
+          return `<div class="autocomplete-item" data-lat="${coordinates[1]}" data-lng="${coordinates[0]}" data-postal="${postalCode}">${label}</div>`;
+        }).join('');
+        $('#autocompleteList').html(suggestionsHTML);
+
+        // Add click event to each suggestion item
+        $('.autocomplete-item').on('click', function () {
+          const lat = $(this).data('lat');
+          const lng = $(this).data('lng');
+          const selectedPostalCode = $(this).data('postal');
+          const currentInseeCode = new URLSearchParams(window.location.search).get('commune');
+
+          if (selectedPostalCode && selectedPostalCode.toString() === currentInseeCode) {
+            // Zoom to the selected location if within the same commune
+            map.setView([lat, lng], 14);
+          } else {
+            // Navigate to the relevant commune page if different
+            window.location.href = `carte.html?commune=${selectedPostalCode}`;
+          }
+          $('#autocompleteList').empty(); // Clear the dropdown
+        });
+      })
+      .catch(error => {
+        console.error("Error querying API for autocomplete:", error);
+        $('#autocompleteList').html('<div class="no-results">Erreur lors de la recherche. Veuillez réessayer.</div>');
+      });
+  });
+
+  // Close the dropdown when clicking outside
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('#searchContainer').length) {
+      $('#autocompleteList').empty();
+    }
+  });
+</script>
+
+<br>
 
 <div class="info-box">
   <h3>Utilisation</h3>
@@ -41,7 +108,6 @@ warning: false
     <li>Vous pouvez également __naviguer vers une autre commune__ en __cliquant / touchant__ la zone sur la carte.</li>
     <li>__Cliquez / touchez__ une année du graphique pour __filtrer les perturbations__ associées.</li>
     <li>D'autres données sont disponibles (__zonages naturels__, __cadastre__, etc.) et peuvent être sélectionnées depuis le __menu Couches__.</li>
-     
   </ul>
 </div>
 </body>

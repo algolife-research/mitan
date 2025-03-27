@@ -216,24 +216,19 @@ async function loadGeoJSON(url) {
             if (!crResponse.ok) throw new Error(`CR fetch failed: ${crResponse.status}`);
             const crBuffer = await crResponse.arrayBuffer();
             const georaster = await parseGeoraster(crBuffer);
-            console.log(georaster)
             const { xmin, xmax, ymin, ymax, width, height, projection } = georaster;
 
             // Handle undefined or unsupported projection
             const rasterProjection = "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"; // EPSG:2154 (Lambert-93)
             const wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"; // WGS84 projection
-            console.log(projection)
             // Convert lat/lng to the same projection as the raster
             const [x, y] = proj4(wgs84, rasterProjection, [lng, lat]);
 
             // Convert x and y to pixel coordinates
             const xPixel = Math.floor((x - xmin) / (xmax - xmin) * width);
             const yPixel = Math.floor((ymax - y) / (ymax - ymin) * height);
-            console.log(xPixel, yPixel)
               // check that x and y are within the raster bounds
-              console.log(x)
                 if (x > xmin || x < xmax || y > ymin || y < ymax) {
-                console.log(georaster)
                 const crValue = georaster.values[0][yPixel][xPixel];
                 if (crValue && crValue !== 4294967295 && !isNaN(crValue)) {
                   const year = 2000 + Math.floor(crValue / 1000);
@@ -246,7 +241,31 @@ async function loadGeoJSON(url) {
                   const day = date.getDate().toString().padStart(2, '0');
                   const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
 
-                  detailedContent += `<br><b>Perturbation</b><br>Date : ${day}-${month}-${year}<br>Surface: indisponible (à venir)<br><br>`;
+                  // Compute the surface of the perturbation
+                  const visited = new Set();
+                  let surface = 0;
+
+                  function dfs(px, py) {
+                    const key = `${px},${py}`;
+                    if (px < 0 || px >= width || py < 0 || py >= height || visited.has(key)) return;
+                    const value = georaster.values[0][py][px];
+                    if (value == 4294967295 || isNaN(value)) return; // Ensure the same perturbation value
+
+                    visited.add(key);
+                    surface += 1;
+
+                    dfs(px + 1, py);
+                    dfs(px - 1, py);
+                    dfs(px, py + 1);
+                    dfs(px, py - 1);
+                  }
+
+                  dfs(xPixel, yPixel);
+
+                  // Convert surface from pixels to hectares (assuming 10m x 10m pixels)
+                  const surfaceHectares = (surface * 100) / 10000;
+
+                  detailedContent += `<br><b>Perturbation</b><br>Date : ${day}-${month}-${year}<br>Surface : ${surfaceHectares.toFixed(2)} ha<br><br>`;
                 } else {
                   detailedContent += `<br><b>Perturbation</b>: Indisponible<br>`;
                 }
