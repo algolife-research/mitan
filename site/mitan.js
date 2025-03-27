@@ -85,18 +85,6 @@ var map = L.map('map', {
     attributionControl: false
 });
 
-// Address search bar
-L.Control.geocoder({
-    defaultMarkGeocode: false,
-    placeholder: "Chercher une adresse...",
-    collapsed: false
-})
-.on('markgeocode', function(e) {
-    var latlng = e.geocode.center;
-    map.setView(latlng, 14);
-})
-.addTo(map);
-
 // Add base map layer
 L.tileLayer(
     "https://data.geopf.fr/wmts?&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/jpeg&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",
@@ -222,34 +210,53 @@ async function loadGeoJSON(url) {
         };
     
         try {
-          // 1. Get CR layer value
-          try {
+            // 1. Get CR layer value
+            try {
             const crResponse = await fetchWithTimeout(crUrl, {});
             if (!crResponse.ok) throw new Error(`CR fetch failed: ${crResponse.status}`);
             const crBuffer = await crResponse.arrayBuffer();
             const georaster = await parseGeoraster(crBuffer);
-    
-            const { xmin, xmax, ymin, ymax, width, height } = georaster;
-            const xRatio = (lng - xmin) / (xmax - xmin);
-            const yRatio = (ymax - lat) / (ymax - ymin);
-            const rasterX = Math.floor(xRatio * width);
-            const rasterY = Math.floor(yRatio * height);
-    
-            if (rasterX >= 0 && rasterX < width && rasterY >= 0 && rasterY < height) {
-              const crValue = georaster.values[0][rasterY][rasterX];
-              if (crValue && crValue !== 4294967295 && !isNaN(crValue)) {
-                const year = 2000 + Math.floor(crValue / 1000);
-                detailedContent += `<b>Perturbation</b>: ${year}<br>`;
-              } else {
-                detailedContent += `<b>Perturbation</b>: Non détectée<br>`;
-              }
-            } else {
-              detailedContent += `<b>Perturbation</b>: Non disponible<br>`;
-            }
-          } catch (crError) {
+            console.log(georaster)
+            const { xmin, xmax, ymin, ymax, width, height, projection } = georaster;
+
+            // Handle undefined or unsupported projection
+            const rasterProjection = "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"; // EPSG:2154 (Lambert-93)
+            const wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"; // WGS84 projection
+            console.log(projection)
+            // Convert lat/lng to the same projection as the raster
+            const [x, y] = proj4(wgs84, rasterProjection, [lng, lat]);
+
+            // Convert x and y to pixel coordinates
+            const xPixel = Math.floor((x - xmin) / (xmax - xmin) * width);
+            const yPixel = Math.floor((ymax - y) / (ymax - ymin) * height);
+            console.log(xPixel, yPixel)
+              // check that x and y are within the raster bounds
+              console.log(x)
+                if (x > xmin || x < xmax || y > ymin || y < ymax) {
+                console.log(georaster)
+                const crValue = georaster.values[0][yPixel][xPixel];
+                if (crValue && crValue !== 4294967295 && !isNaN(crValue)) {
+                  const year = 2000 + Math.floor(crValue / 1000);
+                  const dayOfYear = crValue % 1000;
+
+                  // Convert day of year to month and day
+                  const date = new Date(year, 0); // Start from January 1st of the year
+                  date.setDate(dayOfYear);
+
+                  const day = date.getDate().toString().padStart(2, '0');
+                  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+
+                  detailedContent += `<br><b>Perturbation</b><br>Date : ${day}-${month}-${year}<br>Surface: indisponible (à venir)<br><br>`;
+                } else {
+                  detailedContent += `<br><b>Perturbation</b>: Indisponible<br>`;
+                }
+                } else {
+                detailedContent += `<br><b>Perturbation</b>: Indisponible<br>`;
+                }
+            } catch (crError) {
             console.error("CR layer error:", crError);
-            detailedContent += `<b>Perturbation</b>: Erreur de chargement<br>`;
-          }
+            detailedContent += `<b>Perturbation</b>: Indisponible<br>`;
+            }
     
           // 2. Get altitude from IGN geoservices using GET
           try {
@@ -315,7 +322,7 @@ async function loadGeoJSON(url) {
                 else if (text.startsWith("Essence :")) forestData.essence = value;
               });
     
-              detailedContent += `<br><b>BDForêt V2</b>:<br>`;
+              detailedContent += `<br><b>BDForêt V2</b><br>`;
               detailedContent += `Code: ${forestData.code}<br>`;
               detailedContent += `Type de formation: ${forestData.formation}<br>`;
               detailedContent += `Type générique: ${forestData.generic}<br>`;
@@ -510,7 +517,7 @@ async function loadGeoJSON(url) {
           const years = Object.keys(yearAreaMap).sort();
           const areas = years.map(year => yearAreaMap[year] / 10000);
           const chartContainer = document.createElement("div");
-          chartContainer.innerHTML = `<canvas id="areaChart" width="150px" height="140"></canvas>`;
+          chartContainer.innerHTML = `<canvas id="areaChart"></canvas>`;
           chartContainer.className = "chart-container"; // Add a class instead of inline styles
           document.getElementById("map").appendChild(chartContainer);
           L.DomEvent.disableClickPropagation(chartContainer);
@@ -536,7 +543,7 @@ async function loadGeoJSON(url) {
                   const yearClicked = parseInt(chart.data.labels[clickedIndex]);
                   selectedYear = (selectedYear === yearClicked) ? null : yearClicked;
                   chart.data.datasets[0].backgroundColor = chart.data.labels.map(label =>
-                    selectedYear && parseInt(label) === selectedYear ? 'darkred' : 'firebrick'
+                    selectedYear && parseInt(label) === selectedYear ? '#d72c00' : '#D70040'
                   );
                   chart.update();
                   CR_layer.redraw();
@@ -558,20 +565,16 @@ async function loadGeoJSON(url) {
         });
       });
 
+    // Customize the layer control toggle
     var layerControl = L.control.layers(null, {
         '<span style="display:inline-block; width:12px; height:12px; background-color:rgba(34,139,34,0.3); margin-right:6px; border:1px solid #555;"></span>BDForêt V2': forestLayer,
         '<span style="display:inline-block; width:12px; height:12px; background-color:lightblue; margin-right:6px; border:1px solid #555;"></span>Hydrographie': hydroLayer,
         '<span style="display:inline-block; width:12px; height:12px; background-color:rgba(199, 129, 23, 0.85); margin-right:6px; border:1px solid #555;"></span>Cadastre': cadastreLayer,
-    }, { collapsed: true }).addTo(map);
+    }, { collapsed: true, position: 'topleft' }).addTo(map);
 
+    // Modify the control toggle to be larger and modern
     var layerControlContainer = layerControl.getContainer();
-    var title = document.createElement("div");
-    title.innerHTML = "<b>Couches</b>";
-    title.style.textAlign = "center";
-    title.style.padding = "5px";
-    title.style.backgroundColor = "white";
-    layerControlContainer.insertBefore(title, layerControlContainer.firstChild);
-
+    layerControlContainer.classList.add("modern-layer-control");
 
     // Add a collapsed "Sources" button at the bottom left corner
 /*     Le <strong>Forêt-Score</strong> est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs <strong>critères</strong> liés à la <strong>gestion forestière</strong>, aux <strong>pratiques d’exploitation</strong> et à la <strong>préservation de la biodiversité</strong>.<br>
@@ -596,7 +599,7 @@ async function loadGeoJSON(url) {
       <b>Perturbations et calculs associés</b> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank">Licence CC-BY-NC</a>, et algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank">Licence CC-BY-SA</a><br>
     `;
     
-    const sourcesControl = L.control({ position: 'bottomleft' });
+    const sourcesControl = L.control({ position: 'bottomright' });
     sourcesControl.onAdd = function () {
       const container = L.DomUtil.create('div', 'leaflet-control-custom');
       container.style.backgroundColor = 'white';
@@ -606,8 +609,7 @@ async function loadGeoJSON(url) {
       container.style.border = '1px solid #ccc';
       container.style.borderRadius = '4px';
       container.style.width = '250px'; // Fixed width for better layout
-      container.style.fontSize = '11px'; // Smaller font size for compactness
-      container.innerHTML = '<button id="sourcesToggle" style="width: 100%; background-color: #f4f4f4; border: none; padding: 5px;">Détails et sources</button>';
+      container.innerHTML = '<button id="sourcesToggle" style="width: 100%;  border: none; padding: 5px;">Détails et sources</button>';
       
       const sourcesDiv = L.DomUtil.create('div', 'sources-content', container);
       sourcesDiv.style.display = 'none';
@@ -675,18 +677,17 @@ async function loadGeoJSON(url) {
 
     const imgEl = document.getElementById("foret-score-img");
     imgEl.src = `assets/Foret-Score-${score}.svg`;
-    imgEl.style.width = "170px";  // Set the width to 80 pixels
+    imgEl.style.width = "160px";  // Set the width to 80 pixels
     imgEl.style.height = "auto"; // Optional: maintain the aspect ratio
 
     document.getElementById("foret-score-img").alt = `Score ${score}`;
 
     document.getElementById("foret-score-details").innerHTML = `
-      <b>Forêt-Score :</b> ${score}<br>
-      <b>Surface de la commune :</b>  ${Math.round(surfaceTotal).toLocaleString()} hectares<br>
-      <b>Surface boisée :</b>  ${Math.round(surfaceBoisee).toLocaleString()} hectares<br>
+      <b>Surface de la commune :</b>  ${Math.round(surfaceTotal).toLocaleString()} ha<br>
+      <b>Surface boisée :</b>  ${Math.round(surfaceBoisee).toLocaleString()} ha<br>
       <b>Taux de boisement :</b> ${tauxBoisement.toFixed(2)} %<br>
-      <b>Coupes / Perturbations (surface) :</b> ${coupesHa.toFixed(3)} hectares par an<br>
-      <b>Coupes / Perturbations (% forêt) :</b> ${coupesPct.toFixed(3)} % par an
+      <b>Coupes / Perturbations (surface) :</b> ${coupesHa.toFixed(3)} ha / an<br>
+      <b>Coupes / Perturbations (% forêt) :</b> ${coupesPct.toFixed(3)} % / an
     `;
 
     document.getElementById("foret-score-box").style.display = "flex";
