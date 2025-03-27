@@ -16,6 +16,7 @@ Le **Forêt-Score** est un indicateur destiné à évaluer la qualité et la dur
 
 <!-- Cliquez sur une commune pour plus d'informations. -->
 
+<!-- 
 ```{r setup, include=FALSE}
 # library(leaflet)
 # library(sf)
@@ -26,10 +27,6 @@ Le **Forêt-Score** est un indicateur destiné à évaluer la qualité et la dur
 # communes <- communes %>% 
 #   left_join(indicators, by = join_by(codgeo == commune_code_insee)) %>%
 #   filter(!is.na(taux_coupes_pc))
-
-```
-
-```{r leaflet-map}
 # Define color palette function
 # pal <- colorNumeric(palette = "Spectral", domain = NULL, na.color = "transparent", reverse = TRUE)
 # category_colors <- c("A" = "#248B05",  # Green
@@ -70,6 +67,7 @@ Le **Forêt-Score** est un indicateur destiné à évaluer la qualité et la dur
 #   ) %>%
 #   addLegend(pal = pal, values = communes$foret_score, title = "Forêt-Score", opacity = 0.7)
 ```
+ -->
 
 ### Interprétation du Forêt-Score
 

@@ -34,12 +34,6 @@ format:
       - custom.scss
     toc: false
     minify: true
-    grid:
-      margin-width: 100px
-      body-width: 800px
   
 resources:
   - CNAME
-  - "comm_list.csv"
-  - "a-com2022.json"
-
