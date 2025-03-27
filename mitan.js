@@ -85,18 +85,6 @@ var map = L.map('map', {
     attributionControl: false
 });
 
-// Address search bar
-L.Control.geocoder({
-    defaultMarkGeocode: false,
-    placeholder: "Chercher une adresse...",
-    collapsed: false
-})
-.on('markgeocode', function(e) {
-    var latlng = e.geocode.center;
-    map.setView(latlng, 14);
-})
-.addTo(map);
-
 // Add base map layer
 L.tileLayer(
     "https://data.geopf.fr/wmts?&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/jpeg&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",
@@ -480,14 +468,15 @@ async function loadGeoJSON(url) {
             georaster: georaster,
             pixelValuesToColorFn: values => {
               const [val] = values;
-              if (val == null || isNaN(val) || val === 4294967295) return null;
+              if (val == null || isNaN(val) || val === georaster.noDataValue) return null; // Ensure no color for invalid values
               const yy = Math.floor(val / 1000);
               const year = 2000 + yy;
               if (selectedYear && year !== selectedYear) return null;
               return "#D70040";
             },
             resolution: 256,
-            pane: "pane3"
+            pane: "pane3",
+            noDataValue: georaster.noDataValue // Explicitly set noDataValue to avoid coloring the bbox
           });
           layerControl.addOverlay(CR_layer, '<span style="display:inline-block; width:12px; height:12px; background-color:firebrick; margin-right:6px; border:1px solid #555;"></span>Perturbations');
           CR_layer.addTo(map);
@@ -498,7 +487,7 @@ async function loadGeoJSON(url) {
           for (let row = 0; row < values.length; row++) {
             for (let col = 0; col < values[0].length; col++) {
               const val = values[row][col];
-              if (val == null || isNaN(val) || val === 4294967295) continue;
+              if (val == null || isNaN(val) || val === georaster.noDataValue) continue;
               const yy = Math.floor(val / 1000);
               if (yy < 18 || yy > 25) continue;
               const year = 2000 + yy;
@@ -509,7 +498,7 @@ async function loadGeoJSON(url) {
           const years = Object.keys(yearAreaMap).sort();
           const areas = years.map(year => yearAreaMap[year] / 10000);
           const chartContainer = document.createElement("div");
-          chartContainer.innerHTML = `<canvas id="areaChart" width="150px" height="140"></canvas>`;
+          chartContainer.innerHTML = `<canvas id="areaChart"></canvas>`;
           chartContainer.className = "chart-container"; // Add a class instead of inline styles
           document.getElementById("map").appendChild(chartContainer);
           L.DomEvent.disableClickPropagation(chartContainer);
@@ -535,7 +524,7 @@ async function loadGeoJSON(url) {
                   const yearClicked = parseInt(chart.data.labels[clickedIndex]);
                   selectedYear = (selectedYear === yearClicked) ? null : yearClicked;
                   chart.data.datasets[0].backgroundColor = chart.data.labels.map(label =>
-                    selectedYear && parseInt(label) === selectedYear ? 'darkred' : 'firebrick'
+                    selectedYear && parseInt(label) === selectedYear ? '#d72c00' : '#D70040'
                   );
                   chart.update();
                   CR_layer.redraw();
@@ -557,20 +546,16 @@ async function loadGeoJSON(url) {
         });
       });
 
+    // Customize the layer control toggle
     var layerControl = L.control.layers(null, {
         '<span style="display:inline-block; width:12px; height:12px; background-color:rgba(34,139,34,0.3); margin-right:6px; border:1px solid #555;"></span>BDForêt V2': forestLayer,
         '<span style="display:inline-block; width:12px; height:12px; background-color:lightblue; margin-right:6px; border:1px solid #555;"></span>Hydrographie': hydroLayer,
         '<span style="display:inline-block; width:12px; height:12px; background-color:rgba(199, 129, 23, 0.85); margin-right:6px; border:1px solid #555;"></span>Cadastre': cadastreLayer,
-    }, { collapsed: true }).addTo(map);
+    }, { collapsed: true, position: 'topleft' }).addTo(map);
 
+    // Modify the control toggle to be larger and modern
     var layerControlContainer = layerControl.getContainer();
-    var title = document.createElement("div");
-    title.innerHTML = "<b>Couches</b>";
-    title.style.textAlign = "center";
-    title.style.padding = "5px";
-    title.style.backgroundColor = "white";
-    layerControlContainer.insertBefore(title, layerControlContainer.firstChild);
-
+    layerControlContainer.classList.add("modern-layer-control");
 
     // Add a collapsed "Sources" button at the bottom left corner
 /*     Le <strong>Forêt-Score</strong> est un indicateur destiné à évaluer la qualité et la durabilité des forêts d’une commune, à l’image du Nutri-Score pour l’alimentation. Il repose sur plusieurs <strong>critères</strong> liés à la <strong>gestion forestière</strong>, aux <strong>pratiques d’exploitation</strong> et à la <strong>préservation de la biodiversité</strong>.<br>
@@ -595,7 +580,7 @@ async function loadGeoJSON(url) {
       <b>Perturbations et calculs associés</b> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank">Licence CC-BY-NC</a>, et algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank">Licence CC-BY-SA</a><br>
     `;
     
-    const sourcesControl = L.control({ position: 'bottomleft' });
+    const sourcesControl = L.control({ position: 'bottomright' });
     sourcesControl.onAdd = function () {
       const container = L.DomUtil.create('div', 'leaflet-control-custom');
       container.style.backgroundColor = 'white';
@@ -605,8 +590,7 @@ async function loadGeoJSON(url) {
       container.style.border = '1px solid #ccc';
       container.style.borderRadius = '4px';
       container.style.width = '250px'; // Fixed width for better layout
-      container.style.fontSize = '11px'; // Smaller font size for compactness
-      container.innerHTML = '<button id="sourcesToggle" style="width: 100%; background-color: #f4f4f4; border: none; padding: 5px;">Détails et sources</button>';
+      container.innerHTML = '<button id="sourcesToggle" style="width: 100%;  border: none; padding: 5px;">Détails et sources</button>';
       
       const sourcesDiv = L.DomUtil.create('div', 'sources-content', container);
       sourcesDiv.style.display = 'none';
@@ -674,18 +658,17 @@ async function loadGeoJSON(url) {
 
     const imgEl = document.getElementById("foret-score-img");
     imgEl.src = `assets/Foret-Score-${score}.svg`;
-    imgEl.style.width = "170px";  // Set the width to 80 pixels
+    imgEl.style.width = "160px";  // Set the width to 80 pixels
     imgEl.style.height = "auto"; // Optional: maintain the aspect ratio
 
     document.getElementById("foret-score-img").alt = `Score ${score}`;
 
     document.getElementById("foret-score-details").innerHTML = `
-      <b>Forêt-Score :</b> ${score}<br>
-      <b>Surface de la commune :</b>  ${Math.round(surfaceTotal).toLocaleString()} hectares<br>
-      <b>Surface boisée :</b>  ${Math.round(surfaceBoisee).toLocaleString()} hectares<br>
+      <b>Surface de la commune :</b>  ${Math.round(surfaceTotal).toLocaleString()} ha<br>
+      <b>Surface boisée :</b>  ${Math.round(surfaceBoisee).toLocaleString()} ha<br>
       <b>Taux de boisement :</b> ${tauxBoisement.toFixed(2)} %<br>
-      <b>Coupes / Perturbations (surface) :</b> ${coupesHa.toFixed(3)} hectares par an<br>
-      <b>Coupes / Perturbations (% forêt) :</b> ${coupesPct.toFixed(3)} % par an
+      <b>Coupes / Perturbations (surface) :</b> ${coupesHa.toFixed(3)} ha / an<br>
+      <b>Coupes / Perturbations (% forêt) :</b> ${coupesPct.toFixed(3)} % / an
     `;
 
     document.getElementById("foret-score-box").style.display = "flex";

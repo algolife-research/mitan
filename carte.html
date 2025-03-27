@@ -39,7 +39,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-73066fac136f4af321b36aedb39545d0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ac4e0e936942dea1283f96bd34050013.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 <meta property="og:site_name" content="Mitan">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -110,12 +110,12 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
@@ -140,11 +140,79 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 </div>
-<br>
+<div id="searchContainer">
+<input type="text" id="searchInput" placeholder="Adresse, Code postal ou Commune">
+<div id="autocompleteList" class="autocomplete-list">
+
+</div>
+</div>
 <div id="map">
 
 </div>
 <script src="mitan.js"></script>
+<script>
+  // Handle input for autocomplete
+  $('#searchInput').on('input', () => {
+    const query = $('#searchInput').val().trim();
+    if (!query) {
+      $('#autocompleteList').empty();
+      return;
+    }
+
+    // Query the gouv API for full address suggestions
+    const apiUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`;
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data.features || data.features.length === 0) {
+          $('#autocompleteList').html('<div class="no-results">Aucune adresse trouvée.</div>');
+          return;
+        }
+
+        // Display suggestions in a custom dropdown
+        const suggestionsHTML = data.features.map(feature => {
+          const label = feature.properties.label; // Use the correct property for the label
+          const { coordinates } = feature.geometry;
+          const postalCode = feature.properties.citycode; // Use citycode as the postal code
+          return `<div class="autocomplete-item" data-lat="${coordinates[1]}" data-lng="${coordinates[0]}" data-postal="${postalCode}">${label}</div>`;
+        }).join('');
+        $('#autocompleteList').html(suggestionsHTML);
+
+        // Add click event to each suggestion item
+        $('.autocomplete-item').on('click', function () {
+          const lat = $(this).data('lat');
+          const lng = $(this).data('lng');
+          const selectedPostalCode = $(this).data('postal');
+          const currentInseeCode = new URLSearchParams(window.location.search).get('commune');
+
+          if (selectedPostalCode && selectedPostalCode.toString() === currentInseeCode) {
+            // Zoom to the selected location if within the same commune
+            map.setView([lat, lng], 14);
+          } else {
+            // Navigate to the relevant commune page if different
+            window.location.href = `carte.html?commune=${selectedPostalCode}`;
+          }
+          $('#autocompleteList').empty(); // Clear the dropdown
+        });
+      })
+      .catch(error => {
+        console.error("Error querying API for autocomplete:", error);
+        $('#autocompleteList').html('<div class="no-results">Erreur lors de la recherche. Veuillez réessayer.</div>');
+      });
+  });
+
+  // Close the dropdown when clicking outside
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('#searchContainer').length) {
+      $('#autocompleteList').empty();
+    }
+  });
+</script>
 <p><br></p>
 <div class="info-box">
 <h3 class="anchored">
