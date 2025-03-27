@@ -2,7 +2,8 @@
 $primary: #44644c; //44644c, c43926
 $primary-light: #b4cdc2; //44644c, c43926
 $secondary: #f79873;// #d38b5d;
-$light-color: #fcf8f2dd;
+$light-color: #fffcf9;
+$lili-color: #fcf8f2dd;
 $dark-color: #824062;
 
 $link-color: $secondary;
@@ -134,14 +135,21 @@ h1, h2, h3, h4, h5, h6 {
 
 .chart-container {
   position: absolute;
-  bottom: 20px;
-  right: 10px;
+  width: 33%;
+  height: auto;
+  bottom: 10px;
+  left: 10px;
   background-color: rgba(255, 255, 255, 1);
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 8px;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 768px) {
+    width: 80%;
+    max-height: 30%;
+  }
 }
 
 #more-info-btn {
@@ -280,7 +288,20 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none; /* Optionally remove underline on hover */
 }
 
-.foret-score-img {
-  width: 400px;
-  height: 64px;
+.leaflet-control-layers-toggle {
+  background-color: $light-color; /* Use a modern color */
+  border-radius: 50%; /* Make it round */
+  width: 70px !important; /* Force size override */
+  height: 70px !important; /* Force size override */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+.modern-layer-control {
+  border-radius: 0px; /* Rounded corners for the expanded control */
+  overflow: hidden; /* Ensure content stays within bounds */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for modern look */
 }
