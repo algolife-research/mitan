@@ -210,34 +210,53 @@ async function loadGeoJSON(url) {
         };
     
         try {
-          // 1. Get CR layer value
-          try {
+            // 1. Get CR layer value
+            try {
             const crResponse = await fetchWithTimeout(crUrl, {});
             if (!crResponse.ok) throw new Error(`CR fetch failed: ${crResponse.status}`);
             const crBuffer = await crResponse.arrayBuffer();
             const georaster = await parseGeoraster(crBuffer);
-    
-            const { xmin, xmax, ymin, ymax, width, height } = georaster;
-            const xRatio = (lng - xmin) / (xmax - xmin);
-            const yRatio = (ymax - lat) / (ymax - ymin);
-            const rasterX = Math.floor(xRatio * width);
-            const rasterY = Math.floor(yRatio * height);
-    
-            if (rasterX >= 0 && rasterX < width && rasterY >= 0 && rasterY < height) {
-              const crValue = georaster.values[0][rasterY][rasterX];
-              if (crValue && crValue !== 4294967295 && !isNaN(crValue)) {
-                const year = 2000 + Math.floor(crValue / 1000);
-                detailedContent += `<b>Perturbation</b>: ${year}<br>`;
-              } else {
-                detailedContent += `<b>Perturbation</b>: Non détectée<br>`;
-              }
-            } else {
-              detailedContent += `<b>Perturbation</b>: Non disponible<br>`;
-            }
-          } catch (crError) {
+            console.log(georaster)
+            const { xmin, xmax, ymin, ymax, width, height, projection } = georaster;
+
+            // Handle undefined or unsupported projection
+            const rasterProjection = "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"; // EPSG:2154 (Lambert-93)
+            const wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"; // WGS84 projection
+            console.log(projection)
+            // Convert lat/lng to the same projection as the raster
+            const [x, y] = proj4(wgs84, rasterProjection, [lng, lat]);
+
+            // Convert x and y to pixel coordinates
+            const xPixel = Math.floor((x - xmin) / (xmax - xmin) * width);
+            const yPixel = Math.floor((ymax - y) / (ymax - ymin) * height);
+            console.log(xPixel, yPixel)
+              // check that x and y are within the raster bounds
+              console.log(x)
+                if (x > xmin || x < xmax || y > ymin || y < ymax) {
+                console.log(georaster)
+                const crValue = georaster.values[0][yPixel][xPixel];
+                if (crValue && crValue !== 4294967295 && !isNaN(crValue)) {
+                  const year = 2000 + Math.floor(crValue / 1000);
+                  const dayOfYear = crValue % 1000;
+
+                  // Convert day of year to month and day
+                  const date = new Date(year, 0); // Start from January 1st of the year
+                  date.setDate(dayOfYear);
+
+                  const day = date.getDate().toString().padStart(2, '0');
+                  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+
+                  detailedContent += `<br><b>Perturbation</b><br>Date : ${day}-${month}-${year}<br>Surface: indisponible (à venir)<br><br>`;
+                } else {
+                  detailedContent += `<br><b>Perturbation</b>: Indisponible<br>`;
+                }
+                } else {
+                detailedContent += `<br><b>Perturbation</b>: Indisponible<br>`;
+                }
+            } catch (crError) {
             console.error("CR layer error:", crError);
-            detailedContent += `<b>Perturbation</b>: Erreur de chargement<br>`;
-          }
+            detailedContent += `<b>Perturbation</b>: Indisponible<br>`;
+            }
     
           // 2. Get altitude from IGN geoservices using GET
           try {
@@ -303,7 +322,7 @@ async function loadGeoJSON(url) {
                 else if (text.startsWith("Essence :")) forestData.essence = value;
               });
     
-              detailedContent += `<br><b>BDForêt V2</b>:<br>`;
+              detailedContent += `<br><b>BDForêt V2</b><br>`;
               detailedContent += `Code: ${forestData.code}<br>`;
               detailedContent += `Type de formation: ${forestData.formation}<br>`;
               detailedContent += `Type générique: ${forestData.generic}<br>`;
