@@ -725,18 +725,15 @@ async function loadGeoJSON(url) {
 
     const imgEl = document.getElementById("foret-score-img");
     imgEl.src = `assets/Foret-Score-${score}.svg`;
-    imgEl.style.width = "160px";  // Set the width to 80 pixels
-    imgEl.style.height = "auto"; // Optional: maintain the aspect ratio
 
     document.getElementById("foret-score-img").alt = `Score ${score}`;
 
     document.getElementById("foret-score-details").innerHTML = `
-      <b>Surface de la commune :</b>  ${Math.round(surfaceTotal).toLocaleString()} ha<br>
-      <b>Dont bois :</b>  ${Math.round(surfaceBoisee).toLocaleString()} ha (${tauxBoisement.toFixed(0)} %)<br>
+      <b>Surface :</b>  ${Math.round(surfaceTotal).toLocaleString()} ha<br>
+      <b>Dont forêt :</b>  ${Math.round(surfaceBoisee).toLocaleString()} ha (${tauxBoisement.toFixed(0)} %)<br>
       <b>Coupes :</b> ${coupesHa.toFixed(2)} ha / an (${coupesPct.toFixed(2)} % / an)
     `;
 
-    document.getElementById("foret-score-box").style.display = "flex";
   } catch (err) {
     console.error("Erreur lors du chargement du CSV ou du calcul du Forêt-Score :", err);
   }
@@ -746,7 +743,7 @@ function createForetScoreBox() {
   const foretScoreBox = L.control({ position: "topleft" });
 
   foretScoreBox.onAdd = function () {
-    const container = L.DomUtil.create("div", "foret-score-box");
+    const container = L.DomUtil.create("div", "foret-score-box leaflet-control-foret");
 
     // Add title row
     const titleRow = document.createElement("div");
@@ -784,6 +781,20 @@ function createForetScoreBox() {
   };
 
   foretScoreBox.addTo(map);
+
+  // Adjust the width of the Foret Score box dynamically
+  const adjustForetScoreBoxWidth = () => {
+    const mapElement = document.getElementById("map");
+    const foretScoreBoxElement = document.querySelector(".foret-score-box");
+    if (mapElement && foretScoreBoxElement) {
+      const mapWidth = mapElement.offsetWidth;
+      foretScoreBoxElement.style.width = `${Math.min(mapWidth * 0.5, 500)}px`; // 50% of map width, max 500px
+    }
+  };
+
+  // Set initial width and call on resize
+  adjustForetScoreBoxWidth();
+  window.addEventListener("resize", adjustForetScoreBoxWidth);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -791,10 +802,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchContainer = L.control({ position: "topleft" });
 
   searchContainer.onAdd = function () {
-    const container = L.DomUtil.create("div", "search-container");
+    const container = L.DomUtil.create("div", "search-container leaflet-control-foret");
     container.style.zIndex = "9999"; // Ensure the container has the highest z-index
     container.innerHTML = `
-      <input type="text" id="searchInput" placeholder="Rechercher une adresse ou une commune..." />
+      <input type="text" id="searchInput" placeholder="Rechercher un lieu..." />
       <div id="autocompleteList" class="autocomplete-list"></div>
     `;
 
@@ -868,6 +879,22 @@ document.addEventListener("DOMContentLoaded", function () {
   // Prevent map popup when clicking on the search container
   const searchContainerElement = document.querySelector(".search-container");
   L.DomEvent.disableClickPropagation(searchContainerElement);
+
+  // Adjust the width of .leaflet-control-foret dynamically
+  const adjustForetControlWidth = () => {
+    const mapElement = document.getElementById("map");
+    const foretControls = document.querySelectorAll(".leaflet-control-foret");
+    if (mapElement) {
+      const mapWidth = mapElement.offsetWidth;
+      foretControls.forEach(control => {
+        control.style.width = `${Math.min(mapWidth * 0.5, 500)}px`; // 50% of map width, max 500px
+      });
+    }
+  };
+
+  // Call on load and resize
+  adjustForetControlWidth();
+  window.addEventListener("resize", adjustForetControlWidth);
 
   // ...existing code...
   createForetScoreBox();
