@@ -4,9 +4,13 @@ project:
   render:
     - "*.qmd"
     - "!dev.qmd"
+  preview:
+    port: 4242
+    browser: false
 
 website:
   title: "Mitan"
+  description: "Mitan est plateforme dédiée à l'exploration et au suivi du patrimoine forestier des communes françaises."
   favicon: assets/IconMitan.png
   open-graph: true
   navbar:
@@ -20,15 +24,15 @@ website:
         text: Chercher une Commune
       - href: foret-score.qmd
         text: Le Forêt-Score
-  page-footer: |
-    Ce site est optimisé pour une navigation sur ordinateur. Dernière mise-à-jour : mars 2025 |
-    [Détails sur les données](./details.html) |
-    [Mentions légales](./mentions.html)
+      - menu:
+          - text: Détails sur les données
+            href:  details.html
+          - text: Mentions légales
+            href:  mentions.html
+    collapse: true # Enable collapsible navbar
 
 format:
   html:
-    include-in-header:
-      - text: <script>window.onload = function() {document.getElementById('autocomplete-0-input').placeholder = 'Commune';};</script>
     theme: 
       - cosmo
       - custom.scss
@@ -37,3 +41,4 @@ format:
   
 resources:
   - CNAME
+  - libs/*
