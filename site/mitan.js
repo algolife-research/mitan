@@ -24,6 +24,12 @@ document.addEventListener("DOMContentLoaded", function() {
           // Update the page title
           document.title = communeName;
 
+          // Update the title in the Foret Score box
+          const titleRow = document.querySelector(".foret-score-box .title");
+          if (titleRow) {
+            titleRow.textContent = communeName;
+          }
+
           // Update the title and structure the Foret Score box
           const foretScoreBox = document.getElementById("foret-score-box");
           if (foretScoreBox) {
@@ -148,7 +154,7 @@ async function loadGeoJSON(url) {
 
     map.on("click", function (e) {
       // Check if a popup is already open
-      if (map.hasLayer(map._popup)) {
+      if (map._popup && map.hasLayer(map._popup)) {
         return; // Do nothing if a popup is already open
       }
     
@@ -618,31 +624,19 @@ async function loadGeoJSON(url) {
       <b>Perturbations et calculs associés</b> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank">Licence CC-BY-NC</a>, et algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank">Licence CC-BY-SA</a><br>
     `;
     
+
+    
     const sourcesControl = L.control({ position: 'bottomright' });
     sourcesControl.onAdd = function () {
       const container = L.DomUtil.create('div', 'leaflet-control-custom');
-      container.style.backgroundColor = 'white';
-      container.style.padding = '5px';
-      container.style.cursor = 'pointer';
-      container.style.textAlign = 'left';
-      container.style.border = '1px solid #ccc';
-      container.style.borderRadius = '4px';
-      container.style.width = '250px'; // Fixed width for better layout
-      container.innerHTML = '<button id="sourcesToggle" style="width: 100%;  border: none; padding: 5px;">Détails et sources</button>';
+      container.innerHTML = `
+        <button id="sourcesToggle">Détails et sources</button>
+        <div class="sources-content">${sourcesContent}</div>
+      `;
       
-      const sourcesDiv = L.DomUtil.create('div', 'sources-content', container);
-      sourcesDiv.style.display = 'none';
-      sourcesDiv.style.marginTop = '5px';
-      sourcesDiv.style.padding = '5px';
-      sourcesDiv.style.border = '1px solid #ccc';
-      sourcesDiv.style.borderRadius = '4px';
-      sourcesDiv.style.backgroundColor = 'white';
-      sourcesDiv.style.maxHeight = '200px'; // Limit height
-      sourcesDiv.style.overflowY = 'auto'; // Make scrollable
-      sourcesDiv.innerHTML = sourcesContent;
-    
       container.querySelector('#sourcesToggle').addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent triggering map click events
+        const sourcesDiv = container.querySelector('.sources-content');
         sourcesDiv.style.display = sourcesDiv.style.display === 'none' ? 'block' : 'none';
       });
 
@@ -662,6 +656,41 @@ async function loadGeoJSON(url) {
       // Close the popup if open
       if (!e.target.closest('.leaflet-popup') && !e.target.closest('.leaflet-container')) {
         map.closePopup();
+      }
+    });
+
+    const utilisationContent = `
+        <li><b>Cliquer sur la carte :</b> Obtenez des informations détaillées sur un endroit spécifique.</li>
+        <li><b>Changer de commune :</b> Utilisez la barre de recherche ou cliquez sur la carte.</li>
+        <li><b>Filtrer les coupes :</b> Cliquez sur une année du graphique pour filtrer les perturbations associées.</li>
+        <li><b>Activer/Désactiver des couches :</b> Utilisez le menu en haut à gauche.</li>
+      </ul>
+    `;
+
+    const utilisationControl = L.control({ position: 'bottomleft' });
+    utilisationControl.onAdd = function () {
+      const container = L.DomUtil.create('div', 'leaflet-control-custom');
+      container.innerHTML = `
+        <button id="utilisationToggle">Comment naviguer ?</button>
+        <div class="utilisation-content">${utilisationContent}</div>
+      `;
+      
+      container.querySelector('#utilisationToggle').addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent triggering map click events
+        const utilisationDiv = container.querySelector('.utilisation-content');
+        utilisationDiv.style.display = utilisationDiv.style.display === 'none' ? 'block' : 'none';
+      });
+
+      L.DomEvent.disableClickPropagation(container); // Prevent map click events when interacting with the control
+      return container;
+    };
+    utilisationControl.addTo(map);
+    
+    // Close utilisation box when clicking elsewhere
+    document.addEventListener('click', (e) => {
+      const utilisationDiv = document.querySelector('.utilisation-content');
+      if (utilisationDiv && utilisationDiv.style.display === 'block' && !e.target.closest('.leaflet-control-custom')) {
+        utilisationDiv.style.display = 'none';
       }
     });
 })();
@@ -703,10 +732,8 @@ async function loadGeoJSON(url) {
 
     document.getElementById("foret-score-details").innerHTML = `
       <b>Surface de la commune :</b>  ${Math.round(surfaceTotal).toLocaleString()} ha<br>
-      <b>Surface boisée :</b>  ${Math.round(surfaceBoisee).toLocaleString()} ha<br>
-      <b>Taux de boisement :</b> ${tauxBoisement.toFixed(2)} %<br>
-      <b>Coupes / Perturbations (surface) :</b> ${coupesHa.toFixed(3)} ha / an<br>
-      <b>Coupes / Perturbations (% forêt) :</b> ${coupesPct.toFixed(3)} % / an
+      <b>Dont bois :</b>  ${Math.round(surfaceBoisee).toLocaleString()} ha (${tauxBoisement.toFixed(0)} %)<br>
+      <b>Coupes :</b> ${coupesHa.toFixed(2)} ha / an (${coupesPct.toFixed(2)} % / an)
     `;
 
     document.getElementById("foret-score-box").style.display = "flex";
@@ -714,3 +741,135 @@ async function loadGeoJSON(url) {
     console.error("Erreur lors du chargement du CSV ou du calcul du Forêt-Score :", err);
   }
 })(csvUrl);
+
+function createForetScoreBox() {
+  const foretScoreBox = L.control({ position: "topleft" });
+
+  foretScoreBox.onAdd = function () {
+    const container = L.DomUtil.create("div", "foret-score-box");
+
+    // Add title row
+    const titleRow = document.createElement("div");
+    titleRow.className = "title";
+    container.appendChild(titleRow);
+
+    // Add content row
+    const contentRow = document.createElement("div");
+    contentRow.className = "row";
+    container.appendChild(contentRow);
+
+    // Add image column
+    const imageColumn = document.createElement("div");
+    imageColumn.className = "image-column";
+    contentRow.appendChild(imageColumn);
+
+    const img = document.createElement("img");
+    img.id = "foret-score-img";
+    img.alt = "Forêt Score";
+    imageColumn.appendChild(img);
+
+    // Add text column
+    const textColumn = document.createElement("div");
+    textColumn.className = "text-column";
+    contentRow.appendChild(textColumn);
+
+    const details = document.createElement("div");
+    details.id = "foret-score-details";
+    textColumn.appendChild(details);
+
+    // Prevent map clicks when interacting with the Foret Score box
+    L.DomEvent.disableClickPropagation(container);
+
+    return container;
+  };
+
+  foretScoreBox.addTo(map);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Create the search container
+  const searchContainer = L.control({ position: "topleft" });
+
+  searchContainer.onAdd = function () {
+    const container = L.DomUtil.create("div", "search-container");
+    container.style.zIndex = "9999"; // Ensure the container has the highest z-index
+    container.innerHTML = `
+      <input type="text" id="searchInput" placeholder="Rechercher une adresse ou une commune..." />
+      <div id="autocompleteList" class="autocomplete-list"></div>
+    `;
+
+    return container;
+  };
+
+  searchContainer.addTo(map);
+
+  // Attach event listeners for autocomplete functionality
+  const searchInput = document.getElementById("searchInput");
+  const autocompleteList = document.getElementById("autocompleteList");
+
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim();
+    if (!query) {
+      autocompleteList.innerHTML = "";
+      return;
+    }
+
+    const apiUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`;
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data.features || data.features.length === 0) {
+          autocompleteList.innerHTML = '<div class="no-results">Aucune adresse trouvée.</div>';
+          return;
+        }
+
+        const suggestionsHTML = data.features.map(feature => {
+          const label = feature.properties.label;
+          const { coordinates } = feature.geometry;
+          const postalCode = feature.properties.citycode;
+          return `<div class="autocomplete-item" data-lat="${coordinates[1]}" data-lng="${coordinates[0]}" data-postal="${postalCode}">${label}</div>`;
+        }).join("");
+        autocompleteList.innerHTML = suggestionsHTML;
+
+        document.querySelectorAll(".autocomplete-item").forEach(item => {
+          item.addEventListener("click", function (e) {
+            e.stopPropagation(); // Prevent triggering map click events
+            const lat = this.dataset.lat;
+            const lng = this.dataset.lng;
+            const selectedPostalCode = this.dataset.postal;
+            const currentInseeCode = new URLSearchParams(window.location.search).get("commune");
+
+            if (selectedPostalCode && selectedPostalCode.toString() === currentInseeCode) {
+              map.setView([lat, lng], 17);
+            } else {
+              window.location.href = `carte.html?commune=${selectedPostalCode}`;
+            }
+            autocompleteList.innerHTML = "";
+          });
+        });
+      })
+      .catch(error => {
+        console.error("Error querying API for autocomplete:", error);
+        autocompleteList.innerHTML = '<div class="no-results">Erreur lors de la recherche. Veuillez réessayer.</div>';
+      });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-container")) {
+      autocompleteList.innerHTML = "";
+    }
+  });
+
+  // Prevent map popup when clicking on the search container
+  const searchContainerElement = document.querySelector(".search-container");
+  L.DomEvent.disableClickPropagation(searchContainerElement);
+
+  // ...existing code...
+  createForetScoreBox();
+  // ...existing code...
+});

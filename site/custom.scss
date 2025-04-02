@@ -14,8 +14,33 @@ $navbar-fg: $light-color;
 h1, h2, h3, h4, h5, h6 {
 }
 
+.navbar {
+  height: 85px;
+
+  @media (max-width: 768px) {
+    .navbar-collapse {
+      display: none; /* Initially hide the menu */
+    }
+    .navbar-toggler {
+      display: block; /* Show the toggle button */
+      cursor: pointer;
+      background-color: $primary; /* Match navbar background */
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  }
+}
+
+.navbar-toggler.collapsed + .navbar-collapse {
+  display: flex; /* Show the menu when toggled */
+  flex-direction: column;
+  background-color: $primary; /* Match navbar background */
+  padding: 10px;
+}
+
 .navbar-logo {
-  max-height: 64px;
+  max-height: 70px;
   width: auto;
   padding-right: 2px;
 }
@@ -24,14 +49,6 @@ h1, h2, h3, h4, h5, h6 {
   color: $primary;
 }
 
-.value-box-grid {
-  background-color: $light-color;
-  border-width: 0px;
-}
-
-.bslib-card {
-  border-width: 0px;
-}
 
 .btn-secondary {
   color: #fff;
@@ -42,21 +59,14 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #f5865b;
 }
 
-
-#loading {
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 18px;
-  background: $light-color;
-  padding: 15px 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  z-index: 1000;
-}
-
 #map { 
-  height: 80vh;
+  height: calc(100vh - 85px); /* Full height minus navbar */
+  width: 100vw; /* Full viewport width */
+  margin: 0; /* Remove margins */
+  padding: 0; /* Remove padding */
+  display: flex;
+  flex-direction: column; /* Ensure children stack vertically */
+  position: relative; /* Ensure absolute children are positioned relative to the map */
 }
 
 #foret-score-box {
@@ -137,18 +147,19 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   width: 33%;
   height: auto;
-  bottom: 10px;
-  left: 10px;
+  top: 10px; // Place above the buttons
+  right: 10px; // Align to the bottom-right corner
   background-color: rgba(255, 255, 255, 1);
   border: 1px solid #ccc;
   border-radius: 3px;
-  padding: 8px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 
   @media (max-width: 768px) {
-    width: 80%;
-    max-height: 30%;
+    width: 33%;
+    height: auto;
   }
 }
 
@@ -209,14 +220,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #searchContainer {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%; /* Full width for responsiveness */
   max-width: 500px; /* Limit the maximum width */
   margin: 20px auto; /* Center the search bar */
+position: relative;
 }
 
 #searchInput {
-  width: 100%;
+  flex: 1; /* Allow input to grow and fill available space */
   padding: 12px 20px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -241,7 +255,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 8px; /* Rounded corners for dropdown */
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 9999; /* Ensure it is on top of everything */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
@@ -304,4 +318,115 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0px; /* Rounded corners for the expanded control */
   overflow: hidden; /* Ensure content stays within bounds */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for modern look */
+}
+
+.foret-score-box {
+  position: relative;
+  background-color: $light-color;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  z-index: 1000;
+}
+
+#foret-score-img {
+  width: 80px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#foret-score-details {
+  font-size: 12px;
+  text-align: center;
+}
+
+.search-container {
+  background-color: white;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 3000;
+  width: 400px; /* Make the container wider */
+}
+
+.search-container input#searchInput {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.search-container .autocomplete-list {
+  max-height: 150px;
+  overflow-y: auto;
+  position: relative;
+  z-index: 3000;
+}
+
+.foret-score-box {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 450px;
+}
+
+.foret-score-box .title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.foret-score-box .row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.foret-score-box .image-column {
+  margin-right: 10px;
+}
+
+.foret-score-box .text-column {
+  font-size: 12px;
+  text-align: left;
+}
+
+.leaflet-control-custom {
+  background-color: white;
+  padding: 5px;
+  cursor: pointer;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 250px; /* Fixed width for better layout */
+}
+
+.leaflet-control-custom button {
+  width: 100%;
+  border: none;
+  padding: 5px;
+}
+
+.leaflet-control-custom .sources-content,
+.leaflet-control-custom .utilisation-content {
+  display: none;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  max-height: 200px; /* Limit height */
+  overflow-y: auto; /* Make scrollable */
 }
