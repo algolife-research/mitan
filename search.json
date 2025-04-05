@@ -9,16 +9,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Bienvenue !",
+    "title": "Mitan - Notre milieu.",
     "section": "",
-    "text": "Mitan, le milieu, est une plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises. Grâce à des données satellitaires régulières, Mitan détecte et quantifie les perturbations du milieu naturel, qu’elles soient climatiques, liées à l’exploitation des ressources ou autres.\nPlus qu’un outil de suivi, Mitan offre un espace d’échange réunissant citoyens, gestionnaires des milieux naturels et chercheurs pour repenser ensemble notre relation à notre milieu, prendre des décisions informées et trouver un juste milieu."
-  },
-  {
-    "objectID": "index.html#comment-démarrer",
-    "href": "index.html#comment-démarrer",
-    "title": "Bienvenue !",
-    "section": "Comment démarrer ?",
-    "text": "Comment démarrer ?\n\nCherchez une commune…\n\n\n\n\n\n\nOu consultez des exemples…\n\n\nLimousin - Plateau de Millevaches (Meymac)\n\n\n\nAlpes - Chartreuse (Saint-Pierre-de-Chartreuse)\n\n\n\nLandes (La Teste-de-Buch)"
+    "text": "Mitan est une plateforme cartographique conçue comme un observatoire du patrimoine naturel, surtout forestier, des communes françaises.\nMitan se veut outil de suivi de notre milieu et des perturbations l’affectant, et espace d’échange pour citoyens et gestionnaires, favorisant des décisions éclairées pour l’avenir de nos territoires.\n\nQuelques exemples…\n\nLimousin - Plateau de Millevaches (Meymac)\n\n\n\nAlpes - Chartreuse (Saint-Pierre-de-Chartreuse)\n\n\n\nLandes (La Teste-de-Buch)"
   },
   {
     "objectID": "details.html",

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Bienvenue ! – Mitan</title>
+<title>Mitan - Notre milieu. – Mitan</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,13 +67,27 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UG-15Y9KY6LVP"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+ 
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'analytics_storage': 'denied'
+  });
+gtag('config', 'UG-15Y9KY6LVP', { 'anonymize_ip': true});
+</script>
 
 
-<meta property="og:title" content="Bienvenue ! – Mitan">
+<meta property="og:title" content="Mitan - Notre milieu. – Mitan">
 <meta property="og:description" content="Mitan est plateforme dédiée à l’exploration et au suivi du patrimoine forestier des communes françaises.">
-<meta property="og:image" content="https://aumitan.com/assets/LogoMitanRect.png">
+<meta property="og:image" content="https://aumitan.com/assets/LogoMitanRect-Slogan.png">
 <meta property="og:site_name" content="Mitan">
-<meta property="og:image:alt" content="Logo Mitan">
+<meta property="og:image:alt" content="Logo Mitan avec Slogan">
 <meta property="og:image:height" content="700">
 <meta property="og:image:width" content="1080">
 </head>
@@ -138,7 +152,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bienvenue !</h1>
+<h1 class="title">Mitan - Notre milieu.</h1>
 </div>
 
 
@@ -157,40 +171,36 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css">
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">
 <style>
-    /* Float the logo to the left, add some spacing so text doesn't butt up against it */
-    .logo-dropcap {
-      float: left;
-      width: 120px;      /* Adjust as needed */
+    h1.title {
+      display: none;
+    }
+
+    /* Center search section styling */
+    #searchSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2rem 0;
+    }
+
+    .search-logo {
+      width: 300px;
+      height: auto;
+      margin-bottom: 1.5rem;
       margin: 0 1rem 1rem 0;
-      height: auto;      /* Maintain aspect ratio */
     }
   </style>
 
 
-<p>
-<img src="./assets/LogoMitanRect.png" alt="Logo Mitan" class="logo-dropcap"> <strong>Mitan</strong>, <em>le milieu</em>, est une plateforme dédiée à <strong>l’exploration</strong> et au <strong>suivi</strong> du <strong>patrimoine forestier</strong> des communes françaises. Grâce à des <strong>données satellitaires</strong> régulières, Mitan détecte et quantifie les <strong>perturbations</strong> du milieu naturel, qu’elles soient climatiques, liées à l’exploitation des ressources ou autres.
-</p>
-<p>
-Plus qu’un outil de suivi, Mitan offre un <strong>espace d’échange</strong> réunissant citoyens, gestionnaires des milieux naturels et chercheurs pour repenser ensemble notre relation à notre <strong>milieu</strong>, prendre des décisions informées et trouver <strong>un juste milieu</strong>.
-</p>
-<section id="comment-démarrer" class="level2">
-<h2 class="anchored" data-anchor-id="comment-démarrer">Comment démarrer ?</h2>
-<ul>
-<li><strong>Cherchez</strong> une commune…</li>
-</ul>
 <div id="searchSection">
-
+<p><img src="./assets/LogoMitanRect-Slogan.png" alt="Logo Mitan avec Slogan" class="search-logo"></p>
 </div>
-<p><br></p>
-<ul>
-<li>Ou <strong>consultez des exemples</strong>…</li>
-</ul>
+<div>
+<p><strong>Mitan</strong> est une plateforme cartographique conçue comme un <strong>observatoire du patrimoine naturel</strong>, surtout forestier, des communes françaises.</p>
+<p>Mitan se veut <strong>outil de suivi</strong> de notre milieu et des perturbations l’affectant, et <strong>espace d’échange</strong> pour citoyens et gestionnaires, favorisant des décisions éclairées pour l’avenir de nos <strong>territoires</strong>.</p>
+</div>
+<p><strong>Quelques exemples</strong>…</p>
 <center>
 <a href="carte.html?commune=19136" class="btn btn-secondary" role="button">Limousin - Plateau de Millevaches (Meymac)</a>
 </center>
@@ -208,7 +218,6 @@ Plus qu’un outil de suivi, Mitan offre un <strong>espace d’échange</strong>
 
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

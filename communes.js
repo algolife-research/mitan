@@ -1,6 +1,6 @@
 const searchHTML = `
   <div id="searchContainer">
-    <input type="text" id="searchInput" placeholder="Code postal ou Commune" />
+    <input type="text" id="searchInput" placeholder="Chercher une commune..." />
     <div id="autocompleteList" class="autocomplete-list"></div>
     <div id="searchResult"></div>
   </div>
