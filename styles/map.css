@@ -1,0 +1,33 @@
+.layer-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    margin: 2px 0;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.layer-button:hover {
+    background-color: #f0f0f0;
+}
+
+.layer-button.active {
+    background-color: #e0e0e0;
+}
+
+.layer-icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border: 1px solid #555;
+}
+
+.leaflet-control-layers-list {
+    padding: 8px;
+}

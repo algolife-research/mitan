@@ -3,15 +3,15 @@ function getQueryParam(param) {
   return params.get(param);
 }
 
-const communeCode = getQueryParam("commune") || "defaultCode";
+const urlCommuneCode = getQueryParam("commune");
+const communeCode = urlCommuneCode || "defaultCode";
 const geojsonUrl = `https://geo.api.gouv.fr/communes?code=${communeCode}&geometry=contour&format=geojson`;
 const csvUrl = `https://raw.githubusercontent.com/algolife-research/mitan_data/refs/heads/main/STATS/${communeCode}_stats.csv`;
 const crUrl = `https://raw.githubusercontent.com/algolife-research/mitan_data/refs/heads/main/CR/${communeCode}_cr.tif`;
 
 document.addEventListener("DOMContentLoaded", function() {
   // Get the "commune" parameter from the URL (assuming it's a commune code)
-  const params = new URLSearchParams(window.location.search);
-  const communeCode = params.get("commune");
+  const communeCode = urlCommuneCode;
 
   if (communeCode) {
     // Fetch the commune's name from the geo.api.gouv.fr API
@@ -438,69 +438,54 @@ async function loadGeoJSON(url) {
 
     const geomParam = encodeURIComponent(JSON.stringify(bboxGeoJSON));
 
-    function fetchAndAddLayer(url, style, label) {
-      fetch(url)
-        .then(response => {
-          if (!response.ok) throw new Error("Erreur lors de la récupération des données.");
-          return response.json();
-        })
-        .then(layerData => {
-          const layer = L.geoJSON(layerData, {
-            style: style,
-            pane: "pane1"
-          });
-          layerControl.addOverlay(layer, label);
-        })
-        .catch(err => console.error(err));
+    async function fetchAndAddLayer(url, style, label) {
+      try {
+        // Replace ${geomParam} placeholder in URL with actual value
+        url = url.replace('${geomParam}', geomParam);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Erreur lors de la récupération des données.");
+        const layerData = await response.json();
+        const layer = L.geoJSON(layerData, {
+          style: style,
+          pane: "pane1"
+        });
+        layerControl.addOverlay(layer, label);
+      } catch (err) {
+        console.error(err);
+      }
     }
     
-    const layersConfig = [
-      {
-        url: `https://apicarto.ign.fr/api/nature/natura-habitat?geom=${geomParam}`,
-        style: {
-          color: '#AAFF00',
-          weight: 2,
-          fillColor: '#AAFF00',
-          fillOpacity: 0.2
-        },
-        label: '<span class="layer-natura-habitat"></span>Natura 2000 - Habitat'
-      },
-      {
-        url: `https://apicarto.ign.fr/api/nature/natura-oiseaux?geom=${geomParam}`,
-        style: {
-          color: '#7DF9FF',
-          weight: 2,
-          fillColor: '#7DF9FF',
-          fillOpacity: 0.2
-        },
-        label: '<span class="layer-natura-oiseaux"></span>Natura 2000 - Oiseaux'
-      },
-      {
-        url: `https://apicarto.ign.fr/api/nature/znieff1?geom=${geomParam}`,
-        style: {
-          color: '#E4D00A',
-          weight: 2,
-          fillColor: '#E4D00A',
-          fillOpacity: 0.2
-        },
-        label: '<span class="layer-znieff1"></span>ZNIEFF1'
-      },
-      {
-        url: `https://apicarto.ign.fr/api/nature/znieff2?geom=${geomParam}`,
-        style: {
-          color: '#DFFF00',
-          weight: 2,
-          fillColor: '#DFFF00',
-          fillOpacity: 0.2
-        },
-        label: '<span class="layer-znieff2"></span>ZNIEFF2'
-      }
-    ];
-    
-    // Loop through the configuration and fetch layers
-    layersConfig.forEach(config => {
-      fetchAndAddLayer(config.url, config.style, config.label);
-    });
+    // Fetch and process layers configuration concurrently
+    fetch('/layersConfig.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erreur lors de la récupération des données : ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(layersConfig => {
+        const fetchPromises = layersConfig.map(config =>
+          fetchAndAddLayer(config.url, config.style, config.label)
+        );
+
+        // Apply styles to layer indicators from config
+        layersConfig.forEach(layer => {
+          const className = layer.label.match(/class="([^"]+)"/)?.[1];
+          if (className) {
+            const style = document.createElement('style');
+            style.textContent = `
+              .${className} {
+                background-color: ${layer.style.fillColor} !important;
+                border-color: ${layer.style.color} !important;
+              }
+            `;
+            document.head.appendChild(style);
+          }
+        });
+
+        return Promise.all(fetchPromises);
+      })
+      .catch(err => console.error("Erreur lors du chargement de la configuration des couches :", err));
 
     fetch(crUrl)
       .then(response => response.arrayBuffer())
@@ -699,18 +684,26 @@ async function loadGeoJSON(url) {
 (async function loadAndDisplayForetScore(csvUrl) {
   const CSV_URL = csvUrl;
 
-  function getForetScore(boisement, coupesPct) {
-    let scoreBoisement = "E";
-    if (boisement >= 60) scoreBoisement = "A";
-    else if (boisement >= 40) scoreBoisement = "B";
-    else if (boisement >= 20) scoreBoisement = "C";
-    else if (boisement >= 10) scoreBoisement = "D";
+  const scoreThresholds = {
+    boisement: [
+      { min: 60, score: "A" },
+      { min: 40, score: "B" },
+      { min: 20, score: "C" },
+      { min: 10, score: "D" },
+      { min: 0, score: "E" },
+    ],
+    coupesPct: [
+      { max: 0.1, score: "A" },
+      { max: 0.2, score: "B" },
+      { max: 0.5, score: "C" },
+      { max: 1.2, score: "D" },
+      { max: Infinity, score: "E" },
+    ],
+  };
 
-    let scoreCoupes = "E";
-    if (coupesPct < 0.1) scoreCoupes = "A";
-    else if (coupesPct < 0.2) scoreCoupes = "B";
-    else if (coupesPct < 0.5) scoreCoupes = "C";
-    else if (coupesPct < 1.2) scoreCoupes = "D";
+  function getForetScore(boisement, coupesPct) {
+    const scoreBoisement = scoreThresholds.boisement.find(threshold => boisement >= threshold.min).score;
+    const scoreCoupes = scoreThresholds.coupesPct.find(threshold => coupesPct < threshold.max).score;
 
     // Take the worst of the two (i.e., max letter)
     return scoreBoisement > scoreCoupes ? scoreBoisement : scoreCoupes;
@@ -792,9 +785,18 @@ function createForetScoreBox() {
     }
   };
 
-  // Set initial width and call on resize
+  // Debounce function to limit the frequency of calls
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  // Set initial width and call on resize with debounce
   adjustForetScoreBoxWidth();
-  window.addEventListener("resize", adjustForetScoreBoxWidth);
+  window.addEventListener("resize", debounce(adjustForetScoreBoxWidth, 200));
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -850,15 +852,19 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".autocomplete-item").forEach(item => {
           item.addEventListener("click", function (e) {
             e.stopPropagation(); // Prevent triggering map click events
-            const lat = this.dataset.lat;
-            const lng = this.dataset.lng;
+            const lat = parseFloat(this.dataset.lat);
+            const lng = parseFloat(this.dataset.lng);
             const selectedPostalCode = this.dataset.postal;
             const currentInseeCode = new URLSearchParams(window.location.search).get("commune");
 
-            if (selectedPostalCode && selectedPostalCode.toString() === currentInseeCode) {
-              map.setView([lat, lng], 17);
+            if (!isNaN(lat) && !isNaN(lng)) {
+              if (selectedPostalCode && selectedPostalCode.toString() === currentInseeCode) {
+                map.setView([lat, lng], 17);
+              } else {
+                window.location.href = `carte.html?commune=${selectedPostalCode}`;
+              }
             } else {
-              window.location.href = `carte.html?commune=${selectedPostalCode}`;
+              console.error("Invalid or missing latitude/longitude data.");
             }
             autocompleteList.innerHTML = "";
           });
