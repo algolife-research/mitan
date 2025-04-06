@@ -1,0 +1,41 @@
+/* Styles for perturbation visualization */
+
+/* Violet color for perturbations in protected zones */
+.perturbation-protected {
+  background-color: #8A2BE2 !important;
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin-right: 6px !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+  vertical-align: middle !important;
+}
+
+/* Regular red color for standard perturbations */
+.perturbation-standard {
+  background-color: #D70040 !important;
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin-right: 6px !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+  vertical-align: middle !important;
+}
+
+/* Smaller indicator for the legend sub-item */
+.perturbation-protected-legend {
+  display: inline-block !important;
+  width: 10px !important;
+  height: 10px !important;
+  background-color: #8A2BE2 !important;
+  margin-right: 4px !important;
+  border: 1px solid #555 !important;
+  vertical-align: middle !important;
+}
+
+/* Legend sub-item styling */
+.legend-sub-item {
+  margin-left: 18px;
+  font-size: 0.85em;
+  color: #666;
+}

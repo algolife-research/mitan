@@ -39,7 +39,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5e96fb94504c6b02016f600f1d50bf4f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ec9baa109df76c4294969e774a0b27e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -166,6 +166,64 @@ gtag('config', 'G-15Y9KY6LVP', { 'anonymize_ip': true});
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" id="silktide-consent-manager-css" href="libs/cookie-banner/silktide-consent-manager.css">
+<script src="libs/cookie-banner/silktide-consent-manager.js"></script>
+<script>
+silktideCookieBannerManager.updateCookieBannerConfig({
+  background: {
+    showBackground: false
+  },
+  cookieIcon: {
+    position: "bottomRight"
+  },
+  cookieTypes: [
+    {
+      id: "n_cessaires",
+      name: "Nécessaires",
+      description: "<div>Ces cookies sont nécessaires au fonctionnement du site web et ne peuvent pas être désactivés. Ils aident à la définition de vos préférences en matière de confidentialité.</div>",
+      required: true,
+      onAccept: function() {
+      }
+    },
+    {
+      id: "analytiques",
+      name: "Analytiques",
+      description: "<div>Ces cookies nous aident à améliorer le site en suivant quelles pages sont les plus populaires et comment les visiteurs naviguent sur le site.</div>",
+      required: false,
+      onAccept: function() {
+        gtag('consent', 'update', {
+          analytics_storage: 'granted',
+        });
+        dataLayer.push({
+          'event': 'consent_accepted_analytiques',
+        });
+      },
+      onReject: function() {
+        gtag('consent', 'update', {
+          analytics_storage: 'denied',
+        });
+      }
+    }
+  ],
+  text: {
+    banner: {
+      description: "<div>Nous utilisons des cookies sur notre site pour améliorer votre expérience utilisateur et analyser notre trafic.</div>",
+      acceptAllButtonText: "Accepter tout",
+      acceptAllButtonAccessibleLabel: "Accepter tous les cookies",
+      rejectNonEssentialButtonText: "Rejeter les non-essentiels",
+      rejectNonEssentialButtonAccessibleLabel: "Rejeter les non-essentiels",
+      preferencesButtonText: "Préférences",
+      preferencesButtonAccessibleLabel: "Préférences"
+    },
+    preferences: {
+      title: "Personnalisez vos préférences en matière de cookies",
+      description: "<div>Nous respectons votre droit à la vie privée. Vous pouvez choisir de ne pas autoriser certains types de cookies. Vos préférences en matière de cookies s'appliqueront à l'ensemble de notre site web.</div>",
+      creditLinkText: "Obtenez cette bannière",
+      creditLinkAccessibleLabel: "Obtenez cette bannière"
+    }
+  }
+});
+</script>
 <style>
     h1.title {
       display: none;

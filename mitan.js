@@ -526,12 +526,6 @@ async function loadGeoJSON(url) {
 
           const years = Object.keys(yearAreaMap).sort();
           const areas = years.map(year => yearAreaMap[year] / 10000);
-          const chartContainer = document.createElement("div");
-          chartContainer.innerHTML = `<canvas id="areaChart"></canvas>`;
-          chartContainer.className = "chart-container"; // Add a class instead of inline styles
-          document.getElementById("map").appendChild(chartContainer);
-          L.DomEvent.disableClickPropagation(chartContainer);
-
           const ctx = document.getElementById("areaChart").getContext("2d");
           const chart = new Chart(ctx, {
             type: 'bar',
@@ -678,6 +672,68 @@ async function loadGeoJSON(url) {
         utilisationDiv.style.display = 'none';
       }
     });
+
+    const helpContent = `
+      <b>Comment naviguer</b>
+      <ul>
+        <li><b>Cliquer sur la carte :</b> Obtenez des informations détaillées sur un endroit spécifique.</li>
+        <li><b>Changer de commune :</b> Utilisez la barre de recherche ou cliquez sur la carte.</li>
+        <li><b>Filtrer les coupes :</b> Cliquez sur une année du graphique pour filtrer les perturbations associées.</li>
+        <li><b>Activer/Désactiver des couches :</b> Utilisez le menu en haut à gauche.</li>
+      </ul>
+      <br>
+      <b>À savoir</b><br>
+      Les <strong>perturbations</strong>, en rouge, sont des changements brutaux de la végétation détectées par satellite. Ce sont surtout des <strong>coupes rases et incendies</strong>.<br>
+      Il est judicieux de se questionner face à des données : consultez la page <a href="details.html">Détails</a> pour en apprendre plus sur les limites des <b>processus automatisés</b> de classification des forêts et détection des perturbations.<br>
+    
+      <br><b>Sources</b>
+      <br><b>Annotation des forêts</b><br>
+      <a href="https://geoservices.ign.fr/bdforet" target="_blank">BDForêt® V2</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank">Licence ETALAB-Licence-Ouverte-v2.0</a>
+      <br><br>
+      <b>Couches de base et altitudes</b><br>
+      Fond, Hydrographie, BDForêt V2, Espaces Protégés © IGN/Géoplateforme<br>
+      <a href="https://geoservices.ign.fr/services-geoplateforme-altimetrie" target="_blank">Service Géoplateforme de calcul altimétrique</a>
+      <br><br>
+      <b>Données satellite</b><br>
+      Copernicus (<a href="https://sentiwiki.copernicus.eu/web/s2-mission" target="_blank">satellite Sentinel 2</a>) obtenues par <a href="https://www.sentinel-hub.com/" target="_blank">Sentinel-Hub</a>
+    `;
+    
+    const helpControl = L.control({ position: 'topleft' });
+    helpControl.onAdd = function () {
+      const container = L.DomUtil.create('div', 'leaflet-control-help');
+      container.innerHTML = `
+        <button id="helpToggle" style="width: 100%; text-align: left;">🛟 Aide et détails</button>
+        <div class="help-content">${helpContent}</div>
+      `;
+      
+      container.querySelector('#helpToggle').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const content = container.querySelector('.help-content');
+        const rect = container.getBoundingClientRect();
+        const heightAbove = rect.top + rect.height;
+        document.documentElement.style.setProperty('--height-above', `${heightAbove}px`);
+        content.style.display = content.style.display === 'none' ? 'block' : 'none';
+      });
+    
+      L.DomEvent.disableClickPropagation(container);
+      return container;
+    };
+    helpControl.addTo(map);
+    
+    // Remove old controls (sourcesControl and utilisationControl)
+    
+    // Update click handler to handle new help box
+    document.addEventListener('click', (e) => {
+      const helpContent = document.querySelector('.help-content');
+      if (helpContent && helpContent.style.display === 'block' && !e.target.closest('.leaflet-control-help')) {
+        helpContent.style.display = 'none';
+      }
+      
+      // Keep existing popup handling
+      if (!e.target.closest('.leaflet-popup') && !e.target.closest('.leaflet-container')) {
+        map.closePopup();
+      }
+    });
 })();
     
     
@@ -767,36 +823,21 @@ function createForetScoreBox() {
     details.id = "foret-score-details";
     textColumn.appendChild(details);
 
-    // Prevent map clicks when interacting with the Foret Score box
+    // Add chart container
+    const chartContainer = document.createElement("div");
+    chartContainer.className = "chart-container";
+    chartContainer.innerHTML = '<canvas id="areaChart"></canvas>';
+    container.appendChild(chartContainer);
+
+    // Prevent map clicks when interacting with the Forêt Score box
     L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.disableScrollPropagation(container);
 
     return container;
   };
 
   foretScoreBox.addTo(map);
-
-  // Adjust the width of the Foret Score box dynamically
-  const adjustForetScoreBoxWidth = () => {
-    const mapElement = document.getElementById("map");
-    const foretScoreBoxElement = document.querySelector(".foret-score-box");
-    if (mapElement && foretScoreBoxElement) {
-      const mapWidth = mapElement.offsetWidth;
-      foretScoreBoxElement.style.width = `${Math.min(mapWidth * 0.5, 500)}px`; // 50% of map width, max 500px
-    }
-  };
-
-  // Debounce function to limit the frequency of calls
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  // Set initial width and call on resize with debounce
-  adjustForetScoreBoxWidth();
-  window.addEventListener("resize", debounce(adjustForetScoreBoxWidth, 200));
+  return foretScoreBox;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
