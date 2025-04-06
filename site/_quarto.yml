@@ -13,6 +13,9 @@ website:
   description: "Mitan est plateforme dédiée à l'exploration et au suivi du patrimoine forestier des communes françaises."
   favicon: assets/IconMitan.png
   open-graph: true
+  google-analytics:
+    tracking-id: "G-15Y9KY6LVP"
+
   navbar:
     title: false
     logo: assets/LogoMitanRect.png
@@ -41,4 +44,7 @@ format:
   
 resources:
   - CNAME
-  - libs/*
+  - libs/**
+  - js/**
+  - layersConfig.json
+ 

@@ -14,10 +14,15 @@ $navbar-fg: $light-color;
 h1, h2, h3, h4, h5, h6 {
 }
 
-.navbar {
-  height: 85px;
+#silktide-cookie-icon {
+  display: none !important;
+}
+
+#navbar {
+  max-height: 40px; /* Reduced from 85px to 60px */
 
   @media (max-width: 768px) {
+
     .navbar-collapse {
       display: none; /* Initially hide the menu */
     }
@@ -26,23 +31,25 @@ h1, h2, h3, h4, h5, h6 {
       cursor: pointer;
       background-color: $primary; /* Match navbar background */
       border: none;
-      padding: 10px;
+      padding: 5px;
       border-radius: 4px;
     }
   }
 }
 
 .navbar-toggler.collapsed + .navbar-collapse {
-  display: flex; /* Show the menu when toggled */
   flex-direction: column;
   background-color: $primary; /* Match navbar background */
-  padding: 10px;
+  padding: 5px;
 }
 
 .navbar-logo {
-  max-height: 70px;
+  max-height: 35px; /* Reduced from 70px to 45px */
   width: auto;
   padding-right: 2px;
+  @media (max-width: 768px) {
+    max-height: 30px; /* Reduced from 70px to 45px */
+  }
 }
 
 .bi {
@@ -60,13 +67,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #map { 
-  height: calc(100vh - 85px); /* Full height minus navbar */
+  height: calc(100vh - 40px); /* Adjusted for reduced navbar height */
   width: 100vw; /* Full viewport width */
   margin: 0; /* Remove margins */
   padding: 0; /* Remove padding */
   display: flex;
   flex-direction: column; /* Ensure children stack vertically */
   position: relative; /* Ensure absolute children are positioned relative to the map */
+  
+  @media (max-width: 768px) {
+    height: calc(100svh - 40px); /* Adjusted for reduced navbar height */
+  }
 }
 
 #foret-score-box {
@@ -80,7 +91,6 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     gap: 12px;
     z-index: 1000;
-    max-width: 600px;
     font-family: sans-serif;
     font-size: 12px;
     display: none;
@@ -116,6 +126,20 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center; /* Center the text vertically */
 }
 
+#searchSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.search-logo {
+  width: 300px;
+  height: auto;
+  margin-bottom: 1.5rem;
+  margin: 0 1rem 1rem 0;
+}
+
 .info-box {
   border: 1px solid #ccc;       /* Light gray border */
   background-color: $light-color; 
@@ -144,23 +168,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .chart-container {
-  position: absolute;
-  width: 33%;
+  width: 100%;
   height: auto;
-  top: 10px; // Place above the buttons
-  right: 10px; // Align to the bottom-right corner
-  background-color: rgba(255, 255, 255, 1);
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  z-index: 1000;
+  max-height: 200px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  margin-top: 10px;
   display: flex;
-  flex-direction: column; /* Stack content vertically */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-
-  @media (max-width: 768px) {
-    width: 33%;
-    height: auto;
-  }
+  flex-direction: column;
 }
 
 #more-info-btn {
@@ -183,50 +198,13 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 
-.layer-natura-habitat {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background-color: #AAFF00;
-  margin-right: 6px;
-  border: 1px solid #555;
-}
-
-.layer-natura-oiseaux {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background-color: #7DF9FF;
-  margin-right: 6px;
-  border: 1px solid #555;
-}
-
-.layer-znieff1 {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background-color: #E4D00A;
-  margin-right: 6px;
-  border: 1px solid #555;
-}
-
-.layer-znieff2 {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background-color: #DFFF00;
-  margin-right: 6px;
-  border: 1px solid #555;
-}
-
 #searchContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%; /* Full width for responsiveness */
-  max-width: 500px; /* Limit the maximum width */
   margin: 20px auto; /* Center the search bar */
-position: relative;
+  position: relative;
 }
 
 #searchInput {
@@ -321,23 +299,59 @@ position: relative;
 }
 
 .foret-score-box {
-  position: relative;
-  background-color: $light-color;
+  background-color: white;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 300px;
   z-index: 1000;
+  display: flex;
+  flex-direction: row; /* Arrange content horizontally */
+  align-items: center;
+  justify-content: space-between; /* Space between text and chart */
+}
+
+.foret-score-box .title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.foret-score-box .row {
+  display: flex;
+  flex-direction: column; /* Stack text vertically */
+  align-items: flex-start;
+}
+
+.foret-score-box .image-column {
+  margin-right: 10px;
+}
+
+.foret-score-box .text-column {
+  font-size: 12px;
+  text-align: left;
+}
+
+.foret-score-box .chart-column {
+  flex: 1; /* Allow the chart to take up remaining space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.foret-score-box .chart-column canvas {
+  max-width: 100%; /* Ensure the chart fits within the box */
+  height: auto;
 }
 
 #foret-score-img {
-  width: 80px;
+  width: 140px;
   height: auto;
-  margin-bottom: 10px;
+  @media (max-width: 768px) {
+    width: 80px;
+    height: auto;
+  }
 }
 
 #foret-score-details {
@@ -351,12 +365,11 @@ position: relative;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  z-index: 3000;
-  width: 400px; /* Make the container wider */
+  z-index: 900;
+  width: 40%; /* Full width */
 }
 
 .search-container input#searchInput {
-  width: 100%;
   padding: 5px;
   margin-bottom: 5px;
 }
@@ -378,7 +391,6 @@ position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 450px;
 }
 
 .foret-score-box .title {
@@ -429,4 +441,1246 @@ position: relative;
   background-color: white;
   max-height: 200px; /* Limit height */
   overflow-y: auto; /* Make scrollable */
+}
+
+.leaflet-control-foret {
+  background-color: none;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 3000;
+  max-width: 40%; /* Remove max-width constraint */
+  transition: width 0.3s ease; /* Smooth transition for resizing */
+}
+
+.leaflet-control-foret input#searchInput {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.leaflet-control-foret .autocomplete-list {
+  max-height: 150px;
+  overflow-y: auto;
+  position: relative;
+  z-index: 3000;
+}
+
+.leaflet-control {
+  max-width: 100%;
+}
+
+/* Base style for layer indicators */
+[class^="layer-"] {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.leaflet-control-help {
+  background-color: $primary-light;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  width: 300px;
+  max-width: 90vw;
+  margin-top: 10px;
+  position: relative;
+}
+
+.help-content {
+  display: none;
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: $primary-light;
+  font-size: 14px;
+  line-height: 1.4;
+  max-height: calc(100vh - 10px - var(--height-above));
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin-bottom: 8px;
+  }
+}
+
+// Common control styles for consistent width and responsive behavior
+.map-component-common {
+  width: clamp(300px, 35vw, 450px); // Min 300px, max 450px, 35% of viewport width between those
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 1000;
+  
+  @media (max-width: 768px) {
+    width: 90vw; // Take up most of the width on mobile
+  }
+}
+
+// Apply to search container
+.search-container {
+  @extend .map-component-common;
+  padding: 10px;
+  z-index: 3000; // Higher z-index for the search
+}
+
+.search-container input#searchInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+// Apply to forêt score box
+.foret-score-box {
+  @extend .map-component-common;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+// Apply to layer control
+.leaflet-control-layers {
+  @extend .map-component-common;
+  padding: 10px;
+}
+
+// Apply to help box
+.leaflet-control-help {
+  @extend .map-component-common;
+  padding: 10px;
+  background-color: $light-color;
+}
+
+.help-content {
+  max-height: 70vh; // Limit the height of expanded help content
+  overflow-y: auto;
+}
+
+// Override Leaflet's default styles for layer control
+.modern-layer-control.leaflet-control-layers {
+  width: clamp(300px, 35vw, 450px) !important;
+}
+
+// Ensure all leaflet controls have consistent width
+.leaflet-control-foret {
+  width: auto !important; // Remove fixed width to let the .map-component-common handle it
+  max-width: none !important;
+}
+
+// Ensure the chart container has proper dimensions
+.chart-container {
+  width: 100%;
+  height: auto;
+  min-height: 100px;
+  max-height: 180px;
+}
+
+// Remove old styles
+.leaflet-control-custom,
+.sources-content,
+.utilisation-content {
+  display: none;
+}
+
+// ==========================================
+// UNIFIED MAP COMPONENT STYLING
+// ==========================================
+
+// Base component sizing and appearance for all map controls
+.map-component-base {
+  width: clamp(300px, 35vw, 450px);
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: 10px;
+  
+  @media (max-width: 768px) {
+    width: 90vw;
+  }
+}
+
+// Override all Leaflet control width constraints
+.leaflet-control-layers,
+.leaflet-control-custom,
+.leaflet-control-help,
+.search-container,
+.foret-score-box,
+.leaflet-control-foret {
+  @extend .map-component-base;
+  max-width: none !important;
+  width: clamp(300px, 35vw, 450px) !important;
+}
+
+// Z-index hierarchy
+.search-container {
+  z-index: 3000;
+}
+
+.foret-score-box {
+  z-index: 2000;
+}
+
+.leaflet-control-layers,
+.leaflet-control-help {
+  z-index: 1000;
+}
+
+// Search container specifics
+.search-container input#searchInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+// Forêt score box layout
+.foret-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+
+.foret-score-box .title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+.foret-score-box .row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.foret-score-box .image-column {
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.foret-score-box .text-column {
+  font-size: 12px;
+  text-align: left;
+  flex: 1;
+}
+
+#foret-score-img {
+  width: 100px;
+  height: auto;
+  
+  @media (max-width: 768px) {
+    width: 80px;
+  }
+}
+
+// Chart container
+.chart-container {
+  width: 100%;
+  height: auto;
+  min-height: 100px;
+  max-height: 180px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+// Help content
+.help-content {
+  display: none;
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: $primary-light;
+  font-size: 14px;
+  line-height: 1.4;
+  max-height: 70vh;
+  overflow-y: auto;
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin-bottom: 8px;
+  }
+}
+
+// Layer control
+.modern-layer-control {
+  overflow: hidden;
+}
+
+// Remove old styles that conflict
+.leaflet-control-custom .sources-content,
+.leaflet-control-custom .utilisation-content {
+  display: none;
+}
+
+// Ensure button styling is consistent
+.leaflet-control-help button,
+.leaflet-control-custom button {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+// Fix autocomplete list
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 9999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+// Make layer control always expanded
+.leaflet-control-layers-toggle {
+  display: none !important; // Hide the toggle button
+}
+
+.leaflet-control-layers-expanded {
+  padding: 6px 10px 6px 10px;
+  width: 100% !important;
+  background-color: white;
+}
+
+// Style layer control checkboxes and labels
+.leaflet-control-layers-overlays label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.leaflet-control-layers-overlays input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.leaflet-control-layers-list {
+  margin-bottom: 0;
+}
+
+// Main container and sidebar layout
+#main-container {
+  display: flex;
+  height: calc(100vh - 60px); /* Adjusted for reduced navbar height */
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: $primary; /* Added primary color background */
+  padding: 0px; /* Added primary color background */
+}
+
+#sidebar {
+  width: 25%;
+  flex: 0 0 25%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: $light-color;
+  border-right: 1px solid #ccc;
+  padding: 15px;
+  box-sizing: border-box;
+  z-index: 1000;
+  
+  .layer-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 13px;
+    }
+  }
+  
+  #searchInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .autocomplete-list {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 5px;
+    
+    .autocomplete-item {
+      padding: 8px;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: $primary-light;
+      }
+    }
+  }
+  
+  .foret-score-container {
+    display: flex;
+    margin-bottom: 10px;
+    
+    .image-column {
+      flex: 0 0 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .text-column {
+      flex: 1;
+      font-size: 13px;
+    }
+  }
+  
+  #foret-score-img {
+    max-width: 80px;
+    height: auto;
+  }
+  
+  #foret-score-details {
+    line-height: 1.4;
+  }
+  
+  .chart-container {
+    height: 120px;
+    margin-top: 10px;
+  }
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.sidebar-section:last-child {
+  border-bottom: none;
+}
+
+.sidebar-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: $primary;
+}
+
+#foret-score-title {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: $primary;
+}
+
+#map {
+  flex: 1;
+  height: 100%;
+}
+
+/* Responsive styling for mobile */
+@media (max-width: 768px) {
+  #main-container {
+    flex-direction: column;
+  }
+  
+  #sidebar {
+    width: 100%;
+    flex: none;
+    height: 35%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  #map {
+    width: 100%;
+    height: calc(100vh - 60px - 300px); /* Adjusted for reduced navbar height */
+  }
+}
+
+/* Remove fixed positioning for sidebar components */
+.search-container,
+.foret-score-box,
+.leaflet-control-layers,
+.leaflet-control-help {
+  position: static !important;
+  margin: 0 0 15px 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  background: none !important;
+}
+
+/* Component specific adjustments */
+#search-section input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+}
+
+.leaflet-control-layers-list {
+  width: 100%;
+}
+
+/* Hide the leaflet controls that are now in the sidebar */
+.leaflet-top.leaflet-left,
+.leaflet-bottom.leaflet-left, 
+.leaflet-bottom.leaflet-right {
+  display: none;
+}
+
+/* Make help content always visible */
+#help-content {
+  display: block !important;
+  position: static !important;
+  max-height: none !important;
+  padding: 0 !important;
+  border-top: none !important;
+  font-size: 13px;
+  line-height: 1.4;
+  
+  /* Add proper styling for links in the help content */
+  a {
+    color: $secondary;
+    text-decoration: underline;
+    
+    &:hover {
+      color: darken($secondary, 10%);
+    }
+  }
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin-bottom: 8px;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+}
+
+// Force HTML rendering in sidebar content
+#sidebar a, 
+#sidebar strong, 
+#sidebar b, 
+#sidebar i, 
+#sidebar em {
+  display: inline !important;
+}
+
+/* Make help content always visible */
+#help-content {
+  display: block !important;
+  position: static !important;
+  max-height: none !important;
+  padding: 0 !important;
+  border-top: none !important;
+  font-size: 13px;
+  line-height: 1.4;
+  
+  /* Add proper styling for links in the help content */
+  a {
+    color: $secondary;
+    text-decoration: underline;
+    
+    &:hover {
+      color: darken($secondary, 10%);
+    }
+  }
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin-bottom: 8px;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+}
+
+// Force HTML rendering in sidebar content
+#sidebar a, 
+#sidebar strong, 
+#sidebar b, 
+#sidebar i, 
+#sidebar em {
+  display: inline !important;
+}
+
+/* Make help content always visible with proper styling */
+#help-content {
+  display: block !important;
+  position: static !important;
+  max-height: none !important;
+  padding: 0 !important;
+  border-top: none !important;
+  font-size: 13px;
+  line-height: 1.4;
+  
+  /* Add proper styling for links in the help content */
+  a {
+    color: $secondary;
+    text-decoration: underline;
+    
+    &:hover {
+      color: darken($secondary, 10%);
+    }
+  }
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin-bottom: 8px;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+}
+
+// Force HTML rendering in sidebar content
+#sidebar a, 
+#sidebar strong, 
+#sidebar b, 
+#sidebar i, 
+#sidebar em {
+  display: inline !important;
+}
+
+/* Make help content render correctly */
+.help-content-html {
+  display: block !important;
+  position: static !important;
+  max-height: none !important;
+  padding: 0 !important;
+  border-top: none !important;
+  font-size: 13px;
+  line-height: 1.4;
+  
+  /* Ensure elements render as HTML */
+  a, strong, b, em, i, ul, li, br, p {
+    display: revert !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    color: inherit !important;
+    text-align: inherit !important;
+    margin: revert !important;
+    padding: revert !important;
+  }
+  
+  /* Specifically style links */
+  a {
+    color: $secondary !important;
+    text-decoration: underline !important;
+    
+    &:hover {
+      color: darken($secondary, 10%) !important;
+    }
+  }
+  
+  /* List styling */
+  ul {
+    margin: 0 0 1em 0 !important;
+    padding-left: 20px !important;
+  }
+  
+  li {
+    margin-bottom: 8px !important;
+    list-style-type: disc !important;
+  }
+  
+  /* Paragraph spacing */
+  p {
+    margin-bottom: 1em !important;
+  }
+  
+  /* Ensure strong renders correctly */
+  strong, b {
+    font-weight: 600 !important;
+  }
+}
+
+// Force HTML rendering in sidebar content
+#sidebar a, 
+#sidebar strong, 
+#sidebar b, 
+#sidebar i, 
+#sidebar em {
+  display: inline !important;
+}
+
+// Sidebar layer containers styling
+#base-layers-container,
+#dynamic-layers-container {
+  margin-bottom: 15px;
+}
+
+#base-layers-container h4,
+#dynamic-layers-container h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: $primary;
+  margin: 0 0 8px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#dynamic-layers {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+// Make the forest score image display properly
+#foret-score-img {
+  width: 90px;
+  height: auto;
+  object-fit: contain;
+  margin-right: 10px;
+}
+
+// Ensure the chart container has the right dimensions
+.chart-container {
+  width: 100%;
+  height: 150px;
+  min-height: 120px;
+  margin-top: 15px;
+}
+
+// Force display of forest score content
+.foret-score-container {
+  display: flex !important;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.foret-score-container .image-column {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.foret-score-container .text-column {
+  flex: 1;
+}
+
+#foret-score-details {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+// Improve layer labels in sidebar
+.layer-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
+  
+  input[type="checkbox"] {
+    flex: 0 0 auto;
+    margin-right: 5px;
+  }
+  
+  label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 13px;
+    width: 100%;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+#base-layers,
+#dynamic-layers {
+  width: 100%;
+}
+
+// Ensure colors in layer labels display properly
+[class^="layer-"] {
+  display: inline-block;
+  min-width: 12px;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border: 1px solid rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+
+// Make HTML spans in layers show correctly
+.layer-item label span {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+}
+
+// Fix dynamic layers container to allow proper scrolling
+#dynamic-layers-container {
+  margin-bottom: 15px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+#dynamic-layers {
+  padding-right: 5px;
+}
+
+// Fix layer labels display issues
+.layer-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  width: 100%;
+  
+  input[type="checkbox"] {
+    flex: 0 0 auto;
+    margin-right: 5px;
+    margin-top: 2px;
+  }
+  
+  label {
+    display: block;
+    cursor: pointer;
+    font-size: 13px;
+    width: calc(100% - 25px);
+    line-height: 1.3;
+  }
+  
+  span {
+    display: inline-block !important;
+    min-width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border: 1px solid rgba(0,0,0,0.2);
+    vertical-align: middle;
+  }
+}
+
+/* Fix for layer name spans */
+[class^="layer-"] {
+  display: inline-block !important;
+  vertical-align: middle;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  margin-top: -2px;
+  flex-shrink: 0;
+}
+
+// Fix dynamic layers container
+#dynamic-layers-container {
+  margin-bottom: 15px;
+}
+
+#dynamic-layers,
+#base-layers {
+  width: 100%;
+}
+
+// Reset any problematic inherited styles
+#layers-content {
+  span, label, input {
+    display: inline-block !important;
+  }
+  
+  label span {
+    vertical-align: middle;
+  }
+}
+
+// Ensure any HTML in layer labels renders correctly
+#layers-section {
+  .layer-item {
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  span[style] {
+    display: inline-block !important;
+    vertical-align: middle;
+  }
+}
+
+// Override any display:none issues
+.sidebar-section,
+#layers-content,
+.layer-item,
+#base-layers-container,
+#dynamic-layers-container,
+#base-layers,
+#dynamic-layers {
+  display: block !important;
+  visibility: visible !important;
+}
+
+// Fix critical layer display issues
+#layers-section {
+  // Force visibility of all layer elements
+  display: block !important;
+  visibility: visible !important;
+  
+  // Style layer items properly
+  .layer-item {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
+    
+    label {
+      display: flex !important;
+      align-items: center !important;
+      width: calc(100% - 20px) !important;
+      overflow: visible !important;
+      white-space: normal !important;
+      word-break: normal !important;
+      font-size: 13px !important;
+      margin: 0 !important;
+      color: black !important;
+      
+      span {
+        margin-right: 6px !important;
+      }
+    }
+    
+    input[type="checkbox"] {
+      margin-right: 8px !important;
+      flex: 0 0 auto !important;
+    }
+  }
+  
+  // Fix specifically for spans with inline styles
+  span[style] {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin-right: 6px !important;
+    vertical-align: middle !important;
+  }
+  
+  // Fix color squares
+  [class^="layer-natura-"],
+  [class^="layer-znieff"],
+  [class^="layer-pn"],
+  [class^="layer-rn"] {
+    display: inline-block !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin-right: 6px !important;
+    border: 1px solid rgba(0,0,0,0.2) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+// Override any inherited problems
+#layers-content {
+  * {
+    visibility: visible !important;
+  }
+  
+  // Force label texts to be visible
+  label::after {
+    content: attr(for);
+    display: inline !important;
+    visibility: visible !important;
+    margin-left: 5px !important;
+  }
+}
+
+// Fix styling for span elements containing color indicators
+span[style*="display:inline-block"] {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+// Ensure text content is visible
+#base-layers label,
+#dynamic-layers label {
+  color: #000 !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+// Fix the layer label issues in sidebar
+#layers-section {
+  // Style layer items properly
+  .layer-item {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+    border: none !important;
+    
+    label {
+      display: flex !important;
+      align-items: center !important;
+      border: none !important;
+      font-size: 13px !important;
+      color: black !important;
+      margin: 0 !important;
+      
+      // Remove any generated content
+      &::after {
+        content: none !important;
+      }
+    }
+    
+    // Remove border from spans
+    span {
+      border: none !important;
+    }
+    
+    // Only add border to color indicator squares
+    span[style*="background-color"] {
+      border: 1px solid rgba(0,0,0,0.2) !important;
+    }
+  }
+}
+
+// Fix the display of the color boxes for dynamic layers
+span[style*="display:inline-block"] {
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin-right: 6px !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+  vertical-align: middle !important;
+}
+
+// Remove "dynamic-layer-X" text from displaying
+[id^="dynamic-layer-"] {
+  font-size: 0 !important; // Hide the text
+  
+  &::before {
+    content: attr(for) !important;
+    font-size: 13px !important;
+    display: inline !important;
+  }
+}
+
+// Fix for layer-item specifically to prevent the ID from showing
+#dynamic-layers .layer-item {
+  label {
+    // Ensure only the correct text is shown
+    &::before {
+      content: none !important; // Remove any generated content
+    }
+    
+    // Hide the for attribute if it's showing
+    span + * {
+      visibility: visible !important;
+      display: inline !important;
+      color: black !important;
+      font-size: 13px !important;
+    }
+  }
+}
+
+// Style specifically for the layer-item labels to ensure proper text display
+#layers-content label {
+  white-space: normal !important;
+  overflow: visible !important;
+  
+  // Remove any generated content that might be causing the ID to show
+  &::after, &::before {
+    content: none !important;
+  }
+}
+
+// Override for the span styling in the layer control
+.leaflet-control-layers-overlays span {
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin-right: 6px !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+}
+
+// Ensure the text following the span shows correctly
+.leaflet-control-layers-overlays label span + * {
+  display: inline !important;
+}
+
+// Add special styling for the perturbations layer
+.layer-perturbations,
+span[style*="background-color:#D70040"] {
+  background-color: #D70040 !important;
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin-right: 6px !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+  vertical-align: middle !important;
+}
+
+/* Add to the existing scss file */
+
+// Mobile sidebar positioning
+@media (max-width: 768px) {
+  #main-container {
+    flex-direction: column-reverse; // Reverse order to put sidebar at bottom
+  }
+  
+  #sidebar.mobile-sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 220px !important; // Fixed height for the drawer
+    max-height: 35vh; // Cap at percentage of viewport height
+    overflow-y: auto; // Make it scrollable
+    background-color: $light-color;
+    border-top: 1px solid #ccc;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 1001;
+    padding: 15px 15px 25px 15px; // Add padding at the bottom
+    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+  }
+  
+  #map {
+    height: calc(100vh - 40px); // Full height for map
+    width: 100%;
+    z-index: 1;
+  }
+  
+  // Remove toggle button styles as we don't need it anymore
+  .mobile-toggle {
+    display: none;
+  }
+  
+  // Add a subtle indicator at the top of the sidebar
+  #sidebar.mobile-sidebar::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 4px;
+  }
+  
+  // Sidebar sections styling - make all sections visible
+  #search-section, 
+  #foret-score-section,
+  #layers-section, 
+  #help-section {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    opacity: 1;
+    max-height: none;
+    overflow: visible;
+    display: block !important;
+  }
+  
+  // Hide search section title
+  #search-section h3 {
+    display: none;
+  }
+  
+  // Make section headings normal (not sticky)
+  #sidebar.mobile-sidebar h3 {
+    position: static;
+    background-color: transparent;
+    padding: 0;
+    margin: 0 0 8px 0;
+  }
+  
+  // Ensure the sidebar content flows normally
+  #sidebar > * {
+    position: static !important;
+  }
+  
+  // Add a fade effect at the bottom to indicate more content
+  .sidebar-fade-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, $light-color 90%);
+    pointer-events: none; // Allow clicks to pass through
+    z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+  
+  // Ensure the sidebar has relative positioning for the fade to work
+  #sidebar.mobile-sidebar {
+    position: fixed;
+    // ...existing properties...
+  }
 }

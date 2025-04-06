@@ -1,0 +1,90 @@
+[
+  {
+    "url": "https://apicarto.ign.fr/api/nature/natura-habitat?geom=${geomParam}",
+    "style": {
+      "color": "#AAFF00",
+      "weight": 2,
+      "fillColor": "#AAFF00",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-natura-habitat\"></span>Natura 2000 - Habitat",
+    "category": "Zones protégées"
+  },
+  {
+    "url": "https://apicarto.ign.fr/api/nature/natura-oiseaux?geom=${geomParam}",
+    "style": {
+      "color": "#7DF9FF",
+      "weight": 2,
+      "fillColor": "#7DF9FF",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-natura-oiseaux\"></span>Natura 2000 - Oiseaux",
+    "category": "Zones protégées"
+  },
+  {
+    "url": "https://apicarto.ign.fr/api/nature/znieff1?geom=${geomParam}",
+    "style": {
+      "color": "#E4D00A",
+      "weight": 2,
+      "fillColor": "#E4D00A",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-znieff1\"></span>ZNIEFF1",
+    "category": "Zones protégées"
+  },
+  {
+    "url": "https://apicarto.ign.fr/api/nature/znieff2?geom=${geomParam}",
+    "style": {
+      "color": "#DFFF00",
+      "weight": 2,
+      "fillColor": "#DFFF00",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-znieff2\"></span>ZNIEFF2",
+    "category": "Zones protégées"
+  },
+  {
+    "url": "https://apicarto.ign.fr/api/nature/rnc?geom=${geomParam}",
+    "style": {
+      "color": "#57e140",
+      "weight": 2,
+      "fillColor": "#57e140",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-rnc\"></span>Réserves Naturelles de Corse",
+    "category": "Zones protégées"
+  },
+  {
+    "url": "https://apicarto.ign.fr/api/nature/rnn?geom=${geomParam}",
+    "style": {
+      "color": "#57e140",
+      "weight": 2,
+      "fillColor": "#57e140",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-rnn\"></span>Réserves Naturelles hors Corse",
+    "category": "Zones protégées"
+  },
+  {
+    "url": "https://apicarto.ign.fr/api/nature/pn?geom=${geomParam}",
+    "style": {
+      "color": "#8A00C4",
+      "weight": 2,
+      "fillColor": "#8A00C4",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-pn\"></span>Parcs Nationaux",
+    "category": "Zones protégées"
+  },
+  {
+    "url": "https://apicarto.ign.fr/api/nature/pnr?geom=${geomParam}",
+    "style": {
+      "color": "#8A00C4",
+      "weight": 2,
+      "fillColor": "#8A00C4",
+      "fillOpacity": 0.2
+    },
+    "label": "<span class=\"layer-pnr\"></span>Parcs Naturels Régionaux",
+    "category": "Zones protégées"
+  }
+]

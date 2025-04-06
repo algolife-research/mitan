@@ -1,11 +1,11 @@
----
-title: "Mitan - Notre milieu."
----
+Consent Manager Installation Instructions
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" id="silktide-consent-manager-css" href="libs/cookie-banner/silktide-consent-manager.css">
-<script src="libs/cookie-banner/silktide-consent-manager.js"></script>
+1. Extract the contents of this zip file
+2. Place the files in your website directory
+3. Add the following code to your HTML page, inside the <head> tag:
+
+<link rel="stylesheet" id="silktide-consent-manager-css" href="path-to-css/silktide-consent-manager.css">
+<script src="path-to-js/silktide-consent-manager.js"></script>
 <script>
 silktideCookieBannerManager.updateCookieBannerConfig({
   background: {
@@ -21,6 +21,7 @@ silktideCookieBannerManager.updateCookieBannerConfig({
       description: "<div>Ces cookies sont nécessaires au fonctionnement du site web et ne peuvent pas être désactivés. Ils aident à la définition de vos préférences en matière de confidentialité.</div>",
       required: true,
       onAccept: function() {
+        console.log('Add logic for the required Nécessaires here');
       }
     },
     {
@@ -62,40 +63,3 @@ silktideCookieBannerManager.updateCookieBannerConfig({
   }
 });
 </script>
-  <style>
-    h1.title {
-      display: none;
-    }
-  </style>
-</head>
-
-
-<body>
-
-
-
-<div id="searchSection">
-
-
-<img src="./assets/LogoMitanRect-Slogan.png" alt="Logo Mitan avec Slogan" class="search-logo" />
-
-</div>
-
-<div>
-__Mitan__ est une plateforme cartographique conçue comme un __observatoire du patrimoine naturel__, surtout forestier, des communes françaises.
-
-Mitan se veut __outil de suivi__ de notre milieu et des perturbations l'affectant, et __espace d’échange__ pour citoyens et gestionnaires, favorisant des décisions éclairées pour l'avenir de nos __territoires__.
-</div>
-
-__Quelques exemples__...
-
-<center>[Limousin - Plateau de Millevaches (Meymac)](carte.html?commune=19136){.btn .btn-secondary role="button"}</center>
-<br>
-<center>[Alpes - Chartreuse (Saint-Pierre-de-Chartreuse)](carte.html?commune=38442){.btn .btn-secondary style="background-color:#6f9685;" role="button"}</center>
-<br>
-<center>[Landes (La Teste-de-Buch)](carte.html?commune=33529){.btn .btn-secondary role="button"}</center>
-<br>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="communes.js"></script>
-</body>

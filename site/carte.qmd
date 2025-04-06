@@ -9,18 +9,63 @@ format:
     <meta charset="UTF-8">
     <script src="libs/leaflet/1.9.4/leaflet.js"></script>
     <link rel="stylesheet" href="libs/leaflet/1.9.4/leaflet.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://unpkg.com/georaster"></script>
-    <script src="https://unpkg.com/georaster-layer-for-leaflet"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
+    <script src="libs/chart/chart_v4.4.8.js"></script>
+    <script src="libs/jquery/jquery-3.7.1.min.js"></script>
+    <script src="libs/select2/4.1.0/select2.min.js"></script>
+    <link href="libs/select2/4.1.0/select2.min.css" rel="stylesheet" />
+    <script src="libs/georaster/georaster.browser.bundle.min.js"></script>
+    <script src="libs/georaster/georaster-layer-for-leaflet.min.js"></script>
+    <script src="libs/proj4/2.15.0/proj4.js"></script>
 </head>
 <body>
 
-<div id="map"></div>
-<script src="mitan.js"></script>
+<div id="main-container">
+<div id="sidebar">
+<div id="search-section" class="sidebar-section"></div>
+<div id="foret-score-section" class="sidebar-section"></div>
+<div id="layers-section" class="sidebar-section">
+<h3>Couches Cartographiques</h3>
+<div id="layers-content"></div>
+</div>
+<div id="help-section" class="sidebar-section">
+<h3>Aide</h3>
+<div id="help-content" class="help-content-html">
+<ul>
+<li><strong>Cliquer sur la carte :</strong> Obtenez des informations détaillées sur un endroit spécifique.</li>
+<li><strong>Changer de commune :</strong> Utilisez la barre de recherche ou cliquez sur la carte.</li>
+<li><strong>Filtrer les coupes :</strong> Cliquez sur une année du graphique pour filtrer les perturbations associées.</li>
+</ul>
+
+<h3>À savoir</h3>
+
+Les <strong>perturbations</strong>, en rouge, sont des changements brutaux de la végétation détectées par satellite. Ce sont surtout des <strong>coupes rases et incendies</strong>.</p>
+<p>Il est toujours judicieux de se questionner face à des données : consultez la page Détails pour en apprendre plus sur les limites des processus automatisés de classification des forêts 
+et détection des perturbations.</p>
+
+<h3>Sources</h3>
+
+<b>Annotation des forêts</b><br>
+<a href="https://geoservices.ign.fr/bdforet" target="_blank">BDForêt® V2</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank">Licence ETALAB-Licence-Ouverte-v2.0</a><br>
+
+<b>Couches de base et altitudes</b><br>
+Fond, Hydrographie, BDForêt V2, Espaces Protégés © IGN/Géoplateforme<br>
+<a href="https://geoservices.ign.fr/services-geoplateforme-altimetrie" target="_blank">Service Géoplateforme de calcul altimétrique</a> sous <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf" target="_blank">Licence ETALAB-Licence-Ouverte-v2.0</a><br>
+
+<b>Données satellite</b><br>
+Copernicus (<a href="https://sentiwiki.copernicus.eu/web/s2-mission" target="_blank">satellite Sentinel 2</a>) obtenues par <a href="https://www.sentinel-hub.com/" target="_blank">Sentinel-Hub</a>, sous <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank">Licence CC-BY-SA</a><br>
+
+<b>Fond de carte</b>: IGN-F / Geoportail.<br><br>
+
+<b>Perturbations et calculs associés</b> – <a href="https://ieeexplore.ieee.org/abstract/document/10604724" target="_blank">S. Mermoz et al.</a> sous licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr" target="_blank">Licence CC-BY-NC</a>, et algorithme maison sous <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.fr" target="_blank">Licence CC-BY-SA</a>
+
+</div>
+</div>
+</div>
+  <div id="map"></div>
+</div>
+
+<script type="module" src="js/index.js"></script>
+<script src="js/mobile-sidebar.js"></script>
 
 </body>
 

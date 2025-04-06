@@ -1,21 +1,18 @@
 ---
 title: "Mentions légales"
-format: html
-editor: visual
 ---
 
 ### Qui sommes nous ?
 
-Le site __aumitan.com__ est géré avec amour au coeur du Limousin 
-par __AlgoLife SARL__, à Saint-Julien-le-Petit.
+Le site **aumitan.com** est géré avec amour au coeur du Limousin par **AlgoLife SARL**, à Saint-Julien-le-Petit.
 
-Contact : Alexandre Gouy - aumitan@proton.me
+Contact : Alexandre Gouy - aumitan\@proton.me
 
 ### Registraire du nom de domaine
 
-Le nom de domaine __aumitan.com__ est enregistré chez :
+Le nom de domaine **aumitan.com** est enregistré chez :
 
-__OVH__
+**OVH**
 
 Siège social : 2 rue Kellermann, 59100 Roubaix, France
 
@@ -23,12 +20,11 @@ RCS Lille Métropole 424 761 419
 
 Site web : https://www.ovh.com/
 
-
 ### Hébergeur du site
 
 Le site est hébergé par :
 
-__GitHub Pages__
+**GitHub Pages**
 
 GitHub Inc.
 
@@ -38,42 +34,30 @@ Site web : https://pages.github.com/
 
 ### Propriété intellectuelle
 
-Tout le contenu de ce site (textes, images, visuels, sons, etc.) est proposé 
-librement à la lecture et à la découverte. Vous pouvez le réutiliser, 
-le partager ou même vous en inspirer — tant que vous mentionnez la source.
+Tout le contenu de ce site (textes, images, visuels, sons, etc.) est proposé librement à la lecture et à la découverte. Vous pouvez le réutiliser, le partager ou même vous en inspirer — tant que vous mentionnez la source.
 
-Le contenu de ce site est mis à disposition selon les termes de la licence 
-[Creative Commons Attribution - Pas d’Utilisation Commerciale 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.fr).
+Le contenu de ce site est mis à disposition selon les termes de la licence [Creative Commons Attribution - Pas d’Utilisation Commerciale 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.fr).
 
-Pour toute demande, contactez-nous à aumitan@proton.me.
+Pour toute demande, contactez-nous à aumitan\@proton.me.
 
 ### Protection des données personnelles
 
-Chez aumitan.com, on respecte votre vie privée ! Conformément au Règlement 
-Général sur la Protection des Données (RGPD), vous avez un droit d'accès, 
-de modification et de suppression de vos données personnelles.
+Chez aumitan.com, on respecte votre vie privée ! Conformément au Règlement Général sur la Protection des Données (RGPD), vous avez un droit d'accès, de modification et de suppression de vos données personnelles.
 
-Les infos collectées via le site sont exclusivement destinées à AlgoLife SARL 
-et ne seront jamais revendues ou partagées avec des tiers.
+Les infos collectées via le site sont exclusivement destinées à AlgoLife SARL et ne seront jamais revendues ou partagées avec des tiers.
 
 ### Cookies
 
-Bonne nouvelle : __aumitan.com__ n'utilise pas de cookies ! 
-Pas de pistage, pas de pub, juste du contenu utile.
+Bonne nouvelle : **aumitan.com** n'utilise pas de cookies ! Pas de pistage, pas de pub, juste du contenu utile.
 
 ### Responsabilité
 
-Nous faisons de notre mieux pour vous fournir un site fiable, mais nous 
-ne pouvons garantir qu'il soit toujours parfait ! L'utilisation du site 
-se fait sous votre propre responsabilité.
+Nous faisons de notre mieux pour vous fournir un site fiable, mais nous ne pouvons garantir qu'il soit toujours parfait ! L'utilisation du site se fait sous votre propre responsabilité.
 
-Nous ne pouvons donc pas être tenus responsables des dommages directs ou 
-indirects causés à l’utilisateur lors de l’utilisation du site __aumitan.com__.
+Nous ne pouvons donc pas être tenus responsables des dommages directs ou indirects causés à l’utilisateur lors de l’utilisation du site **aumitan.com**.
 
-Le site peut contenir des liens vers d'autres sites, mais nous ne pouvons 
-pas être tenus responsables de leur contenu.
+Le site peut contenir des liens vers d'autres sites, mais nous ne pouvons pas être tenus responsables de leur contenu.
 
 ### Droit applicable
 
-Ces mentions légales sont soumises au droit français. En cas de souci juridique,
-les tribunaux compétents seront ceux du ressort du siège social d'AlgoLife SARL.
+Ces mentions légales sont soumises au droit français. En cas de souci juridique, les tribunaux compétents seront ceux du ressort du siège social d'AlgoLife SARL.
