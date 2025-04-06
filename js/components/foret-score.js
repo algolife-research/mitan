@@ -28,26 +28,41 @@ function createForetScoreBox(map) {
   const foretScoreBox = L.control({ position: "topleft" });
 
   foretScoreBox.onAdd = function () {
-    const container = L.DomUtil.create("div", "foret-score-box leaflet-control-foret");
+    const container = L.DomUtil.create("div", "scores-container leaflet-control-foret");
 
-    // Add title row
+    // Add single title for both boxes
     const titleRow = document.createElement("div");
-    titleRow.className = "title";
-    // Set commune name if available
+    titleRow.className = "title-row";
     if (window.communeName) {
       titleRow.textContent = window.communeName;
     }
     container.appendChild(titleRow);
 
-    // Add content row
-    const contentRow = document.createElement("div");
-    contentRow.className = "row";
-    container.appendChild(contentRow);
+    // Create Forêt Score box
+    const foretBox = document.createElement("div");
+    foretBox.className = "foret-score-box";
+    container.appendChild(foretBox);
+
+    // Add vertical label for Forêt
+    const verticalLabel = document.createElement("div");
+    verticalLabel.className = "vertical-label";
+    verticalLabel.textContent = "Forêt";
+    foretBox.appendChild(verticalLabel);
+
+    // Create score content container
+    const scoreContent = document.createElement("div");
+    scoreContent.className = "score-content";
+    foretBox.appendChild(scoreContent);
+
+    // Add score row (for image and text)
+    const scoreRow = document.createElement("div");
+    scoreRow.className = "score-row";
+    scoreContent.appendChild(scoreRow);
 
     // Add image column
     const imageColumn = document.createElement("div");
     imageColumn.className = "image-column";
-    contentRow.appendChild(imageColumn);
+    scoreRow.appendChild(imageColumn);
 
     const img = document.createElement("img");
     img.id = "foret-score-img";
@@ -57,19 +72,37 @@ function createForetScoreBox(map) {
     // Add text column
     const textColumn = document.createElement("div");
     textColumn.className = "text-column";
-    contentRow.appendChild(textColumn);
+    scoreRow.appendChild(textColumn);
 
     const details = document.createElement("div");
     details.id = "foret-score-details";
     textColumn.appendChild(details);
 
-    // Add chart container
+    // Add chart container below image and text
     const chartContainer = document.createElement("div");
     chartContainer.className = "chart-container";
     chartContainer.innerHTML = '<canvas id="areaChart"></canvas>';
-    container.appendChild(chartContainer);
+    scoreContent.appendChild(chartContainer);
 
-    // Prevent map clicks when interacting with the Forêt Score box
+    // Create Eau Score box (placeholder)
+    const eauBox = document.createElement("div");
+    eauBox.className = "eau-score-box";
+    eauBox.id = "eau-score-box";
+    container.appendChild(eauBox);
+
+    // Add vertical label for Eau
+    const eauLabel = document.createElement("div");
+    eauLabel.className = "vertical-label";
+    eauLabel.textContent = "Eau";
+    eauBox.appendChild(eauLabel);
+
+    // Add placeholder content
+    const placeholderContent = document.createElement("div");
+    placeholderContent.className = "placeholder-content";
+    placeholderContent.textContent = "À venir";
+    eauBox.appendChild(placeholderContent);
+
+    // Prevent map clicks when interacting with the score boxes
     L.DomEvent.disableClickPropagation(container);
     L.DomEvent.disableScrollPropagation(container);
 

@@ -87,26 +87,44 @@ function setupSidebarComponents(map) {
     }
   }
   
-  // Initialize forêt score section
+  // Create a combined section with a single title for both Forêt and Eau scores
   const foretScoreSection = document.getElementById('foret-score-section');
   if (foretScoreSection) {
     foretScoreSection.innerHTML = `
-      <h3 id="foret-score-title">${window.communeName || ''}</h3>
-      <div class="foret-score-container">
-        <div class="image-column">
-          <img id="foret-score-img" alt="Forêt Score" />
+      <h3 id="scores-title">${window.communeName || ''}</h3>
+      <div class="scores-container">
+        <div class="foret-score-container">
+          <div class="vertical-label">Forêt</div>
+          <div class="score-content">
+            <div class="score-row">
+              <div class="image-column">
+                <img id="foret-score-img" alt="Forêt Score" />
+              </div>
+              <div class="text-column">
+                <div id="foret-score-details"></div>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="areaChart"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="text-column">
-          <div id="foret-score-details"></div>
+        
+        <div class="eau-score-container">
+          <div class="vertical-label">Eau</div>
+          <div class="placeholder-content">À venir</div>
         </div>
-      </div>
-      <div class="chart-container">
-        <canvas id="areaChart"></canvas>
       </div>
     `;
     
     // Load and display Forêt Score data
     loadForetScoreData();
+  }
+  
+  // Remove the separate eau-score-section since it's now included in the foret-score-section
+  const eauScoreSection = document.getElementById('eau-score-section');
+  if (eauScoreSection) {
+    eauScoreSection.remove();
   }
   
   // Initialize the base layers section
