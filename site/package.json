@@ -1,0 +1,63 @@
+{
+  "name": "mitan-v2",
+  "version": "2.0.0",
+  "description": "Mitan Forest Monitoring",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "db:generate": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/types/database.types.ts"
+  },
+  "dependencies": {
+    "@radix-ui/react-collapsible": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-slider": "^1.2.1",
+    "@radix-ui/react-switch": "^1.1.1",
+    "@radix-ui/react-tabs": "^1.1.1",
+    "@supabase/supabase-js": "^2.45.4",
+    "@tanstack/react-query": "^5.59.20",
+    "@turf/area": "^7.3.4",
+    "@turf/boolean-point-in-polygon": "^7.3.4",
+    "@turf/helpers": "^7.3.4",
+    "@turf/intersect": "^7.3.4",
+    "@types/proj4": "^2.5.6",
+    "chart.js": "^4.5.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "encoding": "^0.1.13",
+    "georaster": "^1.6.0",
+    "lucide-react": "^0.454.0",
+    "maplibre-gl": "^4.7.1",
+    "next": "^15.1.0",
+    "pmtiles": "^3.2.0",
+    "proj4": "^2.20.2",
+    "react": "^19.0.0",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.3",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.15.0",
+    "eslint-config-next": "^15.1.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

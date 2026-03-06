@@ -1,0 +1,340 @@
+'use client';
+
+import { useRef, useEffect, useState, useCallback } from 'react';
+import maplibregl from 'maplibre-gl';
+import { Protocol } from 'pmtiles';
+import { IGN_LAYERS, PROTECTED_AREAS_CONFIG, getAltitude } from '@/lib/map/ign-layers';
+import type { Commune, Transition, LayerVisibility } from '@/types';
+import { calculateBounds } from '@/lib/utils';
+
+interface CommuneMapProps {
+  commune?: Commune;
+  transitions?: Transition[];
+  selectedYear?: number | null;
+}
+
+export function CommuneMap({ commune, transitions = [], selectedYear }: CommuneMapProps) {
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<maplibregl.Map | null>(null);
+  const [activeBasemap, setActiveBasemap] = useState<'ortho' | 'plan'>('ortho');
+  const [activeLayers, setActiveLayers] = useState<LayerVisibility>({
+    bdforet: false,
+    hydro: true,
+    cadastre: false,
+    perturbations: true,
+  });
+  const [activeProtectedAreas, setActiveProtectedAreas] = useState<string[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Initialize map
+  useEffect(() => {
+    if (!mapContainer.current || map.current) return;
+
+    // Register PMTiles protocol
+    const protocol = new Protocol();
+    maplibregl.addProtocol('pmtiles', protocol.tile);
+
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: {
+        version: 8,
+        sources: {
+          'ign-ortho': {
+            type: 'raster',
+            tiles: [IGN_LAYERS.ortho.url],
+            tileSize: 256,
+            attribution: IGN_LAYERS.ortho.attribution,
+          },
+          'ign-plan': {
+            type: 'raster',
+            tiles: [IGN_LAYERS.plan.url],
+            tileSize: 256,
+            attribution: IGN_LAYERS.plan.attribution,
+          },
+          'ign-hydro': {
+            type: 'raster',
+            tiles: [IGN_LAYERS.hydro.url],
+            tileSize: 256,
+          },
+          'ign-cadastre': {
+            type: 'raster',
+            tiles: [IGN_LAYERS.cadastre.url],
+            tileSize: 256,
+          },
+        },
+        layers: [
+          {
+            id: 'ign-ortho-layer',
+            type: 'raster',
+            source: 'ign-ortho',
+            layout: { visibility: 'visible' },
+          },
+          {
+            id: 'ign-plan-layer',
+            type: 'raster',
+            source: 'ign-plan',
+            layout: { visibility: 'none' },
+          },
+          {
+            id: 'ign-hydro-layer',
+            type: 'raster',
+            source: 'ign-hydro',
+            layout: { visibility: 'visible' },
+            paint: { 'raster-opacity': 0.7 },
+          },
+          {
+            id: 'ign-cadastre-layer',
+            type: 'raster',
+            source: 'ign-cadastre',
+            layout: { visibility: 'none' },
+            paint: { 'raster-opacity': 0.7 },
+          },
+        ],
+      },
+      center: [2.3522, 46.2276],
+      zoom: 5,
+      maxZoom: 18,
+    });
+
+    map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
+    map.current.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
+    map.current.addControl(new maplibregl.FullscreenControl(), 'top-right');
+
+    map.current.on('load', () => setIsLoaded(true));
+
+    // Click handler
+    map.current.on('click', async (e) => {
+      const { lat, lng } = e.lngLat;
+      const altitude = await getAltitude(lat, lng);
+      
+      const features = map.current!.queryRenderedFeatures(e.point);
+      const transitionFeature = features.find(f => f.sourceLayer === 'transitions');
+      
+      let popupContent = `
+        <div class="p-3 min-w-[200px]">
+          <p class="text-xs text-gray-500 mb-2">Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}</p>
+          ${altitude !== null ? `<p class="text-sm">Altitude: <strong>${altitude}m</strong></p>` : ''}
+        </div>
+      `;
+      
+      if (transitionFeature) {
+        const props = transitionFeature.properties;
+        popupContent = `
+          <div class="p-3">
+            <h4 className="font-bold text-sm mb-1">${getTransitionLabel(props.type)}</h4>
+            <p class="text-xs text-gray-600 mb-1">${props.fromYear} → ${props.toYear}</p>
+            <p class="text-sm font-medium mb-1">${props.areaHa.toFixed(2)} ha</p>
+            <p class="text-xs text-gray-500">Confiance: ${(props.confidence * 100).toFixed(0)}%</p>
+            ${altitude !== null ? `<p class="text-xs mt-2">Altitude: ${altitude}m</p>` : ''}
+          </div>
+        `;
+      }
+      
+      new maplibregl.Popup({ closeButton: true, closeOnClick: true })
+        .setLngLat(e.lngLat)
+        .setHTML(popupContent)
+        .addTo(map.current!);
+    });
+
+    return () => {
+      maplibregl.removeProtocol('pmtiles');
+      map.current?.remove();
+      map.current = null;
+    };
+  }, []);
+
+  // Add commune boundary
+  useEffect(() => {
+    if (!map.current || !commune || !isLoaded) return;
+
+    const sourceId = 'commune-boundary';
+    
+    if (map.current.getSource(sourceId)) {
+      (map.current.getSource(sourceId) as maplibregl.GeoJSONSource).setData({
+        type: 'Feature',
+        geometry: commune.geometry,
+        properties: {},
+      });
+    } else {
+      map.current.addSource(sourceId, {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: commune.geometry,
+          properties: {},
+        },
+      });
+
+      map.current.addLayer({
+        id: 'commune-boundary-line',
+        type: 'line',
+        source: sourceId,
+        paint: {
+          'line-color': '#ffffff',
+          'line-width': 3,
+          'line-opacity': 0.9,
+        },
+      });
+
+      map.current.addLayer({
+        id: 'commune-boundary-glow',
+        type: 'line',
+        source: sourceId,
+        paint: {
+          'line-color': '#ffffff',
+          'line-width': 8,
+          'line-opacity': 0.3,
+          'line-blur': 4,
+        },
+      });
+    }
+
+    // Fit to commune bounds
+    const bounds = calculateBounds(commune.geometry);
+    map.current.fitBounds(bounds as maplibregl.LngLatBoundsLike, { padding: 50, duration: 1000 });
+  }, [commune, isLoaded]);
+
+  // Add transitions
+  useEffect(() => {
+    if (!map.current || !isLoaded || transitions.length === 0) return;
+
+    const geojson: GeoJSON.FeatureCollection = {
+      type: 'FeatureCollection',
+      features: transitions.map((t) => ({
+        type: 'Feature',
+        geometry: t.geometry,
+        properties: {
+          id: t.id,
+          type: t.transitionType?.name || 'unknown',
+          fromYear: t.fromYear,
+          toYear: t.toYear,
+          areaHa: t.areaHa,
+          confidence: t.confidence,
+        },
+      })),
+    };
+
+    const sourceId = 'transitions-dynamic';
+    
+    if (map.current.getSource(sourceId)) {
+      (map.current.getSource(sourceId) as maplibregl.GeoJSONSource).setData(geojson);
+    } else {
+      map.current.addSource(sourceId, { type: 'geojson', data: geojson });
+
+      // Add layers for each transition type
+      const transitionLayers = [
+        { type: 'clear_cut', color: '#dc2626' },
+        { type: 'fire', color: '#f97316' },
+        { type: 'reforestation', color: '#22c55e' },
+        { type: 'urbanization', color: '#7c3aed' },
+        { type: 'degradation', color: '#eab308' },
+      ];
+
+      transitionLayers.forEach(({ type, color }) => {
+        map.current!.addLayer({
+          id: `transitions-${type}`,
+          type: 'fill',
+          source: sourceId,
+          filter: ['==', ['get', 'type'], type],
+          paint: {
+            'fill-color': color,
+            'fill-opacity': 0.6,
+          },
+        });
+      });
+
+      map.current.addLayer({
+        id: 'transitions-outline',
+        type: 'line',
+        source: sourceId,
+        paint: {
+          'line-color': '#000000',
+          'line-width': 1,
+          'line-opacity': 0.5,
+        },
+      });
+    }
+  }, [transitions, isLoaded]);
+
+  const toggleBasemap = useCallback((basemap: 'ortho' | 'plan') => {
+    if (!map.current) return;
+    
+    map.current.setLayoutProperty('ign-ortho-layer', 'visibility', basemap === 'ortho' ? 'visible' : 'none');
+    map.current.setLayoutProperty('ign-plan-layer', 'visibility', basemap === 'plan' ? 'visible' : 'none');
+    setActiveBasemap(basemap);
+  }, []);
+
+  const toggleOverlay = useCallback((layerId: string, visible: boolean) => {
+    if (!map.current) return;
+    
+    const layerMap: Record<string, string> = {
+      hydro: 'ign-hydro-layer',
+      cadastre: 'ign-cadastre-layer',
+    };
+    
+    const mapLayerId = layerMap[layerId];
+    if (mapLayerId && map.current.getLayer(mapLayerId)) {
+      map.current.setLayoutProperty(mapLayerId, 'visibility', visible ? 'visible' : 'none');
+    }
+    
+    setActiveLayers(prev => ({ ...prev, [layerId]: visible }));
+  }, []);
+
+  return (
+    <div className="relative w-full h-full min-h-[600px]">
+      <div ref={mapContainer} className="absolute inset-0" />
+      
+      {/* Simple layer controls overlay */}
+      <div className="absolute top-4 left-4 z-10 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-4 space-y-2">
+        <h3 className="font-semibold text-sm mb-2">Fond de carte</h3>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="radio"
+            checked={activeBasemap === 'ortho'}
+            onChange={() => toggleBasemap('ortho')}
+          />
+          Orthophotos
+        </label>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="radio"
+            checked={activeBasemap === 'plan'}
+            onChange={() => toggleBasemap('plan')}
+          />
+          Plan IGN
+        </label>
+        
+        <hr className="my-2" />
+        
+        <h3 className="font-semibold text-sm mb-2">Couches</h3>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={activeLayers.hydro}
+            onChange={(e) => toggleOverlay('hydro', e.target.checked)}
+          />
+          Hydrographie
+        </label>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={activeLayers.cadastre}
+            onChange={(e) => toggleOverlay('cadastre', e.target.checked)}
+          />
+          Cadastre
+        </label>
+      </div>
+    </div>
+  );
+}
+
+function getTransitionLabel(type: string): string {
+  const labels: Record<string, string> = {
+    clear_cut: '🪓 Coupe rase',
+    fire: '🔥 Incendie',
+    urbanization: '🏗️ Urbanisation',
+    reforestation: '🌱 Reboisement',
+    degradation: '📉 Dégradation',
+  };
+  return labels[type] || type;
+}

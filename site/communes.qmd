@@ -1,9 +1,0 @@
----
-title: "Rechercher une commune"
----
-
-<body>
-  <div id="searchSection"></div>
-  <script src="libs/jquery/jquery-3.7.1.min.js"></script>
-  <script src="communes.js"></script>
-</body>
