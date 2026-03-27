@@ -57,20 +57,34 @@ export interface MapSidebarProps {
   // Overlap (pre-computed)
   overlapStats: Record<string, { overlap: number; protectedAreaHa: number } | -1>;
   // BDForet (pre-computed)
-  bdforetStats: Record<string, number> | null;
+  bdforetStats: Record<string, { ha: number; perturb_ha: number }> | null;
+  bdforetCouvertStats: Record<string, { ha: number; perturb_ha: number }> | null;
+  // Population
+  population: { population: number; densite_hab_km2: number } | null;
+  // Forets anciennes
+  foretsAnciennes: {
+    surface_ha: number;
+    taux_foret_ancienne: number;
+    perturb_in_ancienne_ha: number;
+    perturb_in_ancienne_pct: number;
+    par_nature: Record<string, { ha: number; perturb_ha: number }>;
+  } | null;
   // Protected area toggles (for overlap section links)
   onProtectedAreaToggle: (areaId: string, visible: boolean) => void;
 }
 
 export function MapSidebar(props: MapSidebarProps) {
   const {
-    communeName, communeCode,
+    communeName,
     yearRange, onYearRangeChange, minYear, maxYear,
     yearStats, totalArea, communeSurface, forestSurface, forestScore,
     scoreBoisement, scoreCoupes, tauxBoisement, pixelAreaHa,
     observationYears,
     overlapStats,
     bdforetStats,
+    bdforetCouvertStats,
+    population,
+    foretsAnciennes,
     onProtectedAreaToggle,
   } = props;
 
@@ -80,8 +94,16 @@ export function MapSidebar(props: MapSidebarProps) {
       {communeName && (
         <div className="border-b pb-3">
           <h2 className="text-xl font-bold text-gray-900">{communeName}</h2>
+          {population && (
+            <p className="text-xs text-gray-500 mt-1">
+              {fmtInt(population.population)} habitants · {fmtNum(population.densite_hab_km2, 1)} hab/km²
+            </p>
+          )}
         </div>
       )}
+
+      {/* === Foret === */}
+      <div>
 
       {/* Forest Score */}
       {communeSurface > 0 && (
@@ -209,25 +231,55 @@ export function MapSidebar(props: MapSidebarProps) {
             );
           })()}
 
-          {/* BDForet Overlap */}
+          {/* BDForet Overlap — Summary by couvert */}
           <div>
             <p className="text-sm font-medium text-gray-700 mb-2">Perturbations par type de foret</p>
+
+            {/* Par couvert (summary) */}
+            {bdforetCouvertStats && Object.keys(bdforetCouvertStats).length > 0 && (
+              <div className="mb-3">
+                <p className="text-[10px] text-gray-500 mb-1.5">Par couverture</p>
+                <div className="space-y-1.5">
+                  {Object.entries(bdforetCouvertStats)
+                    .sort(([, a], [, b]) => b.perturb_ha - a.perturb_ha)
+                    .map(([couvert, data]) => {
+                      const perturbRate = data.ha > 0 ? (data.perturb_ha / data.ha) * 100 : 0;
+                      return (
+                        <div key={couvert} className="bg-green-50 border border-green-200 rounded p-2">
+                          <div className="flex justify-between items-baseline mb-1">
+                            <span className="text-xs font-medium text-gray-900">{couvert}</span>
+                            <span className="text-xs font-bold text-green-700 ml-2 whitespace-nowrap">{fmtNum(perturbRate, 1)} %</span>
+                          </div>
+                          <div className="text-[10px] text-gray-600 mb-1">
+                            {fmtNum(data.perturb_ha, 1)} ha perturbes sur {fmtInt(data.ha)} ha totaux
+                          </div>
+                          <div className="bg-gray-200 rounded-full h-1.5">
+                            <div className="bg-green-600 h-1.5 rounded-full" style={{ width: `${Math.min(perturbRate, 100)}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
+
+            {/* Par type (detail) */}
             {bdforetStats && Object.keys(bdforetStats).length > 0 ? (
               <div className="space-y-2">
-                <p className="text-[10px] text-gray-500">Repartition des {fmtNum(totalArea)} ha perturbes</p>
+                <p className="text-[10px] text-gray-500">Detail par type ({fmtNum(totalArea)} ha perturbes)</p>
                 {Object.entries(bdforetStats)
-                  .sort(([, a], [, b]) => b - a)
-                  .map(([tfvG11, hectares]) => {
-                    const pct = (hectares / (totalArea || 1)) * 100;
+                  .sort(([, a], [, b]) => b.perturb_ha - a.perturb_ha)
+                  .map(([tfvG11, data]) => {
+                    const perturbRate = data.ha > 0 ? (data.perturb_ha / data.ha) * 100 : 0;
                     return (
                       <div key={tfvG11} className="bg-green-50 border border-green-200 rounded p-2">
                         <div className="flex justify-between items-baseline mb-1">
                           <span className="text-xs font-medium text-gray-900">{tfvG11}</span>
-                          <span className="text-xs font-bold text-green-700 ml-2 whitespace-nowrap">{fmtNum(pct)}%</span>
+                          <span className="text-xs font-bold text-green-700 ml-2 whitespace-nowrap">{fmtNum(perturbRate, 1)} %</span>
                         </div>
-                        <div className="text-[10px] text-gray-600 mb-1">{fmtNum(hectares, 2)} ha</div>
+                        <div className="text-[10px] text-gray-600 mb-1">{fmtNum(data.perturb_ha, 2)} ha perturbes sur {fmtInt(data.ha)} ha totaux</div>
                         <div className="bg-gray-200 rounded-full h-1.5">
-                          <div className="bg-green-600 h-1.5 rounded-full" style={{ width: `${Math.min(pct, 100)}%` }} />
+                          <div className="bg-green-600 h-1.5 rounded-full" style={{ width: `${Math.min(perturbRate, 100)}%` }} />
                         </div>
                       </div>
                     );
@@ -237,9 +289,38 @@ export function MapSidebar(props: MapSidebarProps) {
             ) : (
               <p className="text-sm text-gray-500 italic">Aucune donnee disponible</p>
             )}
+
+            {/* Forets anciennes */}
+            {foretsAnciennes && (() => {
+              const ancienne = foretsAnciennes.par_nature['foret ancienne'];
+              if (!ancienne || ancienne.ha <= 0) return null;
+              const perturbRate = ancienne.ha > 0 ? (ancienne.perturb_ha / ancienne.ha) * 100 : 0;
+              return (
+                <div className="mt-3">
+                  <p className="text-[10px] text-gray-500 mb-1.5">Foret ancienne</p>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded p-2">
+                    <div className="flex justify-between items-baseline mb-1">
+                      <span className="text-xs font-medium text-gray-900">Foret ancienne</span>
+                      <span className="text-xs font-bold text-emerald-700 ml-2 whitespace-nowrap">{fmtNum(perturbRate, 1)} %</span>
+                    </div>
+                    <div className="text-[10px] text-gray-600 mb-1">
+                      {fmtNum(ancienne.perturb_ha, 1)} ha perturbes sur {fmtNum(ancienne.ha, 1)} ha totaux
+                    </div>
+                    {ancienne.perturb_ha > 0 && (
+                      <div className="bg-gray-200 rounded-full h-1.5">
+                        <div className="bg-red-500 h-1.5 rounded-full" style={{ width: `${Math.min(perturbRate, 100)}%` }} />
+                      </div>
+                    )}
+                    <div className="text-[10px] text-gray-400 mt-1">Source : IGN Forets anciennes</div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </CollapsibleSection>
       )}
+
+      </div>
 
       {/* Help */}
       <CollapsibleSection title="Aide" defaultOpen={false}>

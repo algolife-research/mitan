@@ -230,14 +230,33 @@ export interface CommuneStatsV2 {
   };
   overlap_bdforet: {
     bdforet_total_ha: number;
-    bdforet_par_type: Record<string, {
-      pixels: number;
+    par_couvert: Record<string, {
       ha: number;
-      perturb_pixels: number;
       perturb_ha: number;
     }>;
-    perturb_in_bdforet_pixels: number;
+    par_type: Record<string, {
+      ha: number;
+      perturb_ha: number;
+    }>;
+    par_essence: Record<string, {
+      ha: number;
+      perturb_ha: number;
+    }>;
     perturb_in_bdforet_ha: number;
+  };
+  population?: {
+    population: number;
+    densite_hab_km2: number;
+  };
+  forets_anciennes?: {
+    surface_ha: number;
+    taux_foret_ancienne: number;
+    perturb_in_ancienne_ha: number;
+    perturb_in_ancienne_pct: number;
+    par_nature: Record<string, {
+      ha: number;
+      perturb_ha: number;
+    }>;
   };
 }
 

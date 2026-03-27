@@ -2,7 +2,7 @@
 import parseGeoraster from 'georaster';
 import proj4 from 'proj4';
 import type { GeoRaster } from '@/types';
-import { LAMBERT93, WGS84, PERTURBATION_COLOR } from '@/lib/constants';
+import { LAMBERT93, WGS84, PERTURBATION_COLOR, SURVEY_START_YEAR, SURVEY_END_YEAR } from '@/lib/constants';
 import { isValidPixel } from './perturbation-analysis';
 
 export interface CanvasResult {
@@ -54,18 +54,22 @@ export function renderToCanvas(
         continue;
       }
 
+      const pixelYear = 2000 + Math.floor(val / 1000);
+
       if (yearRange !== null) {
-        const pixelYear = 2000 + Math.floor(val / 1000);
         if (pixelYear < yearRange[0] || pixelYear > yearRange[1]) {
           imageData.data[idx + 3] = 0;
           continue;
         }
       }
 
-      imageData.data[idx] = PERTURBATION_COLOR.r;
-      imageData.data[idx + 1] = PERTURBATION_COLOR.g;
-      imageData.data[idx + 2] = PERTURBATION_COLOR.b;
-      imageData.data[idx + 3] = 255;
+      // Color gradient: early (2018) = light orange, recent (2025) = deep red
+      const t = Math.max(0, Math.min(1, (pixelYear - SURVEY_START_YEAR) / (SURVEY_END_YEAR - SURVEY_START_YEAR)));
+      // Early: #F4A460 (sandy orange) → Recent: #D70040 (deep red)
+      imageData.data[idx]     = Math.round(244 + t * (PERTURBATION_COLOR.r - 244)); // 244 → 215
+      imageData.data[idx + 1] = Math.round(164 - t * 164);                          // 164 → 0
+      imageData.data[idx + 2] = Math.round(96  + t * (PERTURBATION_COLOR.b - 96));  //  96 → 64
+      imageData.data[idx + 3] = Math.round(180 + t * 75);                           // 180 → 255
     }
   }
 

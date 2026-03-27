@@ -34,3 +34,7 @@ export const NODATA_VALUE = 4294967295;
 
 /** Perturbation display color (#D70040) */
 export const PERTURBATION_COLOR = { r: 215, g: 0, b: 64 };
+
+/** Fixed survey period — used for consistent color scaling across communes */
+export const SURVEY_START_YEAR = 2018;
+export const SURVEY_END_YEAR = 2025;

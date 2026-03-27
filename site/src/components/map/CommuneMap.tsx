@@ -88,15 +88,27 @@ export function CommuneMap() {
     return result;
   }, [communeStats]);
 
+  // Map BDForet par_couvert data (summary view)
+  const bdforetCouvertStats = useMemo(() => {
+    if (!communeStats) return null;
+    const parCouvert = communeStats.overlap_bdforet.par_couvert;
+    if (!parCouvert || Object.keys(parCouvert).length === 0) return null;
+    const result: Record<string, { ha: number; perturb_ha: number }> = {};
+    for (const [type, data] of Object.entries(parCouvert)) {
+      if (data.ha > 0) result[type] = data;
+    }
+    return Object.keys(result).length > 0 ? result : null;
+  }, [communeStats]);
+
   // Map BDForet overlap data
   const bdforetStats = useMemo(() => {
     if (!communeStats) return null;
-    const parType = communeStats.overlap_bdforet.bdforet_par_type;
+    const parType = communeStats.overlap_bdforet.par_type;
     if (!parType || Object.keys(parType).length === 0) return null;
-    const result: Record<string, number> = {};
+    const result: Record<string, { ha: number; perturb_ha: number }> = {};
     for (const [type, data] of Object.entries(parType)) {
       if (data.perturb_ha > 0) {
-        result[type] = data.perturb_ha;
+        result[type] = { ha: data.ha, perturb_ha: data.perturb_ha };
       }
     }
     return Object.keys(result).length > 0 ? result : null;
@@ -155,6 +167,8 @@ export function CommuneMap() {
               `${IGN_WMTS_BASE}?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALNAMES.NAMES&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png`,
             ],
             tileSize: 256,
+            minzoom: 6,
+            maxzoom: 18,
           },
         },
         layers: [
@@ -324,6 +338,9 @@ export function CommuneMap() {
       observationYears={observationYears}
       overlapStats={overlapStats}
       bdforetStats={bdforetStats}
+      bdforetCouvertStats={bdforetCouvertStats}
+      population={communeStats?.population ?? null}
+      foretsAnciennes={communeStats?.forets_anciennes ?? null}
       onProtectedAreaToggle={(areaId, visible) => setProtectedAreas(prev => ({ ...prev, [areaId]: visible }))}
     />
   );
