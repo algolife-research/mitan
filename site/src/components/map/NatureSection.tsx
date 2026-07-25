@@ -9,27 +9,38 @@ import { fmtInt } from '@/lib/utils';
  * - AUCUNE coordonnée précise, AUCUNE localisation d'observation, AUCUN pointage d'espèce sensible ;
  * - AUCUNE donnée personnelle (le nom des observateurs n'est jamais requêté ni affiché) ;
  * - lecture seule et en direct : on ne stocke ni ne redistribue de base de données.
- * Le détail (espèces, licences, précautions sur les espèces protégées) reste sur GBIF/INPN.
+ *
+ * Robustesse : on tente une requête sur le contour communal simplifié ; si GBIF rejette la
+ * géométrie (contours complexes, communes multi-polygones), on retombe sur l'emprise
+ * rectangulaire (toujours valide) — la section fonctionne ainsi quelle que soit la commune.
  */
 
 interface Props {
   communeCode: string;
 }
 
-interface Bucket {
+interface Group {
   key: string;
   label: string;
   emoji: string;
   count: number;
 }
 
-const KINGDOM_LABEL: Record<string, { label: string; emoji: string }> = {
-  '1': { label: 'Animaux', emoji: '\u{1F98C}' },
-  '6': { label: 'Plantes', emoji: '\u{1F33F}' },
-  '5': { label: 'Champignons', emoji: '\u{1F344}' },
-};
+// Groupes reconnaissables : règnes (Plantae/Fungi) + classes animales usuelles.
+const KINGDOM_GROUPS: { key: string; label: string; emoji: string }[] = [
+  { key: '6', label: 'Plantes', emoji: '\u{1F33F}' },
+  { key: '5', label: 'Champignons', emoji: '\u{1F344}' },
+];
+// classKey de la dorsale taxonomique GBIF (valeurs stables et vérifiées).
+const CLASS_GROUPS: { key: string; label: string; emoji: string }[] = [
+  { key: '212', label: 'Oiseaux', emoji: '\u{1F426}' },
+  { key: '216', label: 'Insectes', emoji: '\u{1F98B}' },
+  { key: '359', label: 'Mammifères', emoji: '\u{1F98C}' },
+  { key: '131', label: 'Amphibiens', emoji: '\u{1F438}' },
+];
 
-const cache = new Map<string, { total: number; buckets: Bucket[]; wkt: string } | 'error'>();
+type Result = { total: number; groups: Group[]; wkt: string };
+const cache = new Map<string, Result | 'error'>();
 
 function ringArea(ring: number[][]): number {
   let a = 0;
@@ -39,7 +50,7 @@ function ringArea(ring: number[][]): number {
   return a / 2;
 }
 
-function decimate(ring: number[][], max = 280): number[][] {
+function decimate(ring: number[][], max = 200): number[][] {
   if (ring.length <= max) return ring;
   const step = Math.ceil(ring.length / max);
   const out: number[][] = [];
@@ -47,9 +58,8 @@ function decimate(ring: number[][], max = 280): number[][] {
   return out;
 }
 
-/** Construit un WKT POLYGON valide (fermé, sens anti-horaire) pour l'API GBIF. */
-function contourToWkt(geometry: any): string | null {
-  if (!geometry) return null;
+/** Plus grand anneau extérieur du contour (le corps principal de la commune). */
+function largestRing(geometry: any): number[][] | null {
   const polys: number[][][][] =
     geometry.type === 'MultiPolygon' ? geometry.coordinates : [geometry.coordinates];
   let best: number[][] | null = null;
@@ -63,20 +73,52 @@ function contourToWkt(geometry: any): string | null {
       best = ring;
     }
   }
-  if (!best) return null;
-  let ring = decimate(best.map((p) => [p[0], p[1]]));
-  // refermer
-  const first = ring[0];
-  const last = ring[ring.length - 1];
-  if (first[0] !== last[0] || first[1] !== last[1]) ring.push([first[0], first[1]]);
-  // GBIF exige un anneau extérieur anti-horaire (aire signée positive)
-  if (ringArea(ring) < 0) ring = ring.reverse();
-  return 'POLYGON((' + ring.map((p) => `${p[0]} ${p[1]}`).join(',') + '))';
+  return best;
+}
+
+/** WKT du contour (fermé, anti-horaire) — précis mais parfois refusé par GBIF. */
+function contourWkt(ring: number[][]): string {
+  let r = decimate(ring.map((p) => [p[0], p[1]]));
+  const f = r[0];
+  const l = r[r.length - 1];
+  if (f[0] !== l[0] || f[1] !== l[1]) r.push([f[0], f[1]]);
+  if (ringArea(r) < 0) r = r.reverse();
+  return 'POLYGON((' + r.map((p) => `${p[0]} ${p[1]}`).join(',') + '))';
+}
+
+/** Emprise rectangulaire du corps principal (toujours valide, anti-horaire) — repli robuste. */
+function bboxWkt(ring: number[][]): string {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const [x, y] of ring) {
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
+  }
+  return `POLYGON((${minX} ${minY},${maxX} ${minY},${maxX} ${maxY},${minX} ${maxY},${minX} ${minY}))`;
+}
+
+async function queryGbif(wkt: string) {
+  const url =
+    'https://api.gbif.org/v1/occurrence/search?limit=0' +
+    '&hasCoordinate=true&hasGeospatialIssue=false' +
+    '&facet=kingdomKey&facet=classKey&facetLimit=60' +
+    `&geometry=${encodeURIComponent(wkt)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`gbif ${res.status}`);
+  const g = await res.json();
+  const facetMap = (name: string): Record<string, number> => {
+    const f = (g.facets || []).find((x: any) => (x.field || '').toUpperCase() === name);
+    const m: Record<string, number> = {};
+    for (const c of f?.counts || []) m[c.name] = c.count;
+    return m;
+  };
+  return { total: g.count || 0, byKingdom: facetMap('KINGDOM_KEY'), byClass: facetMap('CLASS_KEY') };
 }
 
 export function NatureSection({ communeCode }: Props) {
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
-  const [data, setData] = useState<{ total: number; buckets: Bucket[]; wkt: string } | null>(null);
+  const [data, setData] = useState<Result | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -98,33 +140,36 @@ export function NatureSection({ communeCode }: Props) {
         );
         if (!cRes.ok) throw new Error('contour');
         const feature = await cRes.json();
-        const wkt = contourToWkt(feature.geometry);
-        if (!wkt) throw new Error('wkt');
+        const ring = largestRing(feature.geometry);
+        if (!ring) throw new Error('no-geometry');
 
-        const url =
-          'https://api.gbif.org/v1/occurrence/search?limit=0' +
-          '&hasCoordinate=true&hasGeospatialIssue=false' +
-          '&facet=kingdomKey&facetLimit=12' +
-          `&geometry=${encodeURIComponent(wkt)}`;
-        const gRes = await fetch(url);
-        if (!gRes.ok) throw new Error('gbif');
-        const g = await gRes.json();
+        const precise = contourWkt(ring);
+        const fallback = bboxWkt(ring);
+        let out: Awaited<ReturnType<typeof queryGbif>> | null = null;
+        let usedWkt = precise;
 
-        const facet = (g.facets || []).find(
-          (f: any) => (f.field || '').toUpperCase() === 'KINGDOM_KEY'
-        );
-        const counts: { name: string; count: number }[] = facet?.counts || [];
-        let autres = 0;
-        const named: Bucket[] = [];
-        for (const c of counts) {
-          const meta = KINGDOM_LABEL[c.name];
-          if (meta) named.push({ key: c.name, ...meta, count: c.count });
-          else autres += c.count;
+        try {
+          out = await queryGbif(precise);
+        } catch {
+          out = null;
         }
-        named.sort((a, b) => b.count - a.count);
-        if (autres > 0) named.push({ key: 'other', label: 'Autres', emoji: '\u{1F52C}', count: autres });
+        if (!out) {
+          out = await queryGbif(fallback); // repli emprise rectangulaire (toujours valide)
+          usedWkt = fallback;
+        }
 
-        const result = { total: g.count || 0, buckets: named, wkt };
+        const groups: Group[] = [];
+        for (const g of KINGDOM_GROUPS) {
+          const count = out.byKingdom[g.key] || 0;
+          if (count > 0) groups.push({ ...g, count });
+        }
+        for (const g of CLASS_GROUPS) {
+          const count = out.byClass[g.key] || 0;
+          if (count > 0) groups.push({ ...g, count });
+        }
+        groups.sort((a, b) => b.count - a.count);
+
+        const result: Result = { total: out.total, groups, wkt: usedWkt };
         cache.set(communeCode, result);
         if (!cancelled) {
           setData(result);
@@ -156,7 +201,7 @@ export function NatureSection({ communeCode }: Props) {
       <p className="text-xs text-gray-500">
         Données de biodiversité momentanément indisponibles.{' '}
         <a
-          href={`https://www.gbif.org/occurrence/search?q=&country=FR`}
+          href="https://www.gbif.org/occurrence/search?country=FR"
           target="_blank"
           rel="noopener noreferrer"
           className="underline hover:text-secondary"
@@ -167,8 +212,22 @@ export function NatureSection({ communeCode }: Props) {
     );
   }
 
-  const max = Math.max(1, ...data.buckets.map((b) => b.count));
   const gbifLink = `https://www.gbif.org/occurrence/search?geometry=${encodeURIComponent(data.wkt)}`;
+
+  if (data.total === 0) {
+    return (
+      <div className="space-y-2">
+        <p className="text-sm text-gray-600">
+          Peu ou pas d&apos;observations partagées dans ce secteur pour l&apos;instant.
+        </p>
+        <a href={gbifLink} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-secondary hover:underline">
+          Contribuer / explorer sur GBIF →
+        </a>
+      </div>
+    );
+  }
+
+  const max = Math.max(1, ...data.groups.map((g) => g.count));
 
   return (
     <div className="space-y-3">
@@ -178,20 +237,20 @@ export function NatureSection({ communeCode }: Props) {
         <div className="text-[11px] text-gray-500">dans le secteur de la commune</div>
       </div>
 
-      {data.buckets.length > 0 && (
+      {data.groups.length > 0 && (
         <div className="space-y-1.5">
-          {data.buckets.map((b) => (
-            <div key={b.key}>
+          {data.groups.map((g) => (
+            <div key={g.key}>
               <div className="flex justify-between items-baseline text-xs mb-0.5">
                 <span className="text-gray-800">
-                  {b.emoji} {b.label}
+                  {g.emoji} {g.label}
                 </span>
-                <span className="text-gray-500">{fmtInt(b.count)}</span>
+                <span className="text-gray-500">{fmtInt(g.count)}</span>
               </div>
               <div className="bg-gray-200 rounded-full h-1.5">
                 <div
                   className="bg-emerald-500 h-1.5 rounded-full"
-                  style={{ width: `${Math.round((b.count / max) * 100)}%` }}
+                  style={{ width: `${Math.round((g.count / max) * 100)}%` }}
                 />
               </div>
             </div>
@@ -199,12 +258,7 @@ export function NatureSection({ communeCode }: Props) {
         </div>
       )}
 
-      <a
-        href={gbifLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block text-xs text-secondary hover:underline"
-      >
+      <a href={gbifLink} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-secondary hover:underline">
         Voir le détail des espèces sur GBIF →
       </a>
 
