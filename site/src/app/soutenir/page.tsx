@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { CONTACT_EMAIL, GITHUB_URL, SUPPORT_PLATFORMS } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'Soutenir Mitan - Notre milieu',
+  title: 'Soutenir Mitan, observatoire indépendant des coupes rases | Mitan',
   description:
-    'Mitan est un projet bénévole et indépendant, porté par une seule personne. Vous pouvez le soutenir.',
+    'Mitan est un projet bénévole et indépendant, porté par une seule personne. Vous pouvez le soutenir par un don (Tipeee), un partage de données ou un message.',
+  alternates: { canonical: '/soutenir' },
 };
 
 export default function SoutenirPage() {

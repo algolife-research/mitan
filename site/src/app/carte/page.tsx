@@ -1,23 +1,13 @@
-'use client';
+import type { Metadata } from 'next';
+import { CarteClient } from './CarteClient';
 
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
-
-const CommuneMapNoSSR = dynamic(() => import('@/components/map/CommuneMap').then(mod => ({ default: mod.CommuneMap })), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-screen bg-gray-100 flex items-center justify-center">
-      <div className="text-gray-500">Chargement de la carte...</div>
-    </div>
-  ),
-});
+export const metadata: Metadata = {
+  title: 'Carte des coupes rases et des forêts de votre commune | Mitan',
+  description:
+    'Visualisez sur une carte les coupes rases et perturbations forestières de votre commune depuis 2018, détectées par satellite : forêts, forêts anciennes, zones protégées, Forêt-Score.',
+  alternates: { canonical: '/carte' },
+};
 
 export default function CartePage() {
-  return (
-    <div className="flex h-[calc(100vh-3.5rem)] w-full overflow-hidden">
-      <Suspense>
-        <CommuneMapNoSSR />
-      </Suspense>
-    </div>
-  );
+  return <CarteClient />;
 }
