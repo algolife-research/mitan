@@ -86,8 +86,8 @@ export default function HomePage() {
             </p>
             <div className="text-base bg-mitan-lili border border-primary-light rounded-lg px-4 py-4 text-center space-y-3">
               <p>
-                Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule personne
-                — gratuit et sans publicité. Il ne vit que grâce à ses lecteurs et lectrices.
+                Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule
+                personne. Gratuit et sans publicité, il ne vit que grâce à vous.
               </p>
               <Link
                 href="/soutenir"

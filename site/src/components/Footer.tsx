@@ -16,7 +16,7 @@ export function Footer() {
         <p className="text-sm">
           Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule personne.
           <br className="hidden sm:block" />
-          {' '}Gratuit, sans publicité &mdash; il ne vit que grâce à vous.
+          {' '}Gratuit et sans publicité, il ne vit que grâce à vous.
         </p>
         <Link
           href="/soutenir"
@@ -27,7 +27,7 @@ export function Footer() {
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-mitan-light/80">
           <Link href="/mentions" className="hover:text-secondary transition-colors">Mentions légales</Link>
           <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-secondary transition-colors">
-            ✉️ Écrire à Alexandre
+            Écrire à Alexandre
           </a>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
             GitHub

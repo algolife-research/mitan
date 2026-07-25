@@ -20,18 +20,18 @@ export default function MentionsPage() {
             <strong>aumitan.com</strong> est conçu, développé et maintenu avec amour par une seule
             personne, au cœur du Limousin. Il est gratuit et indépendant : aucune publicité, aucune
             subvention, aucun financement d&apos;aucun acteur du débat forestier. Il ne vit que du
-            temps libre de son auteur &mdash; et du soutien de celles et ceux qui le trouvent utile.
+            temps libre de son auteur et du soutien de celles et ceux qui le trouvent utile.
           </p>
           <p>
-            Si Mitan vous est utile, vous pouvez contribuer à sa pérennité :{' '}
+            Si Mitan vous est utile, vous pouvez le soutenir :{' '}
             <Link href="/soutenir" className="text-secondary hover:underline font-medium">
               💚 Soutenir le projet
             </Link>
           </p>
           <p>
             Une question, un bug, une idée ? Écrivez à Alexandre :{' '}
-            <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>
-            {' '}&mdash; chaque message est lu.
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>.
+            Chaque message est lu.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Éditeur du site</h2>
@@ -72,8 +72,8 @@ export default function MentionsPage() {
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Propriété intellectuelle</h2>
           <p>
             Tout le contenu de ce site (textes, images, visuels, sons, etc.) est proposé librement à la
-            lecture et à la découverte. Vous pouvez le réutiliser, le partager ou même vous en inspirer
-            &mdash; tant que vous mentionnez la source.
+            lecture et à la découverte. Vous pouvez le réutiliser, le partager ou même vous en
+            inspirer, tant que vous mentionnez la source.
           </p>
           <p>
             Le contenu de ce site est mis à disposition selon les termes de la licence{' '}

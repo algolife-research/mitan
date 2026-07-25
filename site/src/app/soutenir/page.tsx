@@ -5,7 +5,7 @@ import { CONTACT_EMAIL, GITHUB_URL, SUPPORT_PLATFORMS } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'Soutenir Mitan - Notre milieu',
   description:
-    'Mitan est un projet bénévole et indépendant, porté par une seule personne. Découvrez comment soutenir le projet.',
+    'Mitan est un projet bénévole et indépendant, porté par une seule personne. Vous pouvez le soutenir.',
 };
 
 export default function SoutenirPage() {
@@ -17,50 +17,46 @@ export default function SoutenirPage() {
         <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
           <h2 className="text-2xl font-semibold text-gray-900">Un projet bénévole, porté par une seule personne</h2>
           <p>
-            Derrière Mitan, il n&apos;y a ni grande entreprise, ni équipe de salariés, ni subvention :
-            juste <strong>une seule personne</strong>, qui conçoit, développe et maintient ce site
-            bénévolement, sur son temps libre, au cœur du Limousin.
+            Derrière Mitan, il n&apos;y a pas d&apos;entreprise, pas d&apos;équipe, pas de subvention.
+            Une seule personne conçoit, développe et maintient ce site bénévolement, sur son temps
+            libre, depuis le Limousin.
           </p>
           <p>
-            Mitan est né d&apos;une conviction : chacun et chacune devrait pouvoir savoir, simplement,
-            comment évolue la forêt autour de chez soi. C&apos;est pourquoi le site est{' '}
-            <strong>gratuit, sans publicité et sans pistage commercial</strong> &mdash; et il le restera.
+            Le projet doit beaucoup aux échanges avec le Réseau Forêt Limousine : l&apos;idée du
+            Forêt-Score, en particulier, est née de ces discussions.
+          </p>
+          <p>
+            L&apos;idée de départ est simple : chacun devrait pouvoir savoir comment évolue la forêt
+            autour de chez soi. Le site est donc <strong>gratuit, sans publicité et sans pistage
+            commercial</strong>, et il le restera.
           </p>
 
-          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Gratuit et indépendant, quoi qu&apos;il arrive</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Gratuit et indépendant</h2>
           <p>
-            Le débat autour de la forêt française est passionné, et c&apos;est bien normal :
-            l&apos;enjeu est immense. Pour y être utile, Mitan a fait un choix simple : celui de{' '}
-            <strong>l&apos;indépendance, sans condition</strong>. Le site n&apos;est financé par aucun
-            acteur de ce débat &mdash; ni par la filière bois, ni par des associations ou ONG, ni par
-            aucune institution.
+            Le débat sur la forêt française est vif. Mitan n&apos;est financé par aucun de ses
+            acteurs : ni la filière bois, ni les associations ou ONG, ni aucune institution.
           </p>
           <p>
-            Et disons-le sans acrimonie, parce que cela fait partie de l&apos;histoire du projet :
-            depuis son lancement, Mitan a déjà reçu <strong>des pressions de chaque côté</strong> du
-            débat, chacun souhaitant que le site penche un peu plus dans son sens. La réponse est la
-            même pour tout le monde : les données sont présentées telles quelles, sans filtre ni
-            agenda, et chacun et chacune reste libre de son interprétation. Être bousculé par tous
-            les bords à la fois, c&apos;est sans doute le signe que le site porte bien son nom :
-            au mitan &mdash; au milieu.
+            Autant le dire clairement : depuis son lancement, le site a reçu des pressions des deux
+            côtés, chacun souhaitant le voir pencher dans son sens. La réponse est la même pour
+            tous. Les données sont publiées telles quelles et chacun en tire ses propres
+            conclusions. Mitan porte bien son nom : le mitan, c&apos;est le milieu.
           </p>
           <p>
-            C&apos;est pourquoi Mitan n&apos;acceptera jamais un soutien qui viendrait conditionner
-            ce qu&apos;il montre. Le soutien de particuliers &mdash; le vôtre &mdash; est précisément
-            ce qui rend cette indépendance possible et durable.
+            Aucun soutien qui conditionnerait ce que le site montre ne sera accepté. Ce sont les
+            dons de particuliers qui garantissent cette indépendance.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Pourquoi un soutien ?</h2>
-          <p>Faire vivre Mitan a un coût bien réel :</p>
+          <p>Faire tourner Mitan a un coût :</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>le traitement des images satellite (Sentinel-2) sur l&apos;ensemble des communes couvertes ;</li>
             <li>l&apos;hébergement du site et le stockage des données ;</li>
             <li>le nom de domaine ;</li>
-            <li>et surtout de nombreuses heures de développement, d&apos;analyse et de maintenance.</li>
+            <li>et de nombreuses heures de développement, d&apos;analyse et de maintenance.</li>
           </ul>
           <p>
-            Mitan ne part d&apos;ailleurs pas de zéro, et c&apos;est important de le dire : les
-            détections de perturbations s&apos;appuient sur les travaux scientifiques de{' '}
+            Les détections de perturbations s&apos;appuient sur les travaux de{' '}
             <a
               href="https://ieeexplore.ieee.org/abstract/document/10604724"
               target="_blank"
@@ -69,38 +65,31 @@ export default function SoutenirPage() {
             >
               S. Mermoz et al.
             </a>
-            , et les données brutes proviennent notamment du programme européen Copernicus (Sentinel-2)
-            et de l&apos;IGN. Le rôle de Mitan est de rassembler ces sources, les traiter et les rendre
-            lisibles, commune par commune &mdash; toutes les sources sont créditées sur la page{' '}
+            , et les données brutes viennent du programme européen Copernicus (Sentinel-2) et de
+            l&apos;IGN. Mitan les rassemble, les traite et les rend lisibles, commune par commune.
+            Toutes les sources sont créditées sur la page{' '}
             <Link href="/details" className="text-secondary hover:underline">Détails sur les données</Link>.
           </p>
           <p>
-            Chaque contribution, même modeste, aide à couvrir ces frais, à pérenniser le projet et à
-            dégager du temps pour le faire grandir.
+            Un point important : le jeu de données de S. Mermoz et al. s&apos;arrête en septembre
+            2025. Pour mettre à jour les détections au-delà, il faudra un financement dédié, ou des
+            partenaires prêts à partager leurs données. Si vous pouvez aider sur l&apos;un ou
+            l&apos;autre, écrivez à Alexandre :{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>.
+          </p>
+          <p>
+            Chaque contribution, même modeste, aide à couvrir ces frais et à dégager du temps pour
+            le projet.
           </p>
 
-          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Et demain, avec votre soutien ?</h2>
-          <p>
-            Au-delà du fonctionnement courant, un financement suffisant permettrait d&apos;ouvrir de
-            nouveaux chantiers qui tiennent à cœur au projet :
-          </p>
+          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Et ensuite ?</h2>
+          <p>Avec un financement suffisant, d&apos;autres chantiers pourront s&apos;ouvrir :</p>
           <ul className="list-disc pl-6 space-y-2">
-            <li>
-              <strong>étudier l&apos;impact des perturbations forestières sur l&apos;eau potable</strong>,
-              enjeu majeur et encore trop peu documenté ;
-            </li>
-            <li>
-              <strong>intégrer un volet « eau » dans Mitan</strong>, pour suivre cette ressource au même
-              titre que la forêt ;
-            </li>
-            <li>
-              <strong>intégrer des données naturalistes</strong> (faune, flore, biodiversité) au portrait
-              de chaque commune ;
-            </li>
-            <li>
-              <strong>ouvrir un volet humain et social</strong> : recueillir des témoignages et explorer
-              le lien entre les gens et leur milieu naturel.
-            </li>
+            <li>reprendre la mise à jour des détections au-delà de septembre 2025 ;</li>
+            <li>étudier l&apos;impact des perturbations forestières sur l&apos;eau potable ;</li>
+            <li>ajouter un volet eau, pour suivre cette ressource comme on suit la forêt ;</li>
+            <li>intégrer des données naturalistes (faune, flore) au portrait de chaque commune ;</li>
+            <li>ouvrir un volet humain et social : recueillir des témoignages sur le lien entre les gens et leur milieu naturel.</li>
           </ul>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Faire un don</h2>
@@ -121,30 +110,29 @@ export default function SoutenirPage() {
           </div>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">D&apos;autres façons d&apos;aider</h2>
-          <p>Le soutien n&apos;est pas qu&apos;une question d&apos;argent, loin de là :</p>
+          <p>L&apos;argent n&apos;est pas la seule façon d&apos;aider :</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
               <strong>Parlez de Mitan autour de vous</strong> : à vos proches, votre commune, vos
               associations locales. Plus le site est utilisé, plus il est utile.
             </li>
             <li>
-              <strong>Signalez un bug, proposez une idée</strong> (ou envoyez juste un petit mot) :
-              écrivez à Alexandre, à{' '}
+              <strong>Signalez un bug, proposez une idée, partagez des données</strong> : écrivez à
+              Alexandre, à{' '}
               <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>.
-              Chaque message est lu &mdash; et comme il n&apos;y a qu&apos;une personne derrière
-              l&apos;écran, la bienveillance est toujours appréciée. 😊
+              Chaque message est lu, et un mot gentil fait toujours plaisir : il n&apos;y a
+              qu&apos;une personne derrière l&apos;écran.
             </li>
             <li>
               <strong>Contribuez au code</strong> : le projet est ouvert et disponible sur{' '}
               <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline">
                 GitHub
-              </a>{' '}
-              &mdash; les étoiles, retours et contributions sont les bienvenus.
+              </a>. Les contributions sont les bienvenues.
             </li>
           </ul>
 
           <p className="mt-8">
-            Merci du fond du cœur pour votre soutien, quelle que soit sa forme. 🌳
+            Merci pour votre soutien, quelle que soit sa forme.
           </p>
           <p>
             <Link href="/mentions" className="text-secondary hover:underline">
