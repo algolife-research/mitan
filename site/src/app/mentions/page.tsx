@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { CONTACT_EMAIL } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'Mentions légales - Mitan',
+  title: 'Mentions légales | Mitan',
   description: 'Mentions légales du site aumitan.com, projet bénévole et indépendant.',
+  alternates: { canonical: '/mentions' },
 };
 
 export default function MentionsPage() {

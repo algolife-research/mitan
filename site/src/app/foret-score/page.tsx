@@ -1,4 +1,12 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'Forêt-Score : évaluer la forêt de sa commune | Mitan',
+  description:
+    'Le Forêt-Score note l’état de la forêt d’une commune : taux de boisement et intensité des coupes rases, calculés à partir de données satellite. Méthode et grille de lecture.',
+  alternates: { canonical: '/foret-score' },
+};
 
 export default function ForetScorePage() {
   return (
