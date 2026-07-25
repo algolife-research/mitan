@@ -1,12 +1,21 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { CONTACT_EMAIL, SUPPORT_PLATFORMS } from '@/lib/constants';
 import { PROTECTED_AREAS_CONFIG } from '@/lib/map/ign-layers';
 import { fmtNum, fmtInt } from '@/lib/utils';
 import { CollapsibleSection } from './CollapsibleSection';
 import { NatureSection } from './NatureSection';
+import { WaterSection } from './WaterSection';
 import { YearRangeSlider } from './YearRangeSlider';
+
+const TABS = [
+  { key: 'foret', label: 'Forêt' },
+  { key: 'nature', label: 'Biodiversité' },
+  { key: 'eau', label: 'Eau' },
+] as const;
+type TabKey = (typeof TABS)[number]['key'];
 
 const SCORE_COLORS: Record<string, string> = {
   A: '#1a9641', B: '#a6d96a', C: '#fee08b', D: '#f46d43', E: '#d73027',
@@ -91,6 +100,8 @@ export function MapSidebar(props: MapSidebarProps) {
     onProtectedAreaToggle,
   } = props;
 
+  const [activeTab, setActiveTab] = useState<TabKey>('foret');
+
   return (
     <div className="p-4 space-y-4">
       {/* Commune Name */}
@@ -112,8 +123,26 @@ export function MapSidebar(props: MapSidebarProps) {
         en haut de la carte pour changer de fond · barre de recherche pour changer de commune.
       </div>
 
-      {/* === Foret === */}
-      <div>
+      {/* Onglets modalités */}
+      <div className="flex gap-1 border-b border-gray-200">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setActiveTab(t.key)}
+            className={`flex-1 text-xs font-medium px-1 py-2 -mb-px border-b-2 transition-colors ${
+              activeTab === t.key
+                ? 'border-secondary text-secondary'
+                : 'border-transparent text-gray-500 hover:text-gray-800'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* === Forêt === */}
+      {activeTab === 'foret' && (
+      <div className="space-y-4">
 
       {/* Forest Score */}
       {communeSurface > 0 && (
@@ -336,13 +365,13 @@ export function MapSidebar(props: MapSidebarProps) {
       )}
 
       </div>
-
-      {/* Biodiversité (données agrégées GBIF, chargées à l'ouverture de la section) */}
-      {communeCode && (
-        <CollapsibleSection title="Biodiversité" defaultOpen={false}>
-          <NatureSection communeCode={communeCode} />
-        </CollapsibleSection>
       )}
+
+      {/* === Biodiversité === */}
+      {activeTab === 'nature' && communeCode && <NatureSection communeCode={communeCode} />}
+
+      {/* === Eau === */}
+      {activeTab === 'eau' && communeCode && <WaterSection communeCode={communeCode} />}
 
       {/* Help */}
       <CollapsibleSection title="Aide" defaultOpen={false}>
