@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { STATS_V2_BASE } from '@/lib/constants';
 import { fmtInt } from '@/lib/utils';
 
 /**
@@ -98,6 +99,21 @@ function bboxWkt(ring: number[][]): string {
   return `POLYGON((${minX} ${minY},${maxX} ${minY},${maxX} ${maxY},${minX} ${maxY},${minX} ${minY}))`;
 }
 
+/** Construit les groupes affichés à partir des comptages par règne et par classe. */
+function buildGroups(byKingdom: Record<string, number>, byClass: Record<string, number>): Group[] {
+  const groups: Group[] = [];
+  for (const g of KINGDOM_GROUPS) {
+    const count = byKingdom[g.key] || 0;
+    if (count > 0) groups.push({ ...g, count });
+  }
+  for (const g of CLASS_GROUPS) {
+    const count = byClass[g.key] || 0;
+    if (count > 0) groups.push({ ...g, count });
+  }
+  groups.sort((a, b) => b.count - a.count);
+  return groups;
+}
+
 async function queryGbif(wkt: string) {
   const url =
     'https://api.gbif.org/v1/occurrence/search?limit=0' +
@@ -134,6 +150,28 @@ export function NatureSection({ communeCode }: Props) {
 
     setState('loading');
     (async () => {
+      // 1) Résumé précalculé dans mitan_data (fiable, sans appel externe) — prioritaire.
+      try {
+        const sRes = await fetch(`${STATS_V2_BASE}/nature/${communeCode}.json`);
+        if (sRes.ok) {
+          const s = await sRes.json();
+          const result: Result = {
+            total: s.total || 0,
+            groups: buildGroups(s.kingdom || {}, s.class || {}),
+            wkt: '',
+          };
+          cache.set(communeCode, result);
+          if (!cancelled) {
+            setData(result);
+            setState('ready');
+          }
+          return;
+        }
+      } catch {
+        /* pas de fichier précalculé : on tente l'appel en direct ci-dessous */
+      }
+
+      // 2) Repli : appel GBIF en direct (contour, puis emprise rectangulaire).
       try {
         const cRes = await fetch(
           `https://geo.api.gouv.fr/communes/${communeCode}?fields=contour&format=geojson`
@@ -158,18 +196,11 @@ export function NatureSection({ communeCode }: Props) {
           usedWkt = fallback;
         }
 
-        const groups: Group[] = [];
-        for (const g of KINGDOM_GROUPS) {
-          const count = out.byKingdom[g.key] || 0;
-          if (count > 0) groups.push({ ...g, count });
-        }
-        for (const g of CLASS_GROUPS) {
-          const count = out.byClass[g.key] || 0;
-          if (count > 0) groups.push({ ...g, count });
-        }
-        groups.sort((a, b) => b.count - a.count);
-
-        const result: Result = { total: out.total, groups, wkt: usedWkt };
+        const result: Result = {
+          total: out.total,
+          groups: buildGroups(out.byKingdom, out.byClass),
+          wkt: usedWkt,
+        };
         cache.set(communeCode, result);
         if (!cancelled) {
           setData(result);
@@ -199,7 +230,7 @@ export function NatureSection({ communeCode }: Props) {
   if (state === 'error' || !data) {
     return (
       <p className="text-xs text-gray-500">
-        Données de biodiversité momentanément indisponibles.{' '}
+        Le résumé biodiversité de cette commune est en cours de constitution.{' '}
         <a
           href="https://www.gbif.org/occurrence/search?country=FR"
           target="_blank"
