@@ -5,6 +5,7 @@ import { CONTACT_EMAIL, SUPPORT_PLATFORMS } from '@/lib/constants';
 import { PROTECTED_AREAS_CONFIG } from '@/lib/map/ign-layers';
 import { fmtNum, fmtInt } from '@/lib/utils';
 import { CollapsibleSection } from './CollapsibleSection';
+import { NatureSection } from './NatureSection';
 import { YearRangeSlider } from './YearRangeSlider';
 
 const SCORE_COLORS: Record<string, string> = {
@@ -77,6 +78,7 @@ export interface MapSidebarProps {
 export function MapSidebar(props: MapSidebarProps) {
   const {
     communeName,
+    communeCode,
     yearRange, onYearRangeChange, minYear, maxYear,
     yearStats, totalArea, communeSurface, forestSurface, forestScore,
     scoreBoisement, scoreCoupes, tauxBoisement, pixelAreaHa,
@@ -334,6 +336,13 @@ export function MapSidebar(props: MapSidebarProps) {
       )}
 
       </div>
+
+      {/* Biodiversité (données agrégées GBIF, chargées à l'ouverture de la section) */}
+      {communeCode && (
+        <CollapsibleSection title="Biodiversité" defaultOpen={false}>
+          <NatureSection communeCode={communeCode} />
+        </CollapsibleSection>
+      )}
 
       {/* Help */}
       <CollapsibleSection title="Aide" defaultOpen={false}>
