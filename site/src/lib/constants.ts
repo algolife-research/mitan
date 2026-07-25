@@ -45,18 +45,13 @@ export const GITHUB_URL = 'https://github.com/algolife-research/mitan';
 
 /**
  * Plateformes de soutien affichées sur /soutenir.
- * ⚠️ Mettre à jour les URLs une fois les comptes créés.
- * Retirer une entrée de la liste suffit à masquer le bouton correspondant.
+ * Ajouter une entrée suffit à afficher un bouton supplémentaire,
+ * ex. { name: 'Patreon', url: 'https://www.patreon.com/...', tagline: 'Soutien mensuel' }
  */
 export const SUPPORT_PLATFORMS = [
   {
     name: 'Tipeee',
-    url: 'https://fr.tipeee.com/aumitan',
+    url: 'https://fr.tipeee.com/mitan',
     tagline: 'Don ponctuel ou mensuel, plateforme française',
-  },
-  {
-    name: 'Patreon',
-    url: 'https://www.patreon.com/aumitan',
-    tagline: 'Soutien mensuel',
   },
 ];
