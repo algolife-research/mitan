@@ -4,7 +4,7 @@ import type { CommuneStatsV2 } from '@/types';
 import { isValidCommuneCode } from '@/lib/utils';
 
 /** Base URL for pre-computed stats_v2 JSON files */
-const STATS_V2_BASE = 'https://raw.githubusercontent.com/algolife-research/mitan_data/main/stats_v2';
+export const STATS_V2_BASE = 'https://raw.githubusercontent.com/algolife-research/mitan_data/main/stats_v2';
 
 /** Fetch pre-computed commune stats from GitHub stats_v2 */
 export async function fetchCommuneStats(communeCode: string): Promise<CommuneStatsV2> {
