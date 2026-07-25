@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { STATS_V2_BASE } from '@/lib/constants';
-import { fmtInt } from '@/lib/utils';
+import { fmtInt, fetchWithTimeout } from '@/lib/utils';
 
 /**
  * Biodiversité — données AGRÉGÉES uniquement, dans le respect de la loi et des droits :
@@ -120,7 +120,7 @@ async function queryGbif(wkt: string) {
     '&hasCoordinate=true&hasGeospatialIssue=false' +
     '&facet=kingdomKey&facet=classKey&facetLimit=60' +
     `&geometry=${encodeURIComponent(wkt)}`;
-  const res = await fetch(url);
+  const res = await fetchWithTimeout(url);
   if (!res.ok) throw new Error(`gbif ${res.status}`);
   const g = await res.json();
   const facetMap = (name: string): Record<string, number> => {
@@ -152,7 +152,7 @@ export function NatureSection({ communeCode }: Props) {
     (async () => {
       // 1) Résumé précalculé dans mitan_data (fiable, sans appel externe) — prioritaire.
       try {
-        const sRes = await fetch(`${STATS_V2_BASE}/nature/${communeCode}.json`);
+        const sRes = await fetchWithTimeout(`${STATS_V2_BASE}/nature/${communeCode}.json`, 8000);
         if (sRes.ok) {
           const s = await sRes.json();
           const result: Result = {
@@ -173,7 +173,7 @@ export function NatureSection({ communeCode }: Props) {
 
       // 2) Repli : appel GBIF en direct (contour, puis emprise rectangulaire).
       try {
-        const cRes = await fetch(
+        const cRes = await fetchWithTimeout(
           `https://geo.api.gouv.fr/communes/${communeCode}?fields=contour&format=geojson`
         );
         if (!cRes.ok) throw new Error('contour');
