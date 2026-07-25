@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { STATS_V2_BASE } from '@/lib/constants';
-import { fmtInt } from '@/lib/utils';
+import { fmtInt, fetchWithTimeout } from '@/lib/utils';
 
 /**
  * Eau potable — résumé du contrôle sanitaire, dans le respect de la loi et des droits :
@@ -72,7 +72,7 @@ export function WaterSection({ communeCode }: Props) {
     (async () => {
       // 1) Résumé précalculé éventuel dans mitan_data
       try {
-        const sRes = await fetch(`${STATS_V2_BASE}/eau/${communeCode}.json`);
+        const sRes = await fetchWithTimeout(`${STATS_V2_BASE}/eau/${communeCode}.json`, 8000);
         if (sRes.ok) {
           const s = await sRes.json();
           const result: Result = {
@@ -97,7 +97,7 @@ export function WaterSection({ communeCode }: Props) {
           `${HUBEAU}?code_commune=${encodeURIComponent(communeCode)}` +
           '&size=50&sort=desc' +
           '&fields=date_prelevement,conclusion_conformite_prelevement,code_installation_amont,nom_uge';
-        const res = await fetch(url);
+        const res = await fetchWithTimeout(url);
         if (!res.ok) throw new Error(`hubeau ${res.status}`);
         const j = await res.json();
         const result = summarize(j.data || []);
