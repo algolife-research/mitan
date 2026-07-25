@@ -27,6 +27,21 @@ export default function SoutenirPage() {
             <strong>gratuit, sans publicité et sans pistage commercial</strong> &mdash; et il le restera.
           </p>
 
+          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Gratuit et indépendant, quoi qu&apos;il arrive</h2>
+          <p>
+            Le débat autour de la forêt française est passionné, et c&apos;est bien normal :
+            l&apos;enjeu est immense. Pour y être utile, Mitan a fait un choix simple : celui de{' '}
+            <strong>l&apos;indépendance, sans condition</strong>. Le site n&apos;est financé par aucun
+            acteur de ce débat &mdash; ni par la filière bois, ni par des associations ou ONG, ni par
+            aucune institution &mdash; et n&apos;acceptera aucun soutien qui viendrait conditionner ce
+            qu&apos;il montre.
+          </p>
+          <p>
+            Les données sont présentées telles quelles, sans filtre ni agenda : chacun et chacune reste
+            libre de son interprétation. C&apos;est justement le soutien de particuliers &mdash; le
+            vôtre &mdash; qui rend cette indépendance possible et durable.
+          </p>
+
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Pourquoi un soutien ?</h2>
           <p>Faire vivre Mitan a un coût bien réel :</p>
           <ul className="list-disc pl-6 space-y-2">
@@ -36,10 +51,49 @@ export default function SoutenirPage() {
             <li>et surtout de nombreuses heures de développement, d&apos;analyse et de maintenance.</li>
           </ul>
           <p>
-            Chaque contribution, même modeste, aide à couvrir ces frais, à pérenniser le projet et à
-            dégager du temps pour de nouvelles fonctionnalités (nouvelles données, nouveaux territoires,
-            nouveaux outils d&apos;analyse&hellip;).
+            Mitan ne part d&apos;ailleurs pas de zéro, et c&apos;est important de le dire : les
+            détections de perturbations s&apos;appuient sur les travaux scientifiques de{' '}
+            <a
+              href="https://ieeexplore.ieee.org/abstract/document/10604724"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary hover:underline"
+            >
+              S. Mermoz et al.
+            </a>
+            , et les données brutes proviennent notamment du programme européen Copernicus (Sentinel-2)
+            et de l&apos;IGN. Le rôle de Mitan est de rassembler ces sources, les traiter et les rendre
+            lisibles, commune par commune &mdash; toutes les sources sont créditées sur la page{' '}
+            <Link href="/details" className="text-secondary hover:underline">Détails sur les données</Link>.
           </p>
+          <p>
+            Chaque contribution, même modeste, aide à couvrir ces frais, à pérenniser le projet et à
+            dégager du temps pour le faire grandir.
+          </p>
+
+          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Et demain, avec votre soutien ?</h2>
+          <p>
+            Au-delà du fonctionnement courant, un financement suffisant permettrait d&apos;ouvrir de
+            nouveaux chantiers qui tiennent à cœur au projet :
+          </p>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>
+              <strong>étudier l&apos;impact des perturbations forestières sur l&apos;eau potable</strong>,
+              enjeu majeur et encore trop peu documenté ;
+            </li>
+            <li>
+              <strong>intégrer un volet « eau » dans Mitan</strong>, pour suivre cette ressource au même
+              titre que la forêt ;
+            </li>
+            <li>
+              <strong>intégrer des données naturalistes</strong> (faune, flore, biodiversité) au portrait
+              de chaque commune ;
+            </li>
+            <li>
+              <strong>ouvrir un volet humain et social</strong> : recueillir des témoignages et explorer
+              le lien entre les gens et leur milieu naturel.
+            </li>
+          </ul>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Faire un don</h2>
           <p>Vous pouvez soutenir Mitan, ponctuellement ou chaque mois, via :</p>

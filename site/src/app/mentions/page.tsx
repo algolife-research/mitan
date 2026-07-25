@@ -18,9 +18,9 @@ export default function MentionsPage() {
           <p>
             <strong>Mitan</strong> est un projet <strong>indépendant et bénévole</strong> : le site{' '}
             <strong>aumitan.com</strong> est conçu, développé et maintenu avec amour par une seule
-            personne, au cœur du Limousin. Il ne bénéficie d&apos;aucune subvention ni financement
-            publicitaire, et ne vit que du temps libre de son auteur &mdash; et du soutien de celles
-            et ceux qui le trouvent utile.
+            personne, au cœur du Limousin. Il est gratuit et indépendant : aucune publicité, aucune
+            subvention, aucun financement d&apos;aucun acteur du débat forestier. Il ne vit que du
+            temps libre de son auteur &mdash; et du soutien de celles et ceux qui le trouvent utile.
           </p>
           <p>
             Si Mitan vous est utile, vous pouvez contribuer à sa pérennité :{' '}
@@ -31,8 +31,8 @@ export default function MentionsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Éditeur du site</h2>
           <p>
-            Le site est édité par <strong>AlgoLife SARL</strong>, structure qui porte juridiquement le
-            projet, dont le siège est situé à Saint-Julien-le-Petit (Haute-Vienne, France).
+            Le site est édité à titre personnel et bénévole par <strong>Alexandre Gouy</strong>,
+            à Saint-Julien-le-Petit (Haute-Vienne, France).
           </p>
           <p>
             Directeur de la publication : <strong>Alexandre Gouy</strong><br />
@@ -120,8 +120,11 @@ export default function MentionsPage() {
           <p>
             Nous faisons de notre mieux pour vous fournir un site fiable, mais nous ne pouvons garantir
             qu&apos;il soit toujours parfait ! Les informations publiées (cartes, statistiques,
-            détections) sont issues de traitements automatisés de données satellite et sont fournies à
-            titre indicatif. L&apos;utilisation du site se fait sous votre propre responsabilité.
+            détections) sont issues de traitements automatisés de données satellite et de travaux
+            scientifiques publiés (voir la page{' '}
+            <Link href="/details" className="text-secondary hover:underline">Détails sur les données</Link>)
+            et sont fournies à titre indicatif. L&apos;utilisation du site se fait sous votre propre
+            responsabilité.
           </p>
           <p>
             Nous ne pouvons donc pas être tenus responsables des dommages directs ou indirects causés à
@@ -134,8 +137,8 @@ export default function MentionsPage() {
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Droit applicable</h2>
           <p>
-            Ces mentions légales sont soumises au droit français. En cas de souci juridique, les tribunaux
-            compétents seront ceux du ressort du siège social d&apos;AlgoLife SARL.
+            Ces mentions légales sont soumises au droit français. En cas de litige, et à défaut de
+            résolution amiable, les tribunaux français seront compétents.
           </p>
         </div>
       </div>
