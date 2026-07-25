@@ -33,13 +33,21 @@ export default function SoutenirPage() {
             l&apos;enjeu est immense. Pour y être utile, Mitan a fait un choix simple : celui de{' '}
             <strong>l&apos;indépendance, sans condition</strong>. Le site n&apos;est financé par aucun
             acteur de ce débat &mdash; ni par la filière bois, ni par des associations ou ONG, ni par
-            aucune institution &mdash; et n&apos;acceptera aucun soutien qui viendrait conditionner ce
-            qu&apos;il montre.
+            aucune institution.
           </p>
           <p>
-            Les données sont présentées telles quelles, sans filtre ni agenda : chacun et chacune reste
-            libre de son interprétation. C&apos;est justement le soutien de particuliers &mdash; le
-            vôtre &mdash; qui rend cette indépendance possible et durable.
+            Et disons-le sans acrimonie, parce que cela fait partie de l&apos;histoire du projet :
+            depuis son lancement, Mitan a déjà reçu <strong>des pressions de chaque côté</strong> du
+            débat, chacun souhaitant que le site penche un peu plus dans son sens. La réponse est la
+            même pour tout le monde : les données sont présentées telles quelles, sans filtre ni
+            agenda, et chacun et chacune reste libre de son interprétation. Être bousculé par tous
+            les bords à la fois, c&apos;est sans doute le signe que le site porte bien son nom :
+            au mitan &mdash; au milieu.
+          </p>
+          <p>
+            C&apos;est pourquoi Mitan n&apos;acceptera jamais un soutien qui viendrait conditionner
+            ce qu&apos;il montre. Le soutien de particuliers &mdash; le vôtre &mdash; est précisément
+            ce qui rend cette indépendance possible et durable.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Pourquoi un soutien ?</h2>
@@ -120,8 +128,11 @@ export default function SoutenirPage() {
               associations locales. Plus le site est utilisé, plus il est utile.
             </li>
             <li>
-              <strong>Signalez un problème ou proposez une idée</strong> en écrivant à{' '}
+              <strong>Signalez un bug, proposez une idée</strong> (ou envoyez juste un petit mot) :
+              écrivez à Alexandre, à{' '}
               <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>.
+              Chaque message est lu &mdash; et comme il n&apos;y a qu&apos;une personne derrière
+              l&apos;écran, la bienveillance est toujours appréciée. 😊
             </li>
             <li>
               <strong>Contribuez au code</strong> : le projet est ouvert et disponible sur{' '}

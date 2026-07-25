@@ -26,7 +26,9 @@ export function Footer() {
         </Link>
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-mitan-light/80">
           <Link href="/mentions" className="hover:text-secondary transition-colors">Mentions légales</Link>
-          <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-secondary transition-colors">Contact</a>
+          <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-secondary transition-colors">
+            ✉️ Écrire à Alexandre
+          </a>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
             GitHub
           </a>

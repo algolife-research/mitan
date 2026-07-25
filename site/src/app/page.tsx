@@ -84,13 +84,18 @@ export default function HomePage() {
               et <strong>espace d'échange</strong> pour citoyens et gestionnaires, favorisant des décisions
               éclairées pour l'avenir de nos <strong>territoires</strong>.
             </p>
-            <p className="text-base bg-mitan-lili border border-primary-light rounded-lg px-4 py-3">
-              Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule personne
-              — gratuit et sans publicité. Si le site vous est utile,{' '}
-              <Link href="/soutenir" className="text-secondary hover:underline font-medium">
-                vous pouvez le soutenir 💚
+            <div className="text-base bg-mitan-lili border border-primary-light rounded-lg px-4 py-4 text-center space-y-3">
+              <p>
+                Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule personne
+                — gratuit et sans publicité. Il ne vit que grâce à ses lecteurs et lectrices.
+              </p>
+              <Link
+                href="/soutenir"
+                className="inline-block bg-secondary hover:bg-secondary-hover text-white px-6 py-2.5 rounded-full font-medium transition-colors"
+              >
+                💚 Soutenir le projet
               </Link>
-            </p>
+            </div>
           </div>
 
           <div className="mb-8">

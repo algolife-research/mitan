@@ -28,6 +28,11 @@ export default function MentionsPage() {
               💚 Soutenir le projet
             </Link>
           </p>
+          <p>
+            Une question, un bug, une idée ? Écrivez à Alexandre :{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>
+            {' '}&mdash; chaque message est lu.
+          </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Éditeur du site</h2>
           <p>

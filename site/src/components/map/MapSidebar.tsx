@@ -346,6 +346,19 @@ export function MapSidebar(props: MapSidebarProps) {
           </div>
         </div>
       </CollapsibleSection>
+
+      {/* Soutien */}
+      <div className="bg-mitan-lili border border-primary-light rounded-lg p-3 text-center">
+        <p className="text-xs text-gray-600 mb-2">
+          Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule personne.
+        </p>
+        <Link
+          href="/soutenir"
+          className="inline-block bg-secondary hover:bg-secondary-hover text-white px-4 py-1.5 rounded-full text-xs font-medium transition-colors"
+        >
+          💚 Soutenir le projet
+        </Link>
+      </div>
     </div>
   );
 }
