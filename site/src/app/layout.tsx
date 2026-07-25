@@ -5,6 +5,7 @@ import { Providers } from './providers';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
 import { CookieConsent } from '@/components/CookieConsent';
+import { SupportPopup } from '@/components/SupportPopup';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -76,6 +77,7 @@ export default function RootLayout({
         </div>
         <Footer />
         <CookieConsent />
+        <SupportPopup />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}

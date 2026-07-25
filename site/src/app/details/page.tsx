@@ -135,6 +135,19 @@ export default function DetailsPage() {
                 Licence CC-BY-SA
               </a>
             </li>
+            <li>
+              <strong>Biodiversité :</strong> comptages d&apos;observations agrégés via{' '}
+              <a href="https://www.gbif.org/" target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline">
+                GBIF
+              </a>{' '}
+              (données partagées par de nombreux organismes, sous licences variables propres à
+              chaque jeu de données). Mitan n&apos;affiche que des comptages agrégés à l&apos;échelle
+              communale : ni localisation précise, ni espèce sensible, ni donnée personnelle. Pour le
+              détail et les licences, consultez GBIF ou l&apos;
+              <a href="https://inpn.mnhn.fr/" target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline">
+                INPN
+              </a>.
+            </li>
           </ul>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">Comment est calculé le Forêt-Score ?</h2>
