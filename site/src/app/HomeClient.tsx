@@ -80,8 +80,9 @@ export function HomeClient() {
 
           <div className="text-lg text-gray-700 mb-12 space-y-4">
             <p>
-              <strong>Mitan</strong> est une plateforme cartographique conçue comme un{' '}
-              <strong>observatoire du patrimoine naturel</strong>, surtout forestier, des communes françaises.
+              <strong>Mitan</strong> est un <strong>observatoire des coupes rases</strong> et du{' '}
+              <strong>patrimoine naturel</strong> des communes françaises : une plateforme
+              cartographique de suivi de la forêt, commune par commune.
             </p>
             <p>
               Mitan se veut <strong>outil de suivi</strong> de notre milieu et des perturbations l'affectant,

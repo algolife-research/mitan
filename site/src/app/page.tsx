@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { HomeClient } from './HomeClient';
 
 export const metadata: Metadata = {
-  title: 'Mitan : coupes rases et patrimoine naturel de votre commune',
+  title: 'Mitan : l’observatoire des coupes rases, commune par commune',
   description:
-    'Carte des coupes rases et perturbations forestières détectées par satellite, commune par commune, partout en France. Explorez le patrimoine naturel de votre territoire : forêts, forêts anciennes, zones protégées, Forêt-Score.',
+    'Observatoire des coupes rases et des perturbations forestières détectées par satellite, commune par commune, partout en France. Explorez le patrimoine naturel de votre territoire : forêts, forêts anciennes, zones protégées, Forêt-Score.',
   alternates: { canonical: '/' },
 };
 
