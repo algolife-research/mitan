@@ -80,9 +80,16 @@ export default function HomePage() {
               <strong>observatoire du patrimoine naturel</strong>, surtout forestier, des communes françaises.
             </p>
             <p>
-              Mitan se veut <strong>outil de suivi</strong> de notre milieu et des perturbations l'affectant, 
-              et <strong>espace d'échange</strong> pour citoyens et gestionnaires, favorisant des décisions 
+              Mitan se veut <strong>outil de suivi</strong> de notre milieu et des perturbations l'affectant,
+              et <strong>espace d'échange</strong> pour citoyens et gestionnaires, favorisant des décisions
               éclairées pour l'avenir de nos <strong>territoires</strong>.
+            </p>
+            <p className="text-base bg-mitan-lili border border-primary-light rounded-lg px-4 py-3">
+              Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule personne
+              — gratuit et sans publicité. Si le site vous est utile,{' '}
+              <Link href="/soutenir" className="text-secondary hover:underline font-medium">
+                vous pouvez le soutenir 💚
+              </Link>
             </p>
           </div>
 

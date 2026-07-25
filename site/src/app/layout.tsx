@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
 import { CookieConsent } from '@/components/CookieConsent';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 
@@ -30,6 +31,7 @@ export default function RootLayout({
         <div className="pt-14">
           <Providers>{children}</Providers>
         </div>
+        <Footer />
         <CookieConsent />
       </body>
     </html>

@@ -11,12 +11,14 @@ const MAIN_LINKS = [
   { href: '/', label: 'Accueil' },
 ];
 
+const SUPPORT_LINK = { href: '/soutenir', label: 'Soutenir 💚' };
+
 const MORE_LINKS = [
   { href: '/details', label: 'Details sur les donnees' },
   { href: '/mentions', label: 'Mentions legales' },
 ];
 
-const ALL_LINKS = [...MAIN_LINKS, ...MORE_LINKS];
+const ALL_LINKS = [...MAIN_LINKS, SUPPORT_LINK, ...MORE_LINKS];
 
 export function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -144,6 +146,12 @@ export function NavBar() {
           {MAIN_LINKS.map(({ href, label }) => (
             <Link key={href} href={href} className="hover:text-secondary transition-colors">{label}</Link>
           ))}
+          <Link
+            href={SUPPORT_LINK.href}
+            className="bg-secondary hover:bg-secondary-hover text-white px-3 py-1.5 rounded-full font-medium transition-colors"
+          >
+            {SUPPORT_LINK.label}
+          </Link>
           <div ref={dropdownRef} className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}

@@ -38,3 +38,25 @@ export const PERTURBATION_COLOR = { r: 215, g: 0, b: 64 };
 /** Fixed survey period — used for consistent color scaling across communes */
 export const SURVEY_START_YEAR = 2018;
 export const SURVEY_END_YEAR = 2025;
+
+/** Contact et liens du projet */
+export const CONTACT_EMAIL = 'aumitan@proton.me';
+export const GITHUB_URL = 'https://github.com/algolife-research/mitan';
+
+/**
+ * Plateformes de soutien affichées sur /soutenir.
+ * ⚠️ Mettre à jour les URLs une fois les comptes créés.
+ * Retirer une entrée de la liste suffit à masquer le bouton correspondant.
+ */
+export const SUPPORT_PLATFORMS = [
+  {
+    name: 'Tipeee',
+    url: 'https://fr.tipeee.com/aumitan',
+    tagline: 'Don ponctuel ou mensuel, plateforme française',
+  },
+  {
+    name: 'Patreon',
+    url: 'https://www.patreon.com/aumitan',
+    tagline: 'Soutien mensuel',
+  },
+];
