@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { CONTACT_EMAIL, GITHUB_URL, SUPPORT_PLATFORMS } from '@/lib/constants';
+import { CONTACT_EMAIL, SUPPORT_PLATFORMS } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Soutenir Mitan, observatoire indépendant des coupes rases | Mitan',
@@ -123,12 +123,6 @@ export default function SoutenirPage() {
               <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>.
               Chaque message est lu, et un mot gentil fait toujours plaisir : il n&apos;y a
               qu&apos;une personne derrière l&apos;écran.
-            </li>
-            <li>
-              <strong>Contribuez au code</strong> : le projet est ouvert et disponible sur{' '}
-              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline">
-                GitHub
-              </a>. Les contributions sont les bienvenues.
             </li>
           </ul>
 
