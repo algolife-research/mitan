@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CONTACT_EMAIL, SUPPORT_PLATFORMS } from '@/lib/constants';
+import { CONTACT_EMAIL } from '@/lib/constants';
 import { PROTECTED_AREAS_CONFIG } from '@/lib/map/ign-layers';
 import { fmtNum, fmtInt } from '@/lib/utils';
 import { CollapsibleSection } from './CollapsibleSection';
@@ -367,22 +367,19 @@ export function MapSidebar(props: MapSidebarProps) {
           Il ne vit que grâce à vous.
         </p>
         <a
-          href={SUPPORT_PLATFORMS[0].url}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`mailto:${CONTACT_EMAIL}`}
           className="inline-block bg-secondary hover:bg-secondary-hover text-white px-4 py-1.5 rounded-full text-xs font-medium transition-colors"
         >
-          💚 Faire un don sur Tipeee
+          💚 Soutenir ou nous écrire
         </a>
+        <p className="text-[11px] text-gray-500">
+          Un soutien, une question, des données à partager ? Écrivez à Alexandre :{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>
+        </p>
         <p className="text-xs">
           <Link href="/soutenir" className="text-secondary hover:underline">
-            Toutes les façons de soutenir le projet
+            En savoir plus
           </Link>
-        </p>
-        <p className="text-[11px] text-gray-500">
-          Une question, une idée, des données à partager ?<br />
-          Écrivez à Alexandre :{' '}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>
         </p>
       </div>
     </div>

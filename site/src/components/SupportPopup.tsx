@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CONTACT_EMAIL, SUPPORT_PLATFORMS } from '@/lib/constants';
+import { CONTACT_EMAIL } from '@/lib/constants';
 
 const SEEN_KEY = 'mitan_support_popup_seen';
 const CONSENT_KEY = 'mitan_cookie_consent';
@@ -88,27 +88,18 @@ export function SupportPopup() {
 
         <div className="flex flex-col gap-2">
           <a
-            href={SUPPORT_PLATFORMS[0].url}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={`mailto:${CONTACT_EMAIL}`}
             onClick={close}
             className="bg-secondary hover:bg-secondary-hover text-white text-center rounded-full px-5 py-2.5 text-sm font-medium transition-colors"
           >
-            💚 Faire un don sur Tipeee
-          </a>
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            onClick={close}
-            className="border border-primary-light text-primary text-center rounded-full px-5 py-2.5 text-sm font-medium hover:bg-mitan-lili transition-colors"
-          >
-            Partager des données ou une idée
+            💚 Nous écrire pour soutenir le projet
           </a>
           <Link
             href="/soutenir"
             onClick={close}
             className="text-center text-sm text-secondary hover:underline mt-1"
           >
-            Toutes les façons de soutenir le projet
+            Toutes les façons de soutenir
           </Link>
         </div>
 

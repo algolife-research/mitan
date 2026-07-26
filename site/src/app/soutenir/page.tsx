@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { CONTACT_EMAIL, SUPPORT_PLATFORMS } from '@/lib/constants';
+import { CONTACT_EMAIL } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Soutenir Mitan, observatoire indépendant des coupes rases | Mitan',
   description:
-    'Mitan est un projet bénévole et indépendant, porté par une seule personne. Vous pouvez le soutenir par un don (Tipeee), un partage de données ou un message.',
+    'Mitan est un projet bénévole et indépendant, porté par une seule personne. Écrivez-nous pour soutenir le projet, partager des données ou faire un retour.',
   alternates: { canonical: '/soutenir' },
 };
 
@@ -93,21 +93,19 @@ export default function SoutenirPage() {
             <li>ouvrir un volet humain et social : recueillir des témoignages sur le lien entre les gens et leur milieu naturel.</li>
           </ul>
 
-          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Faire un don</h2>
-          <p>Vous pouvez soutenir Mitan, ponctuellement ou chaque mois, via :</p>
-          <div className="flex flex-col sm:flex-row gap-4 not-prose">
-            {SUPPORT_PLATFORMS.map(({ name, url, tagline }) => (
-              <a
-                key={name}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 block bg-secondary hover:bg-secondary-hover text-white rounded-lg px-6 py-4 text-center transition-colors"
-              >
-                <span className="block text-lg font-semibold">💚 {name}</span>
-                <span className="block text-sm text-white/90 mt-1">{tagline}</span>
-              </a>
-            ))}
+          <h2 className="text-2xl font-semibold text-gray-900 mt-8">Soutenir le projet</h2>
+          <p>
+            Le plus simple, c&apos;est d&apos;écrire à Alexandre. Que vous vouliez aider
+            financièrement, partager des données, proposer une idée ou simplement donner votre avis,
+            un message suffit pour en discuter.
+          </p>
+          <div className="not-prose">
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="inline-block bg-secondary hover:bg-secondary-hover text-white rounded-full px-6 py-3 font-medium transition-colors"
+            >
+              💚 Nous écrire : {CONTACT_EMAIL}
+            </a>
           </div>
 
           <h2 className="text-2xl font-semibold text-gray-900 mt-8">D&apos;autres façons d&apos;aider</h2>

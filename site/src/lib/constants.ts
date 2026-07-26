@@ -39,18 +39,5 @@ export const PERTURBATION_COLOR = { r: 215, g: 0, b: 64 };
 export const SURVEY_START_YEAR = 2018;
 export const SURVEY_END_YEAR = 2025;
 
-/** Contact et liens du projet */
+/** Contact du projet */
 export const CONTACT_EMAIL = 'aumitan@proton.me';
-
-/**
- * Plateformes de soutien affichées sur /soutenir.
- * Ajouter une entrée suffit à afficher un bouton supplémentaire,
- * ex. { name: 'Patreon', url: 'https://www.patreon.com/...', tagline: 'Soutien mensuel' }
- */
-export const SUPPORT_PLATFORMS = [
-  {
-    name: 'Tipeee',
-    url: 'https://fr.tipeee.com/mitan',
-    tagline: 'Don ponctuel ou mensuel, plateforme française',
-  },
-];
