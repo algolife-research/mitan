@@ -4,7 +4,7 @@ import type { CommuneStatsV2 } from '@/types';
 import { isValidCommuneCode } from '@/lib/utils';
 
 /** Base URL for pre-computed stats_v2 JSON files */
-const STATS_V2_BASE = 'https://raw.githubusercontent.com/algolife-research/mitan_data/main/stats_v2';
+export const STATS_V2_BASE = 'https://raw.githubusercontent.com/algolife-research/mitan_data/main/stats_v2';
 
 /** Fetch pre-computed commune stats from GitHub stats_v2 */
 export async function fetchCommuneStats(communeCode: string): Promise<CommuneStatsV2> {
@@ -38,3 +38,6 @@ export const PERTURBATION_COLOR = { r: 215, g: 0, b: 64 };
 /** Fixed survey period — used for consistent color scaling across communes */
 export const SURVEY_START_YEAR = 2018;
 export const SURVEY_END_YEAR = 2025;
+
+/** Contact du projet */
+export const CONTACT_EMAIL = 'aumitan@proton.me';

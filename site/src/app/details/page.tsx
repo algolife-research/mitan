@@ -1,3 +1,12 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Données et méthode : détection des coupes rases | Mitan',
+  description:
+    'Sources et limites des données de Mitan : détection des coupes rases par satellite (Sentinel-2, travaux de S. Mermoz et al.), BDForêt, IGN, zones protégées.',
+  alternates: { canonical: '/details' },
+};
+
 export default function DetailsPage() {
   return (
     <div className="min-h-screen bg-white py-12">

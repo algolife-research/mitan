@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { CONTACT_EMAIL } from '@/lib/constants';
 import { PROTECTED_AREAS_CONFIG } from '@/lib/map/ign-layers';
 import { fmtNum, fmtInt } from '@/lib/utils';
 import { CollapsibleSection } from './CollapsibleSection';
@@ -102,8 +103,15 @@ export function MapSidebar(props: MapSidebarProps) {
         </div>
       )}
 
-      {/* === Foret === */}
-      <div>
+      {/* Astuces d'utilisation */}
+      <div className="text-[11px] text-gray-600 bg-gray-50 border border-gray-200 rounded p-2 leading-relaxed">
+        <strong>Pour explorer :</strong> clic droit sur la carte (appui long sur mobile) pour
+        analyser un point · curseur temporel pour filtrer les coupes par période · bouton couches
+        en haut de la carte pour changer de fond · barre de recherche pour changer de commune.
+      </div>
+
+      {/* === Forêt === */}
+      <div className="space-y-4">
 
       {/* Forest Score */}
       {communeSurface > 0 && (
@@ -168,6 +176,11 @@ export function MapSidebar(props: MapSidebarProps) {
             <div className="text-sm text-gray-600">Surface totale perturbee</div>
             <div className="text-2xl font-bold text-red-600">{fmtNum(totalArea)} ha</div>
             <div className="text-xs text-gray-400 mt-1">Periode de suivi : janvier 2018 – septembre 2025 (<Link href="/details" className="underline hover:text-secondary">voir details et sources</Link>)</div>
+            <div className="text-xs text-gray-400 mt-1">
+              Les détections s&apos;arrêtent en septembre 2025, fin du jeu de données publié.
+              La suite dépend de nouveaux financements ou de données partagées.{' '}
+              <Link href="/soutenir" className="underline hover:text-secondary">Comment aider</Link>
+            </div>
           </div>
 
           {/* Year Range Slider */}
@@ -346,6 +359,29 @@ export function MapSidebar(props: MapSidebarProps) {
           </div>
         </div>
       </CollapsibleSection>
+
+      {/* Soutien */}
+      <div className="bg-mitan-lili border border-primary-light rounded-lg p-3 text-center space-y-2">
+        <p className="text-xs text-gray-600">
+          Mitan est un projet <strong>bénévole et indépendant</strong>, porté par une seule personne.
+          Il ne vit que grâce à vous.
+        </p>
+        <a
+          href={`mailto:${CONTACT_EMAIL}`}
+          className="inline-block bg-secondary hover:bg-secondary-hover text-white px-4 py-1.5 rounded-full text-xs font-medium transition-colors"
+        >
+          💚 Soutenir ou nous écrire
+        </a>
+        <p className="text-[11px] text-gray-500">
+          Un soutien, une question, des données à partager ? Écrivez à Alexandre :{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline">{CONTACT_EMAIL}</a>
+        </p>
+        <p className="text-xs">
+          <Link href="/soutenir" className="text-secondary hover:underline">
+            En savoir plus
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

@@ -74,6 +74,20 @@ export function fmtInt(n: number): string {
   return Math.round(n).toLocaleString('fr-FR');
 }
 
+/**
+ * fetch avec délai maximal : évite qu'une requête externe lente ou sans réponse
+ * ne bloque indéfiniment l'interface (l'appel rejette au bout de `ms`).
+ */
+export async function fetchWithTimeout(url: string, ms: number = 12000): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  try {
+    return await fetch(url, { signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export function calculateBounds(geometry: GeoJSON.MultiPolygon | GeoJSON.Polygon): [[number, number], [number, number]] {
   const coords = geometry.type === 'MultiPolygon' 
     ? geometry.coordinates.flat(2)
