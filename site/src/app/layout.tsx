@@ -12,15 +12,12 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://aumitan.com'),
-  title: 'Mitan : l’observatoire des coupes rases, commune par commune',
+  title: 'Mitan : coupes rases et patrimoine naturel de votre commune',
   description:
-    'Observatoire des coupes rases et des perturbations forestières détectées par satellite, commune par commune, partout en France. Explorez le patrimoine naturel de votre territoire : forêts, forêts anciennes, zones protégées, Forêt-Score.',
+    'Carte des coupes rases et perturbations forestières détectées par satellite, commune par commune, partout en France. Explorez le patrimoine naturel de votre territoire : forêts, forêts anciennes, zones protégées, Forêt-Score.',
   keywords: [
-    'observatoire des coupes rases',
-    'observatoire coupes rases',
     'coupes rases',
     'coupe rase',
-    'observatoire des forêts',
     'forêt',
     'patrimoine naturel',
     'commune',
@@ -37,16 +34,16 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     url: 'https://aumitan.com',
     siteName: 'Mitan',
-    title: 'Mitan : l’observatoire des coupes rases, commune par commune',
+    title: 'Mitan : coupes rases et patrimoine naturel de votre commune',
     description:
-      'L’observatoire des coupes rases, commune par commune : un projet gratuit et indépendant de suivi du patrimoine naturel par satellite.',
+      'Carte des coupes rases et perturbations forestières, commune par commune. Un observatoire gratuit et indépendant du patrimoine naturel.',
     images: [{ url: '/LogoMitanRect-Slogan.png', alt: 'Mitan, notre milieu' }],
   },
   twitter: {
     card: 'summary',
-    title: 'Mitan : l’observatoire des coupes rases, commune par commune',
+    title: 'Mitan : coupes rases et patrimoine naturel de votre commune',
     description:
-      'L’observatoire des coupes rases, commune par commune. Gratuit et indépendant.',
+      'Carte des coupes rases et perturbations forestières, commune par commune. Gratuit et indépendant.',
     images: ['/LogoMitanRect-Slogan.png'],
   },
   icons: {
@@ -62,7 +59,7 @@ const websiteJsonLd = {
   url: 'https://aumitan.com',
   inLanguage: 'fr',
   description:
-    'Observatoire des coupes rases et du patrimoine naturel des communes françaises : forêts, perturbations et zones protégées, à partir de données satellite.',
+    'Observatoire du patrimoine naturel des communes françaises : coupes rases, forêts et zones protégées, à partir de données satellite.',
 };
 
 export default function RootLayout({
