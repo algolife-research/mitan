@@ -55,43 +55,32 @@ function ChantierPanel() {
 }
 
 export function WaterSection({ communeCode }: Props) {
-  const [state, setState] = useState<'loading' | 'ready' | 'none'>('loading');
-  const [data, setData] = useState<WaterData | null>(null);
+  // On affiche le panneau immédiatement ; la donnée précalculée (si elle existe)
+  // vient le remplacer en arrière-plan. Aucune attente, quelle que soit la commune.
+  const initial = cache.get(communeCode);
+  const [data, setData] = useState<WaterData | null>(
+    initial && initial !== 'none' ? initial : null
+  );
 
   useEffect(() => {
+    if (cache.has(communeCode)) return; // déjà résolu (donnée ou absence)
     let cancelled = false;
-    const cached = cache.get(communeCode);
-    if (cached) {
-      if (cached === 'none') setState('none');
-      else {
-        setData(cached);
-        setState('ready');
-      }
-      return;
-    }
-
-    setState('loading');
     (async () => {
       try {
-        const res = await fetchWithTimeout(`${STATS_V2_BASE}/eau/${communeCode}.json`, 8000);
+        const res = await fetchWithTimeout(`${STATS_V2_BASE}/eau/${communeCode}.json`, 6000);
         if (res.ok) {
           const d = (await res.json()) as WaterData;
           const meaningful =
             d && (d.perturb_in_aac_ha != null || d.aac_ha != null || d.captages != null);
           if (meaningful) {
             cache.set(communeCode, d);
-            if (!cancelled) {
-              setData(d);
-              setState('ready');
-            }
+            if (!cancelled) setData(d);
             return;
           }
         }
         cache.set(communeCode, 'none');
-        if (!cancelled) setState('none');
       } catch {
         cache.set(communeCode, 'none');
-        if (!cancelled) setState('none');
       }
     })();
 
@@ -100,16 +89,7 @@ export function WaterSection({ communeCode }: Props) {
     };
   }, [communeCode]);
 
-  if (state === 'loading') {
-    return (
-      <div className="space-y-2">
-        <div className="h-3 bg-gray-100 rounded animate-pulse w-2/3" />
-        <div className="h-3 bg-gray-100 rounded animate-pulse w-1/2" />
-      </div>
-    );
-  }
-
-  if (state === 'none' || !data) return <ChantierPanel />;
+  if (!data) return <ChantierPanel />;
 
   const hasAac = data.aac_ha != null && data.aac_ha > 0;
 
