@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { CONTACT_EMAIL, GITHUB_URL } from '@/lib/constants';
+import { CONTACT_EMAIL } from '@/lib/constants';
 
 export function Footer() {
   const pathname = usePathname();
@@ -28,9 +28,6 @@ export function Footer() {
           <Link href="/mentions" className="hover:text-secondary transition-colors">Mentions légales</Link>
           <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-secondary transition-colors">
             Écrire à Alexandre
-          </a>
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
-            GitHub
           </a>
         </div>
       </div>

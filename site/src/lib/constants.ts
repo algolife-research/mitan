@@ -41,7 +41,6 @@ export const SURVEY_END_YEAR = 2025;
 
 /** Contact et liens du projet */
 export const CONTACT_EMAIL = 'aumitan@proton.me';
-export const GITHUB_URL = 'https://github.com/algolife-research/mitan';
 
 /**
  * Plateformes de soutien affichées sur /soutenir.

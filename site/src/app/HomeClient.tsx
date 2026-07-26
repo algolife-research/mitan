@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FranceDeptMap } from '@/components/FranceDeptMap';
 
 export function HomeClient() {
   const [search, setSearch] = useState('');
@@ -102,14 +101,10 @@ export function HomeClient() {
             </div>
           </div>
 
-          <div className="mb-12">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-              La France des coupes rases, département par département
-            </h2>
-            <p className="text-sm text-gray-600 mb-5">
-              Taux de coupe annuel moyen 2018-2025, en % de la surface forestière de chaque département.
-            </p>
-            <FranceDeptMap />
+          <div className="mb-10 text-center">
+            <Link href="/carte-france" className="text-secondary hover:underline font-medium">
+              → Voir la carte de France des coupes rases par département
+            </Link>
           </div>
 
           <div className="mb-8">

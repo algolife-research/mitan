@@ -9,6 +9,7 @@ import { isValidCommuneCode } from '@/lib/utils';
 
 const MAIN_LINKS = [
   { href: '/', label: 'Accueil' },
+  { href: '/carte-france', label: 'Carte de France' },
 ];
 
 const SUPPORT_LINK = { href: '/soutenir', label: 'Soutenir 💚' };
